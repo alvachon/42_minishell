@@ -63,7 +63,6 @@ int main(int ac, char **av, char **env)
             {
      		    printf("exit, command freed, goodbye.\n");
 				clear_history();
-				test;
       		    free(cmd);
       		    exit(EXIT_SUCCESS);
     		}
