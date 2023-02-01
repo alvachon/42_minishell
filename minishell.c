@@ -59,6 +59,7 @@ int main(int ac, char **av, char **env)
     		if (ft_strcmp(cmd, "exit") == 0)
             {
      		    printf("exit, command freed, goodbye.\n");
+				rl_clear_history
       		    free(cmd);
       		    exit(EXIT_SUCCESS);
     		}
