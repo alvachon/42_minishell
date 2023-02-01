@@ -6,7 +6,7 @@
 /*   By: alvachon <alvachon@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/31 13:27:55 by alvachon          #+#    #+#             */
-/*   Updated: 2023/02/01 11:58:34 by alvachon         ###   ########.fr       */
+/*   Updated: 2023/02/01 12:14:20 by alvachon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,6 +57,7 @@ int main(int ac, char **av, char **env)
       		    free(cmd);
       		    continue;
     		}
+			//alloooooooo
     		if (ft_strcmp(cmd, "exit") == 0)
             {
      		    printf("exit, command freed, goodbye.\n");
