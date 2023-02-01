@@ -6,7 +6,7 @@
 /*   By: alvachon <alvachon@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/31 13:27:55 by alvachon          #+#    #+#             */
-/*   Updated: 2023/01/31 14:52:31 by alvachon         ###   ########.fr       */
+/*   Updated: 2023/02/01 11:58:34 by alvachon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,6 +42,7 @@ int main(int ac, char **av, char **env)
 
 	if (ac != 2)
 	{
+		//THIS IS 42ALMINISHELL BRANCH * * * * * * * * * * * * * * * * * * 
   		printf("Welcome! You can exit by pressing Ctrl+C at any time...\n");
 		//signal redirection here
   		while (1)
@@ -62,6 +63,7 @@ int main(int ac, char **av, char **env)
             {
      		    printf("exit, command freed, goodbye.\n");
 				clear_history();
+				test;
       		    free(cmd);
       		    exit(EXIT_SUCCESS);
     		}
