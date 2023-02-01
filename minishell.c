@@ -23,6 +23,8 @@
 #include<readline/readline.h>
 #include<readline/history.h>
 #include<errno.h>
+#include<locale.h>
+#include<signal.h>
 
 int	ft_strcmp(char *s1, char *s2)
 {
@@ -59,7 +61,7 @@ int main(int ac, char **av, char **env)
     		if (ft_strcmp(cmd, "exit") == 0)
             {
      		    printf("exit, command freed, goodbye.\n");
-				rl_clear_history
+				clear_history();
       		    free(cmd);
       		    exit(EXIT_SUCCESS);
     		}
