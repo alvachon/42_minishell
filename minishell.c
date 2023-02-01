@@ -6,7 +6,7 @@
 /*   By: alvachon <alvachon@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/31 13:27:55 by alvachon          #+#    #+#             */
-/*   Updated: 2023/01/31 14:52:31 by alvachon         ###   ########.fr       */
+/*   Updated: 2023/02/01 12:58:01 by alvachon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,7 @@
 /*
  * [1]BUILT [2]OPTION [3]REDIRECTION [4]APPEND [5]INFILE [6]PIPE [7]REDIRECTION [8]APPEND [9]OUTFILE
  * */
+
 #include<stdio.h>
 #include<string.h>
 #include<stdlib.h>
@@ -40,6 +41,7 @@ int main(int ac, char **av, char **env)
 
 	if (ac != 2)
 	{
+		//* * * * * * * * * * * * * * * * * * * * * * THIS IS MASTER BRANCH
   		printf("Welcome! You can exit by pressing Ctrl+C at any time...\n");
 		//signal redirection here
   		while (1)
