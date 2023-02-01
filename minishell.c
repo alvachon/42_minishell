@@ -22,6 +22,7 @@
 #include<sys/wait.h>
 #include<readline/readline.h>
 #include<readline/history.h>
+#include<errno.h>
 
 int	ft_strcmp(char *s1, char *s2)
 {
@@ -43,7 +44,7 @@ int main(int ac, char **av, char **env)
 		//signal redirection here
   		while (1)
 		{
-    		cmd = readline("$ ");
+    		cmd = readline("minishell$ ");
     		if (!cmd)
       		{
 				fprintf(stderr, "Usage: readline space allocation\n");
