@@ -23,6 +23,7 @@
 #include<readline/readline.h>
 #include<readline/history.h>
 #include<errno.h>
+#include<signal.h>
 
 int	ft_strcmp(char *s1, char *s2)
 {
@@ -33,26 +34,35 @@ int	ft_strcmp(char *s1, char *s2)
     return (s1[i] - s2[i]);
 }
 
+void  sign_handler(int signnum)
+{
+  printf("CTRL-C SIG_IGN on simple command... \nEn vrai ca marche pas vrm sur linux\n Ca fait juste print par dessu le prompt.");
+  printf("\nMight need to put it on SIG_DFL later on pipe or redirect, idk.\n");
+  return ;
+}
+
+
 int main(int ac, char **av, char **env)
 {
-	int		infile;
 	char	*cmd;
-
+	
 	if (ac != 2)
 	{
+  		printf("Welcome! You can exit by pressing Ctrl+D at any time...\n");
   		printf("Welcome! You can exit by pressing Ctrl+C at any time...\n");
-		//signal redirection here
+  		signal(SIGINT, SIG_IGN);
+  		signal(SIGINT, sign_handler);
   		while (1)
 		{
-    		cmd = readline("minishell$ ");
-    		if (!cmd)
-      		{
-				fprintf(stderr, "Usage: readline space allocation\n");
-  				exit(EXIT_FAILURE);
-			}
+    		  cmd = readline("minishell$ ");
+    		if (!cmd)/*ctrl-d, EOF*/
+    		{
+                  printf("CTRL-D, exit now. goodbye.\n");
+                  exit(EXIT_SUCCESS);
+      		}
     		if (cmd[0] == '\0' || ft_strcmp(cmd, "\n") == 0)
-            {
-      	    	printf("Nothing, command freed, continue.\n");
+                {
+      	    	    printf("Nothing, command freed, continue.\n");
       		    free(cmd);
       		    continue;
     		}
