@@ -14,17 +14,7 @@
 /*
  * [1]BUILT [2]OPTION [3]REDIRECTION [4]APPEND [5]INFILE [6]PIPE [7]REDIRECTION [8]APPEND [9]OUTFILE
  * */
-#include<stdio.h>
-#include<string.h>
-#include<stdlib.h>
-#include<unistd.h>
-#include<sys/types.h>
-#include<sys/wait.h>
-#include<readline/readline.h>
-#include<readline/history.h>
-#include<errno.h>
-#include<locale.h>
-#include<signal.h>
+#include "lib/minishell.h"
 
 int	ft_strcmp(char *s1, char *s2)
 {
@@ -35,11 +25,58 @@ int	ft_strcmp(char *s1, char *s2)
     return (s1[i] - s2[i]);
 }
 
+char	**ft_pathfinder(char *envp[])
+{
+	int	i;
+
+	i = 0;
+	while (ft_strncmp("PATH=", envp[i], 5) != 0)
+		i++;
+	return (ft_split(envp[i], ':'));
+}
+
+int	**command_parse(char *cmd, char **env)
+{
+	char	**buff;
+	char	**buff2;
+
+	buff = ft_pathfinder(env);
+	buff2 = ft_split(cmd, ' ');
+	if (builtincheck(buff2) == 1)
+		return (1);
+	else
+		return (0);
+}
+
+int	builtincheck(char **cmd)
+{
+	int	i;
+
+	if (ft_strncmp(cmd[0], "echo", 5) != 0)
+		i++;
+	if (ft_strncmp(cmd[0], "cd", 3) != 0)
+		i++;
+	if (ft_strncmp(cmd[0], "pwd", 4) != 0)
+		i++;
+	if (ft_strncmp(cmd[0], "export", 7) != 0)
+		i++;
+	if (ft_strncmp(cmd[0], "unset", 6) != 0)
+		i++;
+	if (ft_strncmp(cmd[0], "env", 4) != 0)
+		i++;
+	if (i < 6)
+		return (0);
+	else
+		return (1);
+}
+
 int main(int ac, char **av, char **env)
 {
 	int		infile;
 	char	*cmd;
 
+	(void)infile;
+	(void)env;
 	if (ac != 2)
 	{
 		//THIS IS 42ALMINISHELL BRANCH * * * * * * * * * * * * * * * * * * 
@@ -66,7 +103,6 @@ int main(int ac, char **av, char **env)
       		    free(cmd);
       		    exit(EXIT_SUCCESS);
     		}
-			//lexical_parsing_here(cmd);
     		printf("%s\n", cmd);
 			add_history(cmd);
 			printf("Command done and freed, added to the history\n");
