@@ -6,7 +6,7 @@
 /*   By: alvachon <alvachon@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/31 13:27:55 by alvachon          #+#    #+#             */
-/*   Updated: 2023/02/06 13:15:40 by alvachon         ###   ########.fr       */
+/*   Updated: 2023/02/06 13:42:03 by alvachon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,6 @@
  * [1]BUILT [2]OPTION [3]REDIRECTION [4]APPEND [5]INFILE [6]PIPE [7]REDIRECTION [8]APPEND [9]OUTFILE
  * */
 #include "lib/minishell.h"
-#include<termios.h>
 
 typedef struct s_process
 {
@@ -42,14 +41,7 @@ typedef struct s_job
 }	t_job
 ;
 
-int	ft_strcmp(char *s1, char *s2)
-{
-    int i;
-    i = 0;
-    while (s1[i] != '\0' && s2[i] != '\0' && s1[i] == s2[i]) 
-        i++;
-    return (s1[i] - s2[i]);
-}
+
 
 char	**ft_pathfinder(char *envp[])
 {
