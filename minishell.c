@@ -6,7 +6,7 @@
 /*   By: alvachon <alvachon@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/31 13:27:55 by alvachon          #+#    #+#             */
-/*   Updated: 2023/02/06 13:08:19 by alvachon         ###   ########.fr       */
+/*   Updated: 2023/02/06 13:15:40 by alvachon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -244,6 +244,7 @@ void	init_shell()
 int main(int ac, char **av, char **env)
 {
 	//pid_t			shell_pgid;
+	int		infile;
 	char	*cmd;
 
 	(void)infile;
