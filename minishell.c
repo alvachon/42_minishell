@@ -35,39 +35,87 @@ char	**ft_pathfinder(char *envp[])
 	return (ft_split(envp[i], ':'));
 }
 
-int	**command_parse(char *cmd, char **env)
+int	command_parse(char *cmd, char **env)
 {
 	char	**buff;
 	char	**buff2;
+	int		i;
 
 	buff = ft_pathfinder(env);
 	buff2 = ft_split(cmd, ' ');
-	if (builtincheck(buff2) == 1)
+	i = builtincheck(buff2);
+	if (i == 8)
+	{
+		free (buff);
+		free (buff2);
 		return (1);
+	}
 	else
+	{
+		free (buff2);
 		return (0);
+	}
 }
 
 int	builtincheck(char **cmd)
 {
 	int	i;
 
-	if (ft_strncmp(cmd[0], "echo", 5) != 0)
-		i++;
-	if (ft_strncmp(cmd[0], "cd", 3) != 0)
-		i++;
-	if (ft_strncmp(cmd[0], "pwd", 4) != 0)
-		i++;
-	if (ft_strncmp(cmd[0], "export", 7) != 0)
-		i++;
-	if (ft_strncmp(cmd[0], "unset", 6) != 0)
-		i++;
-	if (ft_strncmp(cmd[0], "env", 4) != 0)
-		i++;
-	if (i < 6)
-		return (0);
+	i = 7;
+	if (ft_strncmp(cmd[0], "echo", 5) == 0)
+		i = 1;
+	else if (ft_strncmp(cmd[0], "cd", 3) == 0)
+		i = 2;
+	else if (ft_strncmp(cmd[0], "pwd", 4) == 0)
+		i = 3;
+	else if (ft_strncmp(cmd[0], "export", 7) == 0)
+		i = 4;
+	else if (ft_strncmp(cmd[0], "unset", 6) == 0)
+		i = 5;
+	else if (ft_strncmp(cmd[0], "env", 4) == 0)
+		i = 6;
+	if (i <= 6)
+		return (i);
 	else
-		return (1);
+		return (envcheck(cmd));
+}
+
+int	envcheck(char **cmd)
+{
+	if (ft_strncmp(cmd[0], "$", 1) == 0)
+		return (7);
+	else
+		return (8);
+}
+
+void	error_msg(char *cmd)
+{
+	char	**buff;
+
+	buff = ft_split(cmd, ' ');
+	write (2, "minishell: ", 12);
+	write (2, buff[0], ft_strlen(buff[0]));
+	write (2, " : Command not found.\n", 23);
+	return ;
+}
+
+int	functionparse_dispatch(char **env, char **cmd, int code)
+{
+	if (code == 1)
+		echo_parse_here(cmd, env);
+	/*if (code == 2)
+		cd_parse_here(cmd, env);
+	if (code == 3)
+		pwd_parse_here(cmd, env);
+	if (code == 4)
+		export_parse_here(cmd, env);
+	if (code == 5)
+		unset_parse_here(cmd, env);
+	if (code == 6)
+		env_parse_here(cmd, env);
+	if (code == 7)
+		envar_parse_here(cmd, env);*/
+	return (0);
 }
 
 int main(int ac, char **av, char **env)
@@ -103,9 +151,12 @@ int main(int ac, char **av, char **env)
       		    free(cmd);
       		    exit(EXIT_SUCCESS);
     		}
-    		printf("%s\n", cmd);
+    		//printf("%s\n", cmd);
 			add_history(cmd);
-			printf("Command done and freed, added to the history\n");
+			if (command_parse(cmd, env) == 1)
+				error_msg(cmd);
+			else
+				printf("Command done and freed, added to the history\n");
 			// readline malloc's a new buffer every time
     		free(cmd);
   		}

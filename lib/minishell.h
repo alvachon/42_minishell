@@ -34,5 +34,10 @@ typedef struct s_argsandflags
 
 int		ft_strcmp(char *s1, char *s2);
 char	**ft_pathfinder(char *envp[]);
+int		command_parse(char *cmd, char **env);
+int		builtincheck(char **cmd);
+int		envcheck(char **cmd);
+int		functionparse_dispatch(char **env, char **cmd, int code);
+void	error_msg(char *cmd);
 
 #endif
