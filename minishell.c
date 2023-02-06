@@ -100,9 +100,9 @@ int	functionparse_dispatch(char **env, char **cmd, int code)
 {
 	if (code == 1)
 		echo_parse(cmd, env);
-	/*if (code == 2)
-		cd_parse_here(cmd, env);
-	if (code == 3)
+	//if (code == 2)
+		//echo_parse(cmd, env);
+	/*if (code == 3)
 		pwd_parse_here(cmd, env);
 	if (code == 4)
 		export_parse_here(cmd, env);
