@@ -6,7 +6,7 @@
 /*   By: alvachon <alvachon@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/31 13:27:55 by alvachon          #+#    #+#             */
-/*   Updated: 2023/02/06 13:42:03 by alvachon         ###   ########.fr       */
+/*   Updated: 2023/02/06 15:21:36 by alvachon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,8 +40,6 @@ typedef struct s_job
 	int				stderr;//standard error exit (2) i/o channel
 }	t_job
 ;
-
-
 
 char	**ft_pathfinder(char *envp[])
 {
@@ -206,30 +204,53 @@ void	execute_echo(char *path, char **cmd, char **env)
 	return ;
 }
 
+
+/*Changes the attributes associated with a terminal. 
+New attributes are specified with a termios control structure.
+Programs should always issue a tcgetattr() first, modify the desired fields, and then issue a tcsetattr().
+tcsetattr() should never be issued using a termios structure that was not obtained using tcgetattr().
+tcsetattr() should use only a termios structure that was obtained by tcgetattr().*/
+
+
 void	init_shell()
 {
-	int				shell_terminal;
-	int				shell_is_interactive;
-	struct termios	term1;
+	int				std_terminal_input;
+	int				is_std_terminal;
+	struct termios	saved_attributes;
+	struct termios	custom_attributes;
 
-
-	shell_terminal = STDIN_FILENO;
-	shell_is_interactive = isatty(shell_terminal);
-	if (shell_is_interactive)
+	std_terminal_input = STDIN_FILENO;
+	is_std_terminal = isatty(std_terminal_input);
+	if (is_std_terminal)
 	{
-		if (tcgetattr(STDIN_FILENO, &term1) != 0)
-    		perror("tcgetattr() error");
+		if (tcgetattr(STDIN_FILENO, &saved_attributes) != 0)
+		{
+    		perror("tcgetattr() error : Failed to save standard terminal attributes\n");
+			exit (EXIT_FAILURE);
+		}
 		else
 		{
-			printf("the original end-of-file character is x'%02x'\n", term1.c_cc[VEOF]);
-			term1.c_cc[VEOF] = 'z';
- 			if (tcsetattr(STDIN_FILENO, TCSANOW, &term1) != 0)
+			/*atexit(reset_input_mode)*/
+			//term.c_cc[VINTR] //CTRL-C -> CTRL-D
+			//term.c_cc[VEOF]// CTRL-D -> CTRL-C ?
+			//term.c_cc[VEOL]// CTRL-D -> CTRL-C ?
+			tcgetattr(STDIN_FILENO, &custom_attributes);
+			printf("Original EOF Character is :'%02x'\n", saved_attributes.c_cc[VEOF]);
+			printf("Original CTRL-C Character is :'%02x'\n", saved_attributes.c_cc[VINTR]);
+			custom_attributes.c_cc[VEOF] = VINTR;
+ 			if (tcsetattr(STDIN_FILENO, TCSANOW, &custom_attributes) != 0)//make the change immediatly
       			perror("tcsetattr() error");
-    		if (tcgetattr(STDIN_FILENO, &term1) != 0)
+    		if (tcgetattr(STDIN_FILENO, &custom_attributes) != 0)
       			perror("tcgetattr() error");
    			else
-      			printf("the new end-of-file character is x'%02x'\n", term1.c_cc[VEOF]);
+      			printf("New EOF Character is :'%02x'\n", custom_attributes.c_cc[VEOF]);
+	      	printf("Ne fonctionne pas pour l'instant\n");
 		}
+	}
+	else
+	{
+    	perror("Not a terminal.\n");
+		exit (EXIT_FAILURE);
 	}
 }
 
@@ -253,7 +274,7 @@ int main(int ac, char **av, char **env)
     		cmd = readline("minishell$ ");
     		if (!cmd)
       		{
-				fprintf(stderr, "Usage: readline space allocation\n");
+    			perror("Usage: readline space allocation\n");
   				exit(EXIT_FAILURE);
 			}
     		if (cmd[0] == '\0' || ft_strcmp(cmd, "\n") == 0)
@@ -266,6 +287,7 @@ int main(int ac, char **av, char **env)
             {
      		    printf("exit, command freed, goodbye.\n");
 				clear_history();
+				/*reset_terminal_input_mode();*/ //Pas acces a atexit(); ft
       		    free(cmd);
       		    exit(EXIT_SUCCESS);
     		}
@@ -289,6 +311,6 @@ int main(int ac, char **av, char **env)
     		free(cmd);
   		}
 	}
-	fprintf(stderr, "Usage: %s <file>\n", av[0]);
+	fprintf(stderr, "Usage: %s <file>\n", av[0]);//need to be change later
   	exit(EXIT_FAILURE);
 }
