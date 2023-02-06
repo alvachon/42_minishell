@@ -39,5 +39,8 @@ int		builtincheck(char **cmd);
 int		envcheck(char **cmd);
 int		functionparse_dispatch(char **env, char **cmd, int code);
 void	error_msg(char *cmd);
+void	echo_parse(char **cmd, char **env);
+void	execute_echo(char *path, char **cmd, char **env);
+void	free_echo(char *temp, char *temp2, char **env, int code);
 
 #endif
