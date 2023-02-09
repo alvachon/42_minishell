@@ -6,7 +6,7 @@
 /*   By: alvachon <alvachon@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/31 13:27:55 by alvachon          #+#    #+#             */
-/*   Updated: 2023/02/06 15:21:36 by alvachon         ###   ########.fr       */
+/*   Updated: 2023/02/09 15:07:51 by alvachon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,8 @@
  * [1]BUILT [2]OPTION [3]REDIRECTION [4]APPEND [5]INFILE [6]PIPE [7]REDIRECTION [8]APPEND [9]OUTFILE
  * */
 #include "lib/minishell.h"
+
+#define FOREGROUND_JOB 1
 
 typedef struct s_process
 {
@@ -34,11 +36,24 @@ typedef struct s_job
 	t_process		*first_process;//list of processes in this job
 	pid_t			pgid;//process group ID
 	char			notified;//true if user told about stopped job
-	struct termios	tmodes;//saved terminal modes
-	int				stdin;//standard entry (0) i/o channel
-	int				stdout;//standard exit (1) i/o channel
-	int				stderr;//standard error exit (2) i/o channel
 }	t_job
+;
+typedef enum e_signal
+{
+	INIT = 0,
+	TRAP = 130,
+	QUIT = 131
+}t_signal
+;
+typedef struct s_terminal
+{
+	struct termios	mod_terminal;
+	unsigned int	bit_signal;		
+	int				tty_stdin;
+	int				tty_stdout;
+	//char			**env;
+	//char			*user;
+}	t_terminal
 ;
 
 char	**ft_pathfinder(char *envp[])
@@ -205,109 +220,84 @@ void	execute_echo(char *path, char **cmd, char **env)
 }
 
 
-/*Changes the attributes associated with a terminal. 
-New attributes are specified with a termios control structure.
-Programs should always issue a tcgetattr() first, modify the desired fields, and then issue a tcsetattr().
-tcsetattr() should never be issued using a termios structure that was not obtained using tcgetattr().
-tcsetattr() should use only a termios structure that was obtained by tcgetattr().*/
-
+void	handle_newline(int signum)
+{
+	(void)signum;
+	ft_putstr_fd("\n", STDERR_FILENO);
+	rl_on_new_line();
+	rl_replace_line("", 0);
+	rl_redisplay();
+}
 
 void	init_shell()
 {
-	int				std_terminal_input;
-	int				is_std_terminal;
-	struct termios	saved_attributes;
-	struct termios	custom_attributes;
+	t_terminal		minishell;
 
-	std_terminal_input = STDIN_FILENO;
-	is_std_terminal = isatty(std_terminal_input);
-	if (is_std_terminal)
+	if (isatty(STDIN_FILENO))
 	{
-		if (tcgetattr(STDIN_FILENO, &saved_attributes) != 0)
-		{
-    		perror("tcgetattr() error : Failed to save standard terminal attributes\n");
-			exit (EXIT_FAILURE);
-		}
-		else
-		{
-			/*atexit(reset_input_mode)*/
-			//term.c_cc[VINTR] //CTRL-C -> CTRL-D
-			//term.c_cc[VEOF]// CTRL-D -> CTRL-C ?
-			//term.c_cc[VEOL]// CTRL-D -> CTRL-C ?
-			tcgetattr(STDIN_FILENO, &custom_attributes);
-			printf("Original EOF Character is :'%02x'\n", saved_attributes.c_cc[VEOF]);
-			printf("Original CTRL-C Character is :'%02x'\n", saved_attributes.c_cc[VINTR]);
-			custom_attributes.c_cc[VEOF] = VINTR;
- 			if (tcsetattr(STDIN_FILENO, TCSANOW, &custom_attributes) != 0)//make the change immediatly
-      			perror("tcsetattr() error");
-    		if (tcgetattr(STDIN_FILENO, &custom_attributes) != 0)
-      			perror("tcgetattr() error");
-   			else
-      			printf("New EOF Character is :'%02x'\n", custom_attributes.c_cc[VEOF]);
-	      	printf("Ne fonctionne pas pour l'instant\n");
-		}
+		tcgetattr(STDIN_FILENO, &minishell.mod_terminal);
+		minishell.tty_stdin = dup(STDIN_FILENO);
+		minishell.tty_stdout = dup(STDOUT_FILENO);
+		minishell.bit_signal = INIT;
+		signal(SIGINT, handle_newline);
+		minishell.bit_signal = TRAP;
+		signal(SIGQUIT, SIG_IGN);
 	}
 	else
 	{
-    	perror("Not a terminal.\n");
+    	perror("init_shell : Not a terminal.\n");
 		exit (EXIT_FAILURE);
 	}
 }
 
 int main(int ac, char **av, char **env)
 {
-	//pid_t			shell_pgid;
-	int		infile;
+	//pid_t		shell_pgid;
+	//int		infile;
 	char	*cmd;
-
-	(void)infile;
-	(void)env;
+	//THIS IS 42ALMINISHELL BRANCH * * * * * * * * * * * * * * * * * * 
 	if (ac != 2)
 	{
-		//THIS IS 42ALMINISHELL BRANCH * * * * * * * * * * * * * * * * * * 
-  		printf("Welcome! You can exit by pressing Ctrl+C at any time...\n");
-		//Break Terminal Signals here
 		init_shell();
-  		while (1)//This part is named Foreground Job (gets input)
+  		while (FOREGROUND_JOB)
 		{
-			/*signal_handler(process_a);*/
-    		cmd = readline("minishell$ ");
-    		if (!cmd)
-      		{
-    			perror("Usage: readline space allocation\n");
-  				exit(EXIT_FAILURE);
+			if (ttyname(0))
+			{
+				printf("\n(main) Control terminal is not redirected\n");
+				/*lexical_parsing_here(cmd);*/
+    			cmd = readline("minishell$ ");
+    			if (!cmd)
+      			{
+    				printf("CTRL-D, exit now. goodbye.\n");
+                	exit(EXIT_SUCCESS);
+				}
+    			if (cmd[0] == '\0' || ft_strcmp(cmd, "\n") == 0)
+            	{
+      	    		printf("Nothing, command freed, continue.\n");
+      		    	free(cmd);
+      		    	continue;
+    			}
+    			if (ft_strcmp(cmd, "exit") == 0)
+            	{
+     		    	printf("exit, command freed, goodbye.\n");
+					clear_history();
+					/*reset_terminal_input_mode();*/ //Pas acces a atexit(); ft
+      		    	free(cmd);
+      		    	exit(EXIT_SUCCESS);
+    			}
+				/*if (simple_command)
+					Do(command_builtins);
+				  else
+					fork_process();*/
 			}
-    		if (cmd[0] == '\0' || ft_strcmp(cmd, "\n") == 0)
-            {
-      	    	printf("Nothing, command freed, continue.\n");
-      		    free(cmd);
-      		    continue;
-    		}
-    		if (ft_strcmp(cmd, "exit") == 0)
-            {
-     		    printf("exit, command freed, goodbye.\n");
-				clear_history();
-				/*reset_terminal_input_mode();*/ //Pas acces a atexit(); ft
-      		    free(cmd);
-      		    exit(EXIT_SUCCESS);
-    		}
-			/*lexical_parsing_here(cmd);*/
-			//This part is Background job
-			/*signal_handler(process_b);*/
-			/*if (simple_command)
-				Do(command_builtins);*/
-			/*else
-			 {
-				fork_process();
-				-> in child (exect requested command and never return);
-				->* in parent (wait for child to complete); */
+			else //enter pipe process
+				printf("\n(job process) Is redirected, not a terminal. \n");
     		printf("%s\n", cmd);
 			add_history(cmd);
 			if (command_parse(cmd, env) == 1)
 				error_msg(cmd);
 			else
 				printf("Command done and freed, added to the history\n");
-			// readline malloc's a new buffer every time
     		free(cmd);
   		}
 	}

@@ -1,8 +1,8 @@
 NAME = minishell
 
-CC = gcc
+CC = gcc 
 
-CFLAGS = -Wall -Wextra -Werror
+CFLAGS =  -Wall -Wextra -Werror -g
 
 SRC = minishell.c
 
@@ -18,7 +18,7 @@ all : $(NAME) $(SRC)
 
 $(NAME) : $(OBJ)
 	$(MAKE) -C $(LIBDIR)
-	$(CC) $(CFLAGS) $(OBJ) $(LIBFT) -lreadline -o $(NAME)
+	$(CC) $(CFLAGS) -lreadline $(OBJ) $(LIBFT) -o $(NAME)
 
 clean : 
 	$(RM) $(OBJ)

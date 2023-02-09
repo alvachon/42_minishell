@@ -6,26 +6,27 @@
 /*   By: alvachon <alvachon@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/02 12:06:16 by fboulang          #+#    #+#             */
-/*   Updated: 2023/02/06 13:43:57 by alvachon         ###   ########.fr       */
+/*   Updated: 2023/02/08 15:53:27 by alvachon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef MINISHELL_H
 # define MINISHELL_H
+
 # include<stdio.h>
+# include<readline/readline.h>
+# include<readline/history.h>
 # include<string.h>
 # include<stdlib.h>
 # include<unistd.h>
 # include<sys/types.h>
 # include<sys/wait.h>
-# include<readline/readline.h>
-# include<readline/history.h>
 # include<errno.h>
 # include<locale.h>
 # include<signal.h>
 # include"libft/libft.h"
 # include<fcntl.h>
-#include<termios.h>
+# include<termios.h>
 
 typedef struct s_argsandflags
 {
