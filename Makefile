@@ -4,7 +4,7 @@ CC = gcc
 
 CFLAGS = -Wall -Wextra -Werror
 
-SRC = minishell.c
+SRC = minishell.c echo.c
 
 OBJ = $(SRC:.c=.o)
 
