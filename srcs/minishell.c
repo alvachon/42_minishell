@@ -10,47 +10,19 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-//gcc minishell.c -lreadline
-/*
- * [1]BUILT [2]OPTION [3]REDIRECTION [4]APPEND [5]INFILE [6]PIPE [7]REDIRECTION [8]APPEND [9]OUTFILE
- */
+/* [1]BUILT [2]OPTION [3]REDIRECTION [4]APPEND [5]INFILE
+* [6]PIPE [7]REDIRECTION [8]APPEND [9]OUTFILE */
 #include "../includes/minishell.h"
 
 #define FOREGROUND_JOB 1
 
-typedef struct s_process
-{
-	struct s_process	*next;//Next process in pipeline
-	char				*argv;//For exect
-	pid_t				pid;//Process ID
-	char				completed;//True if process Hhas completed
-	char				stopped;//True if process has stopped
-	int					status;//report status value
-}	t_process
-;
-
-typedef struct s_job
-{
-	struct s_job	*next;//Next active job
-	char			*command;//Command line, used for messages
-	t_process		*first_process;//list of processes in this job
-	pid_t			pgid;//process group ID
-	char			notified;//true if user told about stopped job
-}	t_job
-;
-typedef enum e_signal
-{
-	INIT = 0,
-	TRAP = 130,
-	QUIT = 131
-}t_signal
-;
 typedef struct s_terminal
 {
-	struct termios	mod_terminal;
-	unsigned int	bit_signal;		
-	int				tty_stdin;
-	int				tty_stdout;
+	struct termios		mod_terminal;	
+	int					tty_stdin;
+	int					tty_stdout;
+	struct sigaction	old_action;
+	struct sigaction	new_action;
 	//char			**env;
 	//char			*user;
 }	t_terminal
@@ -65,7 +37,6 @@ char	**ft_pathfinder(char *envp[])
 		i++;
 	return (ft_split(envp[i], ':'));
 }
-
 int	command_parse(char *cmd, char **env)
 {
 	char	**buff;
@@ -84,7 +55,6 @@ int	command_parse(char *cmd, char **env)
 	else
 		return (0/*functionparse_dispatch(buff, buff2, i)*/);
 }
-
 int	builtincheck(char **cmd)
 {
 	int	i;
@@ -107,7 +77,6 @@ int	builtincheck(char **cmd)
 	else
 		return (envcheck(cmd));
 }
-
 int	envcheck(char **cmd)
 {
 	if (ft_strncmp(cmd[0], "$", 1) == 0)
@@ -115,7 +84,6 @@ int	envcheck(char **cmd)
 	else
 		return (8);
 }
-
 void	error_msg(char *cmd)
 {
 	char	**buff;
@@ -126,7 +94,6 @@ void	error_msg(char *cmd)
 	write (2, " : Command not found.\n", 23);
 	return ;
 }
-
 int	functionparse_dispatch(char **env, char **cmd, int code)
 {
 	if (code == 1)
@@ -145,7 +112,6 @@ int	functionparse_dispatch(char **env, char **cmd, int code)
 		env_parse_here(cmd, env);*/
 	return (0);
 }
-
 void	echo_parse(char **cmd, char **env)
 {
 	char	*temp;
@@ -171,7 +137,6 @@ void	echo_parse(char **cmd, char **env)
 	}
 	free_echo (temp, temp2, env, 2);
 }
-
 void	free_echo(char *temp, char *temp2, char **env, int code)
 {
 	int	i;
@@ -195,7 +160,6 @@ void	free_echo(char *temp, char *temp2, char **env, int code)
 	if (code == 3)
 		free(temp);
 }
-
 void	execute_echo(char *path, char **cmd, char **env)
 {
 	pid_t	exe;
@@ -218,31 +182,23 @@ void	execute_echo(char *path, char **cmd, char **env)
 	free (path);
 	return ;
 }
-
-
 void	handle_newline(int signum)
 {
 	(void)signum;
-	signal(SIGINT, SIG_IGN);
 	ft_putstr_fd("\n", STDERR_FILENO);
 	rl_on_new_line();
 	rl_replace_line("", 0);
 	rl_redisplay();
 }
 
-void	init_shell()
+//https://www.gnu.org/software/libc/manual/html_node/Initial-Signal-Actions.html
+void	init_shell(t_terminal *minishell)
 {
-	t_terminal		minishell;
-
 	if (isatty(STDIN_FILENO))
 	{
-		tcgetattr(STDIN_FILENO, &minishell.mod_terminal);
-		minishell.tty_stdin = dup(STDIN_FILENO);
-		minishell.tty_stdout = dup(STDOUT_FILENO);
-		minishell.bit_signal = INIT;
-		signal(SIGINT, handle_newline);
-		minishell.bit_signal = TRAP;
-		signal(SIGQUIT, SIG_IGN);
+		tcgetattr(STDIN_FILENO, &(*minishell).mod_terminal);
+		(*minishell).tty_stdin = dup(STDIN_FILENO);
+		(*minishell).tty_stdout = dup(STDOUT_FILENO);
 	}
 	else
 	{
@@ -255,23 +211,20 @@ int main(int ac, char **av, char **env)
 {
 	//pid_t		shell_pgid;
 	//int		infile;
-	char	*cmd;
+	t_terminal		minishell;
+	char			*cmd;
 	//THIS IS 42ALMINISHELL BRANCH * * * * * * * * * * * * * * * * * * 
 	if (ac != 2)
 	{
-		init_shell();
+		init_shell(&minishell);
   		while (FOREGROUND_JOB)
 		{
 			if (ttyname(0))
 			{
-				printf("\n(main) Control terminal is not redirected\n");
 				/*lexical_parsing_here(cmd);*/
     			cmd = readline("minishell$ ");
     			if (!cmd)
-      			{
-    				printf("\nCTRL-D, exit now. goodbye.\n");
                 	exit(EXIT_SUCCESS);
-				}
     			if (cmd[0] == '\0' || ft_strcmp(cmd, "\n") == 0)
             	{
       	    		printf("Nothing, command freed, continue.\n");
