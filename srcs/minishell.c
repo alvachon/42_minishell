@@ -13,8 +13,8 @@
 //gcc minishell.c -lreadline
 /*
  * [1]BUILT [2]OPTION [3]REDIRECTION [4]APPEND [5]INFILE [6]PIPE [7]REDIRECTION [8]APPEND [9]OUTFILE
- * */
-#include "lib/minishell.h"
+ */
+#include "../includes/minishell.h"
 
 #define FOREGROUND_JOB 1
 
@@ -23,7 +23,7 @@ typedef struct s_process
 	struct s_process	*next;//Next process in pipeline
 	char				*argv;//For exect
 	pid_t				pid;//Process ID
-	char				completed;//True if process has completed
+	char				completed;//True if process Hhas completed
 	char				stopped;//True if process has stopped
 	int					status;//report status value
 }	t_process
@@ -82,7 +82,7 @@ int	command_parse(char *cmd, char **env)
 		return (1);
 	}
 	else
-		return (functionparse_dispatch(buff, buff2, i));
+		return (0/*functionparse_dispatch(buff, buff2, i)*/);
 }
 
 int	builtincheck(char **cmd)
@@ -127,11 +127,11 @@ void	error_msg(char *cmd)
 	return ;
 }
 
-int	functionparse_dispatch(char **env, char **cmd, int code)
+/*int	functionparse_dispatch(char **env, char **cmd, int code)
 {
 	if (code == 1)
 		echo_parse(cmd, env);
-	/*if (code == 2)
+	if (code == 2)
 		cd_parse_here(cmd, env);
 	if (code == 3)
 		pwd_parse_here(cmd, env);
@@ -142,9 +142,9 @@ int	functionparse_dispatch(char **env, char **cmd, int code)
 	if (code == 6)
 		env_parse_here(cmd, env);
 	if (code == 7)
-		envar_parse_here(cmd, env);*/
+		env_parse_here(cmd, env);
 	return (0);
-}
+}*/
 
 void	echo_parse(char **cmd, char **env)
 {
@@ -223,6 +223,7 @@ void	execute_echo(char *path, char **cmd, char **env)
 void	handle_newline(int signum)
 {
 	(void)signum;
+	signal(SIGINT, SIG_IGN);
 	ft_putstr_fd("\n", STDERR_FILENO);
 	rl_on_new_line();
 	rl_replace_line("", 0);
@@ -268,7 +269,7 @@ int main(int ac, char **av, char **env)
     			cmd = readline("minishell$ ");
     			if (!cmd)
       			{
-    				printf("CTRL-D, exit now. goodbye.\n");
+    				printf("\nCTRL-D, exit now. goodbye.\n");
                 	exit(EXIT_SUCCESS);
 				}
     			if (cmd[0] == '\0' || ft_strcmp(cmd, "\n") == 0)
