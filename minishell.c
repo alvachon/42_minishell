@@ -96,6 +96,57 @@ void	error_msg(char *cmd)
 	return ;
 }
 
+char	**cmd_parse(char *cmd)
+{
+	// 1: look for "" or ''.
+	// 2: if "", look for $ inside the "".
+	// 3: else, seperate the string like so : [0]: echo [1]: flag [2]: arg.
+	int		i;
+	int		j;
+	char	**buff;
+
+	i = 0;
+	j = 0;
+	while (cmd[i] && cmd[i] != '"' && cmd[i] != 39)
+		i++;
+	if (!cmd[i])
+		buff = ft_split(cmd, ' ');
+	else
+	{
+		i = 0;
+		while (cmd[i] != '"')
+			i++;
+		j = i + 1;
+		while (cmd[j] != '"')
+		{
+			j++;
+			if (cmd[j] == '"' && cmd[j + 1] != ' ')
+				j++;
+		}
+		return (cmd_parse2(cmd, ft_substr(cmd, i + 1, j - 1)));
+	}
+	return (buff);
+}
+
+char	**cmd_parse2(char *cmd, char *arg)
+{
+	char	*temp;
+	char	**buff;
+	int		i;
+
+	i = 0;
+	while (cmd[i] && cmd[i] != '-')
+		i++;
+	if (!cmd[i])
+		buff = ft_calloc(3, sizeof(char *));
+	else
+		buff = ft_calloc(4, sizeof(char *));
+	i = 0;
+	while (cmd[i] != ' ')
+		i++;
+	
+}
+
 int	functionparse_dispatch(char **env, char **cmd, int code)
 {
 	if (code == 1)
