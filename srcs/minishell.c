@@ -12,17 +12,21 @@
 
 /* [1]BUILT [2]OPTION [3]REDIRECTION [4]APPEND [5]INFILE
 * [6]PIPE [7]REDIRECTION [8]APPEND [9]OUTFILE */
+
 #include "../includes/minishell.h"
+
+volatile sig_atomic_t gotint = 0;
+extern void quitHandler(int);
 
 #define FOREGROUND_JOB 1
 
 typedef struct s_terminal
 {
-	struct termios		mod_terminal;	
+	struct termios		mod_terminal;
+	struct termios		new_options;
+	struct sigaction	quit_action;
 	int					tty_stdin;
 	int					tty_stdout;
-	struct sigaction	old_action;
-	struct sigaction	new_action;
 	//char			**env;
 	//char			*user;
 }	t_terminal
@@ -182,16 +186,25 @@ void	execute_echo(char *path, char **cmd, char **env)
 	free (path);
 	return ;
 }
-void	handle_newline(int signum)
+void	handle_sigint(int signum)
 {
+	/* Signal safety: It is not safe to call clock(), printf(),
+     * or exit() inside a signal handler. Instead, we set a flag.*/
 	(void)signum;
-	ft_putstr_fd("\n", STDERR_FILENO);
-	rl_on_new_line();
-	rl_replace_line("", 0);
-	rl_redisplay();
+	signal(SIGINT, SIG_IGN);
+	gotint = 1;
+	
 }
 
-//https://www.gnu.org/software/libc/manual/html_node/Initial-Signal-Actions.html
+void	quit_shell(t_terminal *minishell)
+{
+	printf("CTRL-D. Don't forget to clean struct\n");
+	printf("exit, goodbye.\n");
+	gotint = 0;
+	//tcsetattr(STDIN_FILENO, TCSANOW, &(*minishell).mod_terminal);
+    exit(EXIT_SUCCESS);
+}
+
 void	init_shell(t_terminal *minishell)
 {
 	if (isatty(STDIN_FILENO))
@@ -199,6 +212,11 @@ void	init_shell(t_terminal *minishell)
 		tcgetattr(STDIN_FILENO, &(*minishell).mod_terminal);
 		(*minishell).tty_stdin = dup(STDIN_FILENO);
 		(*minishell).tty_stdout = dup(STDOUT_FILENO);
+		(*minishell).new_options = (*minishell).mod_terminal;
+		(*minishell).new_options.c_cc[VEOF] = 3;
+		(*minishell).new_options.c_cc[VINTR] = 4;
+		tcsetattr(STDIN_FILENO,TCSANOW,&(*minishell).new_options);
+		signal(SIGINT, handle_sigint);
 	}
 	else
 	{
@@ -209,8 +227,6 @@ void	init_shell(t_terminal *minishell)
 
 int main(int ac, char **av, char **env)
 {
-	//pid_t		shell_pgid;
-	//int		infile;
 	t_terminal		minishell;
 	char			*cmd;
 	//THIS IS 42ALMINISHELL BRANCH * * * * * * * * * * * * * * * * * * 
@@ -222,9 +238,11 @@ int main(int ac, char **av, char **env)
 			if (ttyname(0))
 			{
 				/*lexical_parsing_here(cmd);*/
+				if (gotint == 1)
+					quit_shell(&minishell);
     			cmd = readline("minishell$ ");
     			if (!cmd)
-                	exit(EXIT_SUCCESS);
+					continue;
     			if (cmd[0] == '\0' || ft_strcmp(cmd, "\n") == 0)
             	{
       	    		printf("Nothing, command freed, continue.\n");
@@ -235,7 +253,8 @@ int main(int ac, char **av, char **env)
             	{
      		    	printf("exit, command freed, goodbye.\n");
 					clear_history();
-					/*reset_terminal_input_mode();*/ //Pas acces a atexit(); ft
+					gotint = 0;
+					tcsetattr(STDIN_FILENO, TCSANOW, &(minishell).mod_terminal);
       		    	free(cmd);
       		    	exit(EXIT_SUCCESS);
     			}
