@@ -15,10 +15,8 @@
 
 #include "../includes/minishell.h"
 
-volatile sig_atomic_t gotint = 0;
-extern void quitHandler(int);
-
 #define FOREGROUND_JOB 1
+volatile sig_atomic_t sigint = 0;
 
 typedef struct s_terminal
 {
@@ -186,25 +184,24 @@ void	execute_echo(char *path, char **cmd, char **env)
 	free (path);
 	return ;
 }
-void	handle_sigint(int signum)
-{
-	/* Signal safety: It is not safe to call clock(), printf(),
-     * or exit() inside a signal handler. Instead, we set a flag.*/
-	(void)signum;
-	signal(SIGINT, SIG_IGN);
-	gotint = 1;
-	
-}
 
-void	quit_shell(t_terminal *minishell)
+int	ft_getchar(void)
 {
-	printf("CTRL-D. Don't forget to clean struct\n");
-	printf("exit, goodbye.\n");
-	gotint = 0;
-	//tcsetattr(STDIN_FILENO, TCSANOW, &(*minishell).mod_terminal);
-    exit(EXIT_SUCCESS);
-}
+	char buf[BUFSIZ];
+	char *bufptr;
+	int i;
 
+	bufptr = buf;
+	i = 0;
+	if (i == 0)
+	{
+		i = read(0, buf, 1);
+		bufptr = buf;
+	}
+	if (--i >= 0)
+		return (*bufptr++);
+	return (0);
+}
 void	init_shell(t_terminal *minishell)
 {
 	if (isatty(STDIN_FILENO))
@@ -213,10 +210,10 @@ void	init_shell(t_terminal *minishell)
 		(*minishell).tty_stdin = dup(STDIN_FILENO);
 		(*minishell).tty_stdout = dup(STDOUT_FILENO);
 		(*minishell).new_options = (*minishell).mod_terminal;
+		(*minishell).new_options.c_cc[VTIME] = 1;
 		(*minishell).new_options.c_cc[VEOF] = 3;
-		(*minishell).new_options.c_cc[VINTR] = 4;
+		(*minishell).new_options.c_cc[VQUIT] = 4;
 		tcsetattr(STDIN_FILENO,TCSANOW,&(*minishell).new_options);
-		signal(SIGINT, handle_sigint);
 	}
 	else
 	{
@@ -229,6 +226,7 @@ int main(int ac, char **av, char **env)
 {
 	t_terminal		minishell;
 	char			*cmd;
+
 	//THIS IS 42ALMINISHELL BRANCH * * * * * * * * * * * * * * * * * * 
 	if (ac != 2)
 	{
@@ -238,22 +236,16 @@ int main(int ac, char **av, char **env)
 			if (ttyname(0))
 			{
 				/*lexical_parsing_here(cmd);*/
-				if (gotint == 1)
-					quit_shell(&minishell);
     			cmd = readline("minishell$ ");
-    			if (!cmd)
-					continue;
-    			if (cmd[0] == '\0' || ft_strcmp(cmd, "\n") == 0)
+    			if (!cmd || cmd[0] == '\0' || ft_strcmp(cmd, "\n") == 0)
             	{
-      	    		printf("Nothing, command freed, continue.\n");
-      		    	free(cmd);
+					if (cmd)
+      		    		free(cmd);
       		    	continue;
     			}
     			if (ft_strcmp(cmd, "exit") == 0)
             	{
-     		    	printf("exit, command freed, goodbye.\n");
 					clear_history();
-					gotint = 0;
 					tcsetattr(STDIN_FILENO, TCSANOW, &(minishell).mod_terminal);
       		    	free(cmd);
       		    	exit(EXIT_SUCCESS);
