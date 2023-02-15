@@ -15,21 +15,6 @@
 
 #include "../includes/minishell.h"
 
-#define FOREGROUND_JOB 1
-volatile sig_atomic_t sigint = 0;
-
-typedef struct s_terminal
-{
-	struct termios		mod_terminal;
-	struct termios		new_options;
-	struct sigaction	quit_action;
-	int					tty_stdin;
-	int					tty_stdout;
-	//char			**env;
-	//char			*user;
-}	t_terminal
-;
-
 char	**ft_pathfinder(char *envp[])
 {
 	int	i;
@@ -202,29 +187,11 @@ int	ft_getchar(void)
 		return (*bufptr++);
 	return (0);
 }
-void	init_shell(t_terminal *minishell)
-{
-	if (isatty(STDIN_FILENO))
-	{
-		tcgetattr(STDIN_FILENO, &(*minishell).mod_terminal);
-		(*minishell).tty_stdin = dup(STDIN_FILENO);
-		(*minishell).tty_stdout = dup(STDOUT_FILENO);
-		(*minishell).new_options = (*minishell).mod_terminal;
-		(*minishell).new_options.c_cc[VTIME] = 1;
-		(*minishell).new_options.c_cc[VEOF] = 3;
-		(*minishell).new_options.c_cc[VQUIT] = 4;
-		tcsetattr(STDIN_FILENO,TCSANOW,&(*minishell).new_options);
-	}
-	else
-	{
-    	perror("init_shell : Not a terminal.\n");
-		exit (EXIT_FAILURE);
-	}
-}
 
 int main(int ac, char **av, char **env)
 {
 	t_terminal		minishell;
+
 	char			*cmd;
 
 	//THIS IS 42ALMINISHELL BRANCH * * * * * * * * * * * * * * * * * * 
@@ -232,7 +199,7 @@ int main(int ac, char **av, char **env)
 	{
 		init_shell(&minishell);
   		while (FOREGROUND_JOB)
-		{
+		{	
 			if (ttyname(0))
 			{
 				/*lexical_parsing_here(cmd);*/
@@ -245,9 +212,13 @@ int main(int ac, char **av, char **env)
     			}
     			if (ft_strcmp(cmd, "exit") == 0)
             	{
+      		    	if (cmd)
+					{
+						printf("%s\n", cmd);
+						free(cmd);
+					}
 					clear_history();
 					tcsetattr(STDIN_FILENO, TCSANOW, &(minishell).mod_terminal);
-      		    	free(cmd);
       		    	exit(EXIT_SUCCESS);
     			}
 				/*if (simple_command)
@@ -256,13 +227,14 @@ int main(int ac, char **av, char **env)
 					fork_process();*/
 			}
 			else //enter pipe process
+			{
 				printf("\n(job process) Is redirected, not a terminal. \n");
-    		printf("%s\n", cmd);
-			add_history(cmd);
+			}
 			if (command_parse(cmd, env) == 1)
 				error_msg(cmd);
 			else
 				printf("Command done and freed, added to the history\n");
+			add_history(cmd);
     		free(cmd);
   		}
 	}

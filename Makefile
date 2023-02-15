@@ -4,12 +4,11 @@ NAME			= minishell
 UNAME_S		 	= 	$(shell uname -s)
 REL_PATH		=	$(shell pwd)
 # --- FILE ----
-SRCS_FILE		= minishell.c
-#
 INCL_DIR		= ./includes
 SRCS_DIR		= ./srcs
 OBJS_DIR		= ./objs
-SRCS			= $(SRCS_DIR)/$(SRCS_FILE)
+SRCS			= $(SRCS_DIR)/minishell.c \
+				  $(SRCS_DIR)/init.c
 OBJS 			= $(SRCS:$(SRCS_DIR)/%.c=$(OBJS_DIR)/%.o)
 HDRS_FILE		= minishell.h
 HDRS			= $(addprefix $(INCL_DIR)/, $(HDRS_FILE))
