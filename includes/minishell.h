@@ -28,6 +28,7 @@
 # include <fcntl.h>
 # include <termios.h>
 
+#define FOREGROUND_JOB 1
 
 typedef struct s_argsandflags
 {
@@ -36,38 +37,30 @@ typedef struct s_argsandflags
 	char	*path;
 }			t_aflg;
 
-char	**ft_pathfinder(char *envp[]);
-//int		command_parse(char *cmd, char **env);
-int		builtincheck(char **cmd);
+typedef struct s_terminal
+{
+	struct termios		mod_terminal;
+	struct termios		new_options;
+}	t_terminal;
+
 int		envcheck(char **cmd);
-//int		functionparse_dispatch(char **env, char **cmd, int code);
+int		ft_getchar(void);
+
+/*init.c*/
+void	handle_sig(int sign);
+void	init_shell(t_terminal *minishell);
+/*lexer.c*/
+char	**ft_pathfinder(char *envp[]);
+int		builtincheck(char **cmd);
+int		functionparse_dispatch(char **env, char **cmd, int code);
+int		command_parse(char *cmd, char **env);
+/*message.c*/
 void	error_msg(char *cmd);
-void	echo_parse(char **cmd, char **env);
-void	execute_echo(char *path, char **cmd, char **env);
+void    exit_msg(char *cmd, t_terminal *minishell);
+void    sys_msg(char *reason, int code);
+/*z_echo.c*/
 void	free_echo(char *temp, char *temp2, char **env, int code);
-
-/* ALEX PART - - - */
-
-
-typedef struct s_process
-{
-	struct s_process	*next;//Next process in pipeline
-	char				*argv;//For exect
-	pid_t				pid;//Process ID
-	char				completed;//True if process Hhas completed
-	char				stopped;//True if process has stopped
-	int					status;//report status value
-}	t_process
-;
-
-typedef struct s_job
-{
-	struct s_job	*next;//Next active job
-	char			*command;//Command line, used for messages
-	t_process		*first_process;//list of processes in this job
-	pid_t			pgid;//process group ID
-	char			notified;//true if user told about stopped job
-}	t_job
-;
+void	execute_echo(char *path, char **cmd, char **env);
+void	echo_parse(char **cmd, char **env);
 
 #endif
