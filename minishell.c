@@ -37,6 +37,29 @@ char	**ft_pathfinder(char *envp[])
 
 int	command_parse(char *cmd, char **env)
 {
+	/* Ce que l'on doit savoir sur une commande :
+	1. est-ce qu'il y a une commande en tant que telle? Done
+	1.a. Oui, on va vers 2.
+	1.b. Non, on stop.
+	2. Si cette commande existe, a-t-elle un flag? -> seulement echo peut utiliser un flag, et seulement -n.
+	2.a. Oui, on va vers 3.
+	2.b. Non, on va vers 4.
+	3. Si cette commande a un flag, est-ce un flag qu'on gère?
+	3.a. Oui, on va vers 4.
+	3.b. Non, on stop.
+	4. Qu'elle est de flag ou non, est-ce qu'elle a un argument?
+	4.a. Oui, et elle prend un argument. On va vers 5.
+	4.b. Non, elle ne prend pas un argument ou elle en prend un et il n'y en a pas. On stop.
+	5. Est-ce que cet argument, s'il existe, est entre des guillemets?
+	5.a. Oui, parse les guillemets. On va vers 6.
+	5.b. On a terminé le parsing. On va vers 8.
+	6. Single quotes ou double quotes?
+	6.a. Single quotes : on ignore tout méta caractères.
+	6.b. Double quotes : on prend en compte seulement $ comme méta caractère.
+	7. Y'a-t-il un pipe ou une redirection?
+	7.a. Oui, on redirige les outputs.
+	7.b. Non, output non redirigé.*/
+
 	char	**buff;
 	char	**buff2;
 	int		i;
@@ -130,21 +153,42 @@ char	**cmd_parse(char *cmd)
 
 char	**cmd_parse2(char *cmd, char *arg)
 {
-	char	*temp;
 	char	**buff;
 	int		i;
+	int		f;
+	int		j;
 
 	i = 0;
+	f = 0;
+	j = 0;
 	while (cmd[i] && cmd[i] != '-')
 		i++;
 	if (!cmd[i])
 		buff = ft_calloc(3, sizeof(char *));
 	else
+	{
 		buff = ft_calloc(4, sizeof(char *));
+		f++;
+	}
 	i = 0;
 	while (cmd[i] != ' ')
 		i++;
-	
+	buff[0] = ft_substr(cmd, 0, i);
+	j = i;
+	while (cmd[i] != ' ' && cmd[i] != '"' && cmd[i] != 39 && f == 1)
+		i++;
+	if (f == 1)
+	{
+		buff[1] = ft_substr(cmd, j, i);
+		buff[2] = arg;
+		buff[3] = NULL;
+	}
+	else
+	{
+		buff[1] = arg;
+		buff[2] = NULL;
+	}
+	return (buff);
 }
 
 int	functionparse_dispatch(char **env, char **cmd, int code)
