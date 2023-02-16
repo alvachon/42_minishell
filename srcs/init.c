@@ -38,8 +38,5 @@ void	init_shell(t_terminal *minishell)
 		}
 	}
 	else
-	{
-    	perror("init_shell : Not a terminal.\n");
-		exit (EXIT_FAILURE);
-	}
+		sys_msg("init_shell : Not a terminal.\n", 2);
 }

@@ -43,16 +43,24 @@ typedef struct s_terminal
 	struct termios		new_options;
 }	t_terminal;
 
-char	**ft_pathfinder(char *envp[]);
-//int		command_parse(char *cmd, char **env);
-int		builtincheck(char **cmd);
 int		envcheck(char **cmd);
-//int		functionparse_dispatch(char **env, char **cmd, int code);
-void	error_msg(char *cmd);
-void	echo_parse(char **cmd, char **env);
-void	execute_echo(char *path, char **cmd, char **env);
-void	free_echo(char *temp, char *temp2, char **env, int code);
+int		ft_getchar(void);
+
+/*init.c*/
 void	handle_sig(int sign);
 void	init_shell(t_terminal *minishell);
+/*lexer.c*/
+char	**ft_pathfinder(char *envp[]);
+int		builtincheck(char **cmd);
+int		functionparse_dispatch(char **env, char **cmd, int code);
+int		command_parse(char *cmd, char **env);
+/*message.c*/
+void	error_msg(char *cmd);
+void    exit_msg(char *cmd, t_terminal *minishell);
+void    sys_msg(char *reason, int code);
+/*z_echo.c*/
+void	free_echo(char *temp, char *temp2, char **env, int code);
+void	execute_echo(char *path, char **cmd, char **env);
+void	echo_parse(char **cmd, char **env);
 
 #endif
