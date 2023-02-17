@@ -52,7 +52,7 @@ int main(int ac, char **av, char **env)
 		init_shell(&minishell);
   		while (FOREGROUND_JOB)
 		{	
-			if (ttyname(0))
+			if (isatty(STDIN_FILENO))
 			{
     			cmd = readline("minishell$ ");
     			if (!cmd || cmd[0] == '\0' || ft_strcmp(cmd, "\n") == 0)

@@ -16,7 +16,6 @@ void handle_sig(int sign)
 {
 	(void)sign;
 	write(0, "minishell$ exit\n", 17);
-	clear_history();
 	exit(EXIT_SUCCESS);
 }
 

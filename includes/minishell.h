@@ -39,6 +39,7 @@ typedef struct s_argsandflags
 
 typedef struct s_terminal
 {
+	char				*term;
 	struct termios		mod_terminal;
 	struct termios		new_options;
 }	t_terminal;

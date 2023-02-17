@@ -85,6 +85,9 @@ fclean: clean
 	$(REMOVE) minishell.dSYM
 	@echo $(RESET_COLOR)$(GREEN) "OK - - - - - - - - - - \n" $(RESET_COLOR)
 
+valgrind:
+	valgrind --leak-check=full --show-leak-kinds=all --trace-children=yes --track-fds=yes ./minishell
+
 re: fclean all
 
 .PHONY:	all clean fclean re init

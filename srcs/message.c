@@ -25,8 +25,13 @@ void	error_msg(char *cmd)
 
 void    exit_msg(char *cmd, t_terminal *minishell)
 {
-    printf("%s\n", cmd);
-	free(cmd);
+    if (cmd)
+    {
+        printf("%s\n", cmd);
+	    free(cmd);
+    }
+    if ((*minishell).term)
+	    free((*minishell).term);
     clear_history();
 	tcsetattr(STDIN_FILENO, TCSANOW, &(*minishell).mod_terminal);
     exit(EXIT_SUCCESS);
