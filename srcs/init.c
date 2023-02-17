@@ -14,13 +14,29 @@
 
 void handle_sig(int sign)
 {
-	(void)sign;
-	write(0, "minishell$ exit\n", 17);
-	exit(EXIT_SUCCESS);
+	if (sign == SIGINT && g_data.shell_state == SH_READ)
+	{
+		rl_on_new_line();
+		rl_redisplay();
+		write(1, "exit\n", 5);
+		exit(EXIT_SUCCESS);
+	}
+	if (sign == SIGINT && g_data.shell_state == SH_EXEC)
+	{
+		rl_on_new_line();
+		rl_redisplay();
+	}
 }
 
-void	init_shell(t_terminal *minishell)
+void	set_global(char **env)
 {
+	g_data.env = env;
+	g_data.shell_state = SH_READ;
+}
+
+void	init_shell(t_terminal *minishell, char **env)
+{
+	set_global(env);
 	if (isatty(STDIN_FILENO))
 	{
 		tcgetattr(STDIN_FILENO, &(*minishell).mod_terminal);
@@ -37,5 +53,9 @@ void	init_shell(t_terminal *minishell)
 		}
 	}
 	else
+	{
+		if (!minishell)
+			sys_msg("Not enough allocation for minishell\n", 2);
 		sys_msg("init_shell : Not a terminal.\n", 2);
+	}
 }

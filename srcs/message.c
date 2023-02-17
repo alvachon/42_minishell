@@ -20,20 +20,18 @@ void	error_msg(char *cmd)
 	write (2, "minishell: ", 12);
 	write (2, buff[0], ft_strlen(buff[0]));
 	write (2, " : Command not found.\n", 23);
+    ft_freeall(buff);
 	return ;
 }
 
-void    exit_msg(char *cmd, t_terminal *minishell)
+void    exit_msg(char *cmd)
 {
     if (cmd)
     {
         printf("%s\n", cmd);
 	    free(cmd);
     }
-    if ((*minishell).term)
-	    free((*minishell).term);
     clear_history();
-	tcsetattr(STDIN_FILENO, TCSANOW, &(*minishell).mod_terminal);
     exit(EXIT_SUCCESS);
 }
 

@@ -73,6 +73,8 @@ int	command_parse(char *cmd, char **env)
 	char	**buff2;
 	int		i;
 
+	if (ft_strcmp(cmd, "exit") == 0)
+		exit_msg(cmd);
 	buff = ft_pathfinder(env);
 	buff2 = ft_split(cmd, ' ');
 	i = builtincheck(buff2);

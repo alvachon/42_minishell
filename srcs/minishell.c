@@ -49,20 +49,20 @@ int main(int ac, char **av, char **env)
 	(void)av;
 	if (ac != 2)
 	{
-		init_shell(&minishell);
+		init_shell(&minishell, env);
+		cmd = NULL;
   		while (FOREGROUND_JOB)
-		{	
+		{
 			if (isatty(STDIN_FILENO))
 			{
-    			cmd = readline("minishell$ ");
+    			cmd = readline("\033[0m\033[34mminishell\033[0m\033[35m$ \033[0m");
+				g_data.shell_state = SH_EXEC;
     			if (!cmd || cmd[0] == '\0' || ft_strcmp(cmd, "\n") == 0)
             	{
 					if (cmd)
       		    		free(cmd);
-      		    	continue;
+					continue;
     			}
-    			else if (ft_strcmp(cmd, "exit") == 0)
-					exit_msg(cmd, &minishell);
 				else if (command_parse(cmd, env) == 1)
 					error_msg(cmd);
 				else
