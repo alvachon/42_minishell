@@ -12,6 +12,7 @@
 
 /* [0]BUILT [1]OPTION [2]REDIRECTION [3]APPEND [4]INFILE
 * [5]PIPE [6]REDIRECTION [7]APPEND [8]OUTFILE */
+#include <ctype.h>//
 
 #include "../includes/minishell.h"
 
@@ -23,28 +24,10 @@ int	envcheck(char **cmd)
 		return (8);
 }
 
-int	ft_getchar(void)
-{
-	char buf[BUFSIZ];
-	char *bufptr;
-	int i;
-
-	bufptr = buf;
-	i = 0;
-	if (i == 0)
-	{
-		i = read(0, buf, 1);
-		bufptr = buf;
-	}
-	if (--i >= 0)
-		return (*bufptr++);
-	return (0);
-}
-
 int main(int ac, char **av, char **env)
 {
 	t_terminal		minishell;
-	char			*cmd;
+	static char		*cmd;
 
 	(void)av;
 	if (ac != 2)
@@ -57,14 +40,24 @@ int main(int ac, char **av, char **env)
 			{
     			cmd = readline("\033[0m\033[34mminishell\033[0m\033[35m$ \033[0m");
 				g_data.shell_state = SH_EXEC;
-    			if (!cmd || cmd[0] == '\0' || ft_strcmp(cmd, "\n") == 0)
+                if (!cmd)
+                {
+                    rl_on_new_line();
+                    rl_redisplay();
+                    write(1, "exit\n", 5);
+                    exit(EXIT_SUCCESS);
+                }
+    			if (cmd[0] == '\0' || ft_strcmp(cmd, "\n") == 0)
             	{
 					if (cmd)
       		    		free(cmd);
 					continue;
     			}
 				else if (command_parse(cmd, env) == 1)
+                {
+                    add_history(cmd);
 					error_msg(cmd);
+                }
 				else
 				{
 					printf("Command done and freed, added to the history\n");
@@ -72,7 +65,7 @@ int main(int ac, char **av, char **env)
     				free(cmd);
 				}
 			}
-			else //enter pipe process
+			else
 			{
 				printf("\n(job process) Is redirected, not a terminal. \n");
 			}

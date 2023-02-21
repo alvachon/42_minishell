@@ -28,8 +28,8 @@ void    exit_msg(char *cmd)
 {
     if (cmd)
     {
-        printf("%s\n", cmd);
-	    free(cmd);
+        write(1, "exit\n", 5);
+        free(cmd);
     }
     clear_history();
     exit(EXIT_SUCCESS);

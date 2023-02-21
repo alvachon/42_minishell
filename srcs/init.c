@@ -14,18 +14,20 @@
 
 void handle_sig(int sign)
 {
-	if (sign == SIGINT && g_data.shell_state == SH_READ)
+	if (sign == SIGINT /*&& g_data.shell_state == SH_READ*/)
+	{
+		write(1, "\n", 1);
+		rl_on_new_line();
+		rl_replace_line("", 0);
+		rl_redisplay();
+		//write(1, "exit\n", 5);
+		//exit(EXIT_SUCCESS);
+	}
+	/*if (sign == SIGINT && g_data.shell_state == SH_EXEC)
 	{
 		rl_on_new_line();
 		rl_redisplay();
-		write(1, "exit\n", 5);
-		exit(EXIT_SUCCESS);
-	}
-	if (sign == SIGINT && g_data.shell_state == SH_EXEC)
-	{
-		rl_on_new_line();
-		rl_redisplay();
-	}
+	}*/
 }
 
 void	set_global(char **env)
@@ -41,8 +43,8 @@ void	init_shell(t_terminal *minishell, char **env)
 	{
 		tcgetattr(STDIN_FILENO, &(*minishell).mod_terminal);
 		(*minishell).new_options = (*minishell).mod_terminal;
-		(*minishell).new_options.c_cc[VEOF]     = 3;
-		(*minishell).new_options.c_cc[VINTR]    = 4;
+		//(*minishell).new_options.c_cc[VEOF]     = 3;
+		//(*minishell).new_options.c_cc[VINTR]    = 4;
         (*minishell).new_options.c_cc[VQUIT]    = 0;
 		tcsetattr(STDIN_FILENO,TCSANOW,&(*minishell).new_options);
 		if (SIGINT)
