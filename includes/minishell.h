@@ -52,7 +52,9 @@ enum	e_shell_state
 typedef struct s_data
 {
 	char				**env;
-	int					loop;
+    char                *built_path;
+    char                *pwd;
+    char                *oldpwd;
 	enum e_shell_state	shell_state;
 }	t_data
 ;
@@ -64,11 +66,14 @@ int		ft_getchar(void);
 
 /*init.c*/
 void	handle_sig(int sign);
+char    *set_built_path();
+char    *set_pwd();
+char    *set_old_pwd();
 void	set_global(char **env);
 void	init_shell(t_terminal *minishell, char **env);
 /*lexer.c*/
-char	**ft_pathfinder(char *envp[]);
 int		builtincheck(char **cmd);
+char	**ft_pathfinder(char *envp[]);
 int		functionparse_dispatch(char **env, char **cmd, int code);
 int		command_parse(char *cmd, char **env);
 /*message.c*/
@@ -82,10 +87,11 @@ void    free_exect(char **cmd, char **env, char *path);
 void	free_echo(char *temp, char *temp2, char **env, int code);
 void	execute_echo(char *path, char **cmd, char **env);
 void	echo_parse(char **cmd, char **env);
-/*z_cd.c*/
-void	free_cd(char *temp, char *temp2, char **env, int code);
-void	execute_cd(char *path, char **cmd, char **env);
-void	parse_cd(char **cmd, char **env);
+
+/*z_pwd.c*/
+void	free_pwd(char *temp, char *temp2, char **env, int code);
+void	execute_pwd(char *path, char **cmd, char **env);
+void	parse_pwd(char **cmd, char **env);
 
 #endif
 

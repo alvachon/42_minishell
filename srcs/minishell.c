@@ -53,7 +53,7 @@ int main(int ac, char **av, char **env)
       		    		free(cmd);
 					continue;
     			}
-				else if (command_parse(cmd, env) == 1)
+				else if (command_parse(cmd, env) == 1)//
                 {
                     add_history(cmd);
 					error_msg(cmd);

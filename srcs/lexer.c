@@ -30,18 +30,22 @@ int	builtincheck(char **cmd)
 	int	i;
 
 	i = 7;
+
 	if (ft_strncmp(cmd[0], "echo", 5) == 0)
 	{
 		printf("Found echo\n");
 		i = 1;
 	}
-	else if (ft_strncmp(cmd[0], "cd", 3) == 0)
+	/*else if (ft_strncmp(cmd[0], "cd", 3) == 0)
 	{
 		printf("Found cd\n");
 		i = 2;
-	}
+	}*/
 	else if (ft_strncmp(cmd[0], "pwd", 4) == 0)
+	{
+		printf("Found pwd\n");
 		i = 3;
+	}
 	else if (ft_strncmp(cmd[0], "export", 7) == 0)
 		i = 4;
 	else if (ft_strncmp(cmd[0], "unset", 6) == 0)
@@ -58,11 +62,11 @@ int	functionparse_dispatch(char **env, char **cmd, int code)
 {
 	if (code == 1)
 		echo_parse(cmd, env);
-	if (code == 2)
-		parse_cd(cmd, env);
-	/*if (code == 3)
-		pwd_parse_here(cmd, env);
-	if (code == 4)
+	/*if (code == 2)
+		parse_cd(cmd, env);*/
+	if (code == 3)
+		parse_pwd(cmd, env);
+	/*if (code == 4)
 		export_parse_here(cmd, env);
 	if (code == 5)
 		unset_parse_here(cmd, env);

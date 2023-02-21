@@ -1,3 +1,17 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   z_pwd.c                                            :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: alvachon <marvin@42.fr>                    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/02/21 14:23:42 by alvachon          #+#    #+#             */
+/*   Updated: 2023/02/21 14:23:44 by alvachon         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
+#include "../includes/minishell.h"
+
 void	free_pwd(char *temp, char *temp2, char **env, int code)
 {
 	int	i;
@@ -47,15 +61,15 @@ void	parse_pwd(char **cmd, char **env)
 		path = ft_strjoin(env[i], file);
 		if (access(path, F_OK) == 0)
 		{
-			execute_cd(path, cmd, env);
-			free_cd(file, path, env, 3);
+			execute_pwd(path, cmd, env);
+			free_pwd(file, path, env, 3);
 			return ;
 		}
 		else
 		{
 			i++;
-			free_cd(file, path, env, 1);
+			free_pwd(file, path, env, 1);
 		}
 	}
-	free_cd(file, path, env, 2);
+	free_pwd(file, path, env, 2);
 }
