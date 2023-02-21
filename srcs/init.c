@@ -14,20 +14,15 @@
 
 void handle_sig(int sign)
 {
-	if (sign == SIGINT /*&& g_data.shell_state == SH_READ*/)
+	if (sign == SIGINT && g_data.shell_state == SH_READ)
 	{
 		write(1, "\n", 1);
 		rl_on_new_line();
 		rl_replace_line("", 0);
 		rl_redisplay();
-		//write(1, "exit\n", 5);
-		//exit(EXIT_SUCCESS);
 	}
-	/*if (sign == SIGINT && g_data.shell_state == SH_EXEC)
-	{
-		rl_on_new_line();
-		rl_redisplay();
-	}*/
+	if (sign == SIGINT && g_data.shell_state == SH_EXEC)
+		return ;
 }
 
 void	set_global(char **env)

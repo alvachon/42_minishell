@@ -75,9 +75,126 @@ int		command_parse(char *cmd, char **env);
 void	error_msg(char *cmd);
 void    exit_msg(char *cmd);
 void    sys_msg(char *reason, int code);
+
+void    free_exect(char **cmd, char **env, char *path);
+
 /*z_echo.c*/
 void	free_echo(char *temp, char *temp2, char **env, int code);
 void	execute_echo(char *path, char **cmd, char **env);
 void	echo_parse(char **cmd, char **env);
+/*z_cd.c*/
+void	free_cd(char *temp, char *temp2, char **env, int code);
+void	execute_cd(char *path, char **cmd, char **env);
+void	parse_cd(char **cmd, char **env);
 
 #endif
+
+/*
+
+int	ft_slen(char *s)
+{
+	int	i;
+
+	i = 0;
+	while (s[i] != '\0')
+		i++;
+	return (i);
+}
+
+int ft_isspace(char c)
+{
+    if (c == '\t' || c == '\n' || c == '\v' || c == '\f' || c == '\r' || c == ' ')
+        return (1);
+    else
+        return (0);
+}
+
+char *ft_rtrim(char *s)
+{
+    char *back = s + ft_slen(s);
+    while(isspace(*--back))
+        *(back + 1) = '\0';
+    return (s);
+}
+
+int	ft_getchar()
+{
+	char buf[BUFSIZ];
+	char *bufptr;
+	int i;
+
+	bufptr = buf;
+	i = 0;
+	if (i == 0)
+	{
+		i = read(0, buf, 1);
+		bufptr = buf;
+	}
+	if (--i >= 0)
+		return (*bufptr++);
+	return (0);
+}
+
+void *ft_realloc(void *ptr, size_t size)
+{
+    void *new;
+
+    if (!ptr)
+	{
+        new = malloc(size);
+        if (!new)
+			return (NULL);
+    }
+	else
+	{
+        if (sizeof(ptr) < size)
+		{
+            new = malloc(size);
+            if (!new)
+				return (NULL);
+            ft_memcpy(new, ptr, sizeof(ptr));
+            free(ptr);
+        }
+		else
+            new = ptr;
+    }
+	return (new);
+}
+
+char *ft_readline()
+{
+    int 	buf_siz;
+	int 	str_siz;
+	char	*buf;
+    int     ix;
+    int     ch;
+	
+    ix = 0;
+	buf_siz = 64;
+    buf = malloc(buf_siz);
+    str_siz = buf_siz;
+    while (1)
+	{
+        if (ix == str_siz - 1)
+        {
+            if (!buf_siz)
+                break ;
+            buf_siz += buf_siz;
+            buf = ft_realloc(buf, buf_siz);
+            str_siz = buf_siz;
+        }
+        ch = ft_getchar();
+        if (ch == EOF)
+        {
+            if (buf_siz)
+                free(buf);
+            return (NULL);
+        }
+        if (ch == '\n')
+            break;
+        buf[ix] = ch;
+        ix++;
+    }
+    buf[ix] = '\0';
+    return (buf);
+}*/

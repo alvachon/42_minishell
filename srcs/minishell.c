@@ -27,7 +27,7 @@ int	envcheck(char **cmd)
 int main(int ac, char **av, char **env)
 {
 	t_terminal		minishell;
-	static char		*cmd;
+	char			*cmd;
 
 	(void)av;
 	if (ac != 2)
@@ -64,6 +64,7 @@ int main(int ac, char **av, char **env)
 					add_history(cmd);
     				free(cmd);
 				}
+				g_data.shell_state = SH_READ;
 			}
 			else
 			{
