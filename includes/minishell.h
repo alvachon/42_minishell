@@ -55,6 +55,7 @@ typedef struct s_data
     char                *built_path;
     char                *pwd;
     char                *oldpwd;
+    char                *cmd;
 	enum e_shell_state	shell_state;
 }	t_data
 ;
@@ -66,9 +67,7 @@ int		ft_getchar(void);
 
 /*init.c*/
 void	handle_sig(int sign);
-char    *set_built_path();
-char    *set_pwd();
-char    *set_old_pwd();
+char    *set(char *var, int siz_var);
 void	set_global(char **env);
 void	init_shell(t_terminal *minishell, char **env);
 /*lexer.c*/
