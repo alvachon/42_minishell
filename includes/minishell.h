@@ -49,6 +49,16 @@ enum	e_shell_state
 	SH_EXEC,
 }
 ;
+
+typedef struct s_parse
+{
+    char    *built;
+    char    *opt;
+    char    *print;
+    char    *redir_input;
+    char    *flag_delim;
+}   t_parse
+;
 typedef struct s_data
 {
 	char				**env;
@@ -56,6 +66,7 @@ typedef struct s_data
     char                *pwd;
     char                *oldpwd;
     char                *cmd;
+    struct s_parse      input;
 	enum e_shell_state	shell_state;
 }	t_data
 ;
@@ -74,7 +85,7 @@ void	init_shell(t_terminal *minishell, char **env);
 int		builtincheck(char **cmd);
 char	**ft_pathfinder(char *envp[]);
 int		functionparse_dispatch(char **env, char **cmd, int code);
-int		command_parse(char *cmd, char **env);
+int		command_parse(char *cmd);
 /*message.c*/
 void	error_msg(char *cmd);
 void    exit_msg(char *cmd);

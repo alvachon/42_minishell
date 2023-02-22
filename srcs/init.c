@@ -27,7 +27,7 @@ void handle_sig(int sign)
 
 char *set(char *var, int siz_var)
 {
-		int	i;
+	int	i;
 	char **cmd;
 	char *file;
 
