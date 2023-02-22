@@ -78,10 +78,41 @@ int	command_parse(char *cmd, char **env)
 	i = builtincheck(buff2);
 	if (i == 8)
 	{
+
+
 		free (buff);
 		free (buff2);
 		return (1);
 	}
 	else
 		return (functionparse_dispatch(buff, buff2, i));
+}
+
+int	executablechecker(char **path, char **cmd)
+{
+	int		i;
+	char	*exect;
+	char	*path2;
+
+	i = 0;
+	exect = ft_strjoin(cmd[0], '/');
+	while (path[i] != NULL)
+	{
+		path2 = ft_strjoin (path[i], exect);
+		if (access(path2, F_OK) == 0)
+		{
+			free (path2);
+			free (cmd[0]);
+			cmd[0] = ft_strdup(exect);
+			free (exect);
+			return (0);
+		}
+		else
+		{
+			free (path2);
+			i++;
+		}
+	}
+	free (exect);
+	return (builtincheck(cmd));
 }

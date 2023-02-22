@@ -17,7 +17,6 @@ void	free_echo(char *temp, char *temp2, char **env, int code)
 	int	i;
 
 	i = 0;
-	(void)env;
 	if (code == 1)
 		free(temp2);
 	if (code == 2)
