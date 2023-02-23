@@ -84,7 +84,7 @@ void	init_shell(t_terminal *minishell, char **env);
 /*lexer.c*/
 int		builtincheck();
 char	**ft_pathfinder(char *envp[]);
-int		functionparse_dispatch(char **env, int code);
+int		functionparse_dispatch(char **env, char **cmds, int code);
 int		command_parse(char *cmd);
 /*message.c*/
 void	error_msg(char *cmd);
@@ -95,8 +95,8 @@ void    free_exect(char **cmd, char **env, char *path);
 
 /*z_echo.c*/
 void	free_echo(char *temp, char *temp2, char **env, int code);
-void	execute_echo(char *path, char **env);
-void	echo_parse(char **env);
+void	execute_echo(char *path, char **cmd, char **env);
+void	echo_parse(char **cmds, char **env);
 
 /*z_pwd.c*/
 void	free_pwd(char *temp, char *temp2, char **env, int code);

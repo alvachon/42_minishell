@@ -59,10 +59,10 @@ int	builtincheck()
 	return (0);
 }
 
-int	functionparse_dispatch(char **env, int code)
+int	functionparse_dispatch(char **env, char **cmds, int code)
 {
 	if (code == 1)
-		echo_parse(env);
+		echo_parse(cmds, env);
 	/*if (code == 2)
 		parse_cd(cmd, env);*/
 	/*if (code == 3)
@@ -321,14 +321,33 @@ char *parse(char *input)
 int	command_parse(char *input)
 {
 	char	**paths;
+	char	**cmds;
 	int		i;
 
 	if (ft_strcmp(input, "exit") == 0)//
 		exit_msg(input);
+	cmds = NULL;
 	paths = ft_pathfinder(g_data.env);
 	input = parse(input);
 	//cmds = ft_split(input, ' ');
 	i = builtincheck();
+	printf("%s\n", g_data.input.built);
+	printf("%d\n", i);
+	if (i == 1)
+	{
+		input = g_data.input.built;
+		input = ft_strjoin(input, "|");
+		printf("%s\n", input);
+		if (g_data.input.opt)
+		{
+			g_data.input.opt = ft_strjoin(g_data.input.opt, "|");
+			input = ft_strjoin(input, g_data.input.opt);
+		}
+		input = ft_strjoin(input, g_data.input.print);
+		cmds = ft_split(input, '|');
+		printf("cmd[0] %s\n", cmds[0]);
+		printf("cmd[0] %s\n", cmds[1]);
+	}
 	if (i == 8)
 	{
 		free (paths);
@@ -336,5 +355,5 @@ int	command_parse(char *input)
 		return (1);
 	}
 	else
-		return (functionparse_dispatch(paths, i));
+		return (functionparse_dispatch(paths, cmds, i));
 }
