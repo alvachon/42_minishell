@@ -47,7 +47,10 @@ void	execute_echo(char *path, char **cmd, char **env)
 	if (exe == 0)
 		execve(path, cmd, env);
 	else
+	{
+		printf("execve(path, cmd, env); != 0\n");
 		wait(0);
+	}
 	while (cmd[i++])
 		free(cmd[i]);
 	while (env[j++])
@@ -66,13 +69,11 @@ void	echo_parse(char **cmds, char **env)
 
 	i = 0;
 	exe_name = ft_strjoin("/", g_data.input.built);
-	printf("%s\n", exe_name);
 	while (env[i])
 	{
 		path = ft_strjoin(env[i], exe_name);
 		if (access(path, F_OK) == 0)
 		{
-			printf("%s\n", path);
 			execute_echo(path, cmds, env);
 			free_echo(exe_name, path, env, 3);
 			return ;
@@ -80,9 +81,8 @@ void	echo_parse(char **cmds, char **env)
 		else
 		{
 			i++;
-			printf("... \n");
-			free_echo (exe_name, path, env, 1);
+			free_echo(exe_name, path, env, 1);
 		}
 	}
-	free_echo (exe_name, path, env, 2);
+	free_echo(exe_name, path, env, 2);
 }

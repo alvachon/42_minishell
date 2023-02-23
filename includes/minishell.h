@@ -81,16 +81,37 @@ void	handle_sig(int sign);
 char    *set(char *var, int siz_var);
 void	set_global(char **env);
 void	init_shell(t_terminal *minishell, char **env);
+
+/*parser.c*/
+char    *keep_redir_input(char *input, int i);
+char    *keep_flag_delim(char *input, int i);
+char    *parse(char *input);
+
+/*parse_builtin.c*/
+char    *ltrim(char *input);
+int	    wordlen(char *input, int i);
+char    *wordtrim(char *input, int i);
+char    *ulstr(char *str);
+char    *keep_option(char *input, int i);
+char    *keep_builtin(char *input, int i);
+
+/*parse_print.c*/
+int     scan(char *input, char c);
+int	    chartrim(char *input, char c);
+char    *rtrim(char *str);
+char    *scan_end(char *file);
+void    trim_guil(char *input, char c);
+char	*keep_print(char *input, int i);
+
 /*lexer.c*/
 int		builtincheck();
-char	**ft_pathfinder(char *envp[]);
 int		functionparse_dispatch(char **env, char **cmds, int code);
-int		command_parse(char *cmd);
+char	**paths_search(void);
+int		lexer(char *cmd);
 /*message.c*/
 void	error_msg(char *cmd);
 void    exit_msg(char *cmd);
 void    sys_msg(char *reason, int code);
-
 void    free_exect(char **cmd, char **env, char *path);
 
 /*z_echo.c*/
