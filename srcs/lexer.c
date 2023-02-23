@@ -25,13 +25,13 @@ char	**ft_pathfinder(char **env)
 	return (ft_split(env[i], ':'));
 }
 
-int	builtincheck(char **cmd)
+int	builtincheck()
 {
 	int	i;
 
 	i = 7;
 
-	if (ft_strncmp(cmd[0], "echo", 5) == 0)
+	if (ft_strncmp(g_data.input.built, "echo", 5) == 0)
 	{
 		printf("Found echo\n");
 		i = 1;
@@ -41,31 +41,32 @@ int	builtincheck(char **cmd)
 		printf("Found cd\n");
 		i = 2;
 	}*/
-	else if (ft_strncmp(cmd[0], "pwd", 4) == 0)
+	else if (ft_strncmp(g_data.input.built, "pwd", 4) == 0)
 	{
 		printf("Found pwd\n");
 		i = 3;
 	}
-	else if (ft_strncmp(cmd[0], "export", 7) == 0)
+	else if (ft_strncmp(g_data.input.built, "export", 7) == 0)
 		i = 4;
-	else if (ft_strncmp(cmd[0], "unset", 6) == 0)
+	else if (ft_strncmp(g_data.input.built, "unset", 6) == 0)
 		i = 5;
-	else if (ft_strncmp(cmd[0], "env", 4) == 0)
+	else if (ft_strncmp(g_data.input.built, "env", 4) == 0)
 		i = 6;
 	if (i <= 6)
 		return (i);
-	else
-		return (envcheck(cmd));
+	/*else
+		return (envcheck(g_data.input.built));*/
+	return (0);
 }
 
-int	functionparse_dispatch(char **env, char **cmd, int code)
+int	functionparse_dispatch(char **env, int code)
 {
 	if (code == 1)
-		echo_parse(cmd, env);
+		echo_parse(env);
 	/*if (code == 2)
 		parse_cd(cmd, env);*/
-	if (code == 3)
-		parse_pwd(cmd, env);
+	/*if (code == 3)
+		parse_pwd(env);*/
 	/*if (code == 4)
 		export_parse_here(cmd, env);
 	if (code == 5)
@@ -82,6 +83,23 @@ char *ltrim(char *input)
 	while (*input <= 32)
 		input++;
 	return (input);
+}
+
+char *rtrim(char *str)
+{
+	int i;
+	int j;
+
+	j = -1;
+	i = 0;
+	while (str[i] != '\0')
+	{
+		if (str[i] > 32)
+			j = i;
+		i++;
+	}
+	str[j + 1] = '\0';
+	return (str);
 }
 
 int	wordlen(char *input, int i)
@@ -106,7 +124,7 @@ int scan(char *input, char c)
 	
 }
 
-int	guiltrim(char *input, char c)
+int	chartrim(char *input, char c)
 {
 	int i;
 	int len;
@@ -156,15 +174,44 @@ char *keep_option(char *input, int i)
 	return (input);
 }
 
+char *scan_end(char *file)
+{
+	char **cmd;
+
+	if (scan(file, '<') == 0)
+	{
+		cmd = ft_split(file, '<');
+		file = cmd[0];
+		free (cmd);
+	}
+	if (scan(file, '>') == 0)
+	{
+		cmd = ft_split(file, '>');
+		file = cmd[0];
+		free (cmd);
+	}
+	if (scan(file, '|') == 0)
+	{
+		cmd = ft_split(file, '>');
+		file = cmd[0];
+		free (cmd);
+	}
+	return (file);
+}
 
 void	trim_guil(char *input, char c)
 {
-	char **cmd;
-	char *file;
-	int	word34;
+	char 	**cmd;
+	char 	*file;
+	int		len_word;
+	int		trig;
 
+	trig = 1;
 	if (input[0] == c)
+	{
 		input++;
+		trig = 0;
+	}
 	while (*input)
 	{
 		cmd = ft_split(input, c);
@@ -173,19 +220,26 @@ void	trim_guil(char *input, char c)
 			g_data.input.print = file;
 		else
 			g_data.input.print = ft_strjoin(g_data.input.print, file);
-		word34 = guiltrim(input, c);
-		free (cmd);
-		while (word34 >= 0)
+		if (trig == 1)
+			g_data.input.print = scan_end(g_data.input.print);
+		g_data.input.print = rtrim(g_data.input.print);
+		if (trig == 1)
 		{
-			input++;
-			word34--;
+			len_word = chartrim(input, c);
+			while (len_word >= 0)
+			{
+				input++;
+				len_word--;
+			}
 		}
+		free (cmd);
 	}
 }
 
 char	*keep_print(char *input, int i)
 {
 	(void)i;
+	char *copy;
 	if (input[0] != '<' || input[0] != '>' || input[0] != '|')
 	{
 		if (input[0] == 34)//"
@@ -201,9 +255,9 @@ char	*keep_print(char *input, int i)
 		else
 		{
 			trim_guil(input, 34);
-			input = g_data.input.print;
+			copy = g_data.input.print;
 			g_data.input.print = NULL;
-			trim_guil(input, 39);
+			trim_guil(copy, 39);
 			printf("data keep : %s\n", g_data.input.print);
 		}
 	}
@@ -251,14 +305,14 @@ char *parse(char *input)
 	i = 0;
 	while (*input)
 	{
-		input = keep_builtin(input, i);
+		input = keep_builtin(input, i);//check for redir symbol before
 		input = keep_option(input, i);
 		input = keep_print(input, i);
 		printf("parse : %s\n", input);
-		input = keep_redir_input(input, i);
+		/*input = keep_redir_input(input, i);
 		input = keep_flag_delim(input, i);
 		//input = keep_delimiter(input, i);
-		printf("parse : %s\n", input);
+		printf("parse : %s\n", input);*/
 		break ;
 	}
 	return (input);
@@ -267,22 +321,20 @@ char *parse(char *input)
 int	command_parse(char *input)
 {
 	char	**paths;
-	char	**cmds;
 	int		i;
 
 	if (ft_strcmp(input, "exit") == 0)//
 		exit_msg(input);
 	paths = ft_pathfinder(g_data.env);
 	input = parse(input);
-	exit(1);
-	cmds = ft_split(input, ' ');
-	i = builtincheck(cmds);
+	//cmds = ft_split(input, ' ');
+	i = builtincheck();
 	if (i == 8)
 	{
 		free (paths);
-		free (cmds);
+		//free (cmds);
 		return (1);
 	}
 	else
-		return (functionparse_dispatch(paths, cmds, i));
+		return (functionparse_dispatch(paths, i));
 }
