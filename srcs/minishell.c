@@ -57,8 +57,8 @@ int main(int ac, char **av, char **env)
     			}
 				else if (command_parse(cmd, env) == 1)
 					error_msg(cmd);
-				else
-					printf("Command done and freed, added to the history\n");
+				/*else
+					printf("Command done and freed, added to the history\n");*/
 				add_history(cmd);
 				free(cmd);
 				g_data.shell_state = SH_READ;

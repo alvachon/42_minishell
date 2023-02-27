@@ -33,7 +33,7 @@ int	builtincheck(char **cmd)
 
 	if (ft_strncmp(cmd[0], "echo", 5) == 0)
 	{
-		printf("Found echo\n");
+		//printf("Found echo\n");
 		i = 1;
 	}
 	/*else if (ft_strncmp(cmd[0], "cd", 3) == 0)

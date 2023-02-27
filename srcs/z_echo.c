@@ -66,11 +66,11 @@ void	echo_parse(char **cmd, char **env)
 
 	i = 0;
 	temp = ft_strjoin("/", cmd[0]);
-	printf("%s\n", temp);
+	//printf("%s\n", temp);
 	while (env[i])
 	{
 		temp2 = ft_strjoin(env[i], temp);
-		printf("%s\n", temp2);
+		//printf("%s\n", temp2);
 		if (access(temp2, F_OK) == 0)
 		{
 			execute_echo(temp2, cmd, env);
@@ -80,7 +80,7 @@ void	echo_parse(char **cmd, char **env)
 		else
 		{
 			i++;
-			printf("... \n");
+			//printf("... \n");
 			free_echo (temp, temp2, env, 1);
 		}
 	}
