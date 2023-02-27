@@ -40,7 +40,7 @@ int main(int ac, char **av, char **env)
 	if (ac != 2)
 	{
 		init_shell(&minishell, env);
-		cmd = g_data.cmd;
+		cmd = NULL;
   		while (FOREGROUND_JOB)
 		{
 			if (isatty(STDIN_FILENO))
@@ -55,10 +55,8 @@ int main(int ac, char **av, char **env)
       		    		free(cmd);
 					continue;
     			}
-				else if (command_parse(cmd, env) == 1)
+				else if (lexer(cmd) == 1)
 					error_msg(cmd);
-				/*else
-					printf("Command done and freed, added to the history\n");*/
 				add_history(cmd);
 				free(cmd);
 				g_data.shell_state = SH_READ;

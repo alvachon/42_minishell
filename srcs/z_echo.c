@@ -12,14 +12,14 @@
 
 #include "../includes/minishell.h"
 
-void	free_echo(char *temp, char *temp2, char **env, int code)
+void	free_echo(char *exe_name, char *path, char **env, int code)
 {
 	int	i;
 
 	i = 0;
 	(void)env;
 	if (code == 1)
-		free(temp2);
+		free(path);
 	if (code == 2)
 	{
 		while (env[i])
@@ -28,12 +28,12 @@ void	free_echo(char *temp, char *temp2, char **env, int code)
 			i++;
 		}
 		free (env);
-		free (temp2);
-		if (*temp)
-			free (temp);
+		free (path);
+		if (*exe_name)
+			free (exe_name);
 	}
 	if (code == 3)
-		free(temp);
+		free(exe_name);
 }
 void	execute_echo(char *path, char **cmd, char **env)
 {
@@ -58,31 +58,29 @@ void	execute_echo(char *path, char **cmd, char **env)
 	return ;
 }
 
-void	echo_parse(char **cmd, char **env)
+void	echo_parse(char **cmds, char **env)
 {
-	char	*temp;
-	char	*temp2;
+	char	*exe_name;
+	char	*path;
 	int		i;
 
 	i = 0;
-	temp = ft_strjoin("/", cmd[0]);
-	//printf("%s\n", temp);
+	exe_name = ft_strjoin("/", cmds[0]);
 	while (env[i])
 	{
-		temp2 = ft_strjoin(env[i], temp);
-		//printf("%s\n", temp2);
-		if (access(temp2, F_OK) == 0)
+		path = ft_strjoin(env[i], exe_name);
+		if (access(path, F_OK) == 0)
 		{
-			execute_echo(temp2, cmd, env);
-			free_echo(temp, temp2, env, 3);
+			execute_echo(path, cmds, env);
+			free_echo(exe_name, path, env, 3);
 			return ;
 		}
 		else
 		{
 			i++;
-			//printf("... \n");
+			printf("... \n");
 			free_echo (temp, temp2, env, 1);
 		}
 	}
-	free_echo (temp, temp2, env, 2);
+	free_echo(exe_name, path, env, 2);
 }

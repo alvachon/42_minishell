@@ -11,6 +11,9 @@ SRCS			= $(SRCS_DIR)/minishell.c \
 				  $(SRCS_DIR)/init.c \
 				  $(SRCS_DIR)/lexer.c \
 				  $(SRCS_DIR)/message.c \
+				  $(SRCS_DIR)/parse_builtin.c \
+				  $(SRCS_DIR)/parse_print.c \
+				  $(SRCS_DIR)/parser.c \
 				  $(SRCS_DIR)/z_echo.c \
 				  $(SRCS_DIR)/z_pwd.c
 OBJS 			= $(SRCS:$(SRCS_DIR)/%.c=$(OBJS_DIR)/%.o)
@@ -99,5 +102,16 @@ check_children:
 
 check_fds:
 	@valgrind --track-fds=yes --suppressions=supp.txt ./minishell
+
+build_tester:
+	@cd tester
+	@cmake -S . -B build_tester
+
+build_test:
+	@cd tester
+	@cmake --build build
+
+run_test:
+	@ctest
 
 .PHONY:	all clean fclean re init

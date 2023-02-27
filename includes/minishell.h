@@ -49,13 +49,23 @@ enum	e_shell_state
 	SH_EXEC,
 }
 ;
+
+typedef struct s_cmd
+{
+    char    *input;
+    char    *built;
+    char    *opt;
+    char    *print;
+    char    *redir_input;
+    char    *flag_delim;
+}   t_cmd
+;
 typedef struct s_data
 {
 	char				**env;
     char                *built_path;
     char                *pwd;
     char                *oldpwd;
-    char                *cmd;
 	enum e_shell_state	shell_state;
 }	t_data
 ;
@@ -70,22 +80,45 @@ void	handle_sig(int sign);
 char    *set(char *var, int siz_var);
 void	set_global(char **env);
 void	init_shell(t_terminal *minishell, char **env);
+
+/*parser.c*/
+void	keep_redir_input(t_cmd data, int i);
+void	keep_flag_delim(t_cmd data, int i);
+t_cmd   parse(t_cmd data);
+
+/*parse_builtin.c*/
+char    *ltrim(char *input);
+int	    wordlen(char *input, int i);
+char    *wordtrim(char *input, int i);
+char    *ulstr(char *str);
+void	keep_option(int i, t_cmd *data);
+void	keep_builtin(int i, t_cmd *data);
+
+/*parse_print.c*/
+int     scan(char *input, char c);
+int	    chartrim(char *input, char c);
+char    *rtrim(char *str);
+char    *scan_end(char *file, int trig);
+int		wordcount(char *str);
+char    *trimchar(char *file, char c);
+void	trim_guil(t_cmd **data, char c, int trig);
+void	keep_print(int i, t_cmd *data);
+
 /*lexer.c*/
-int		builtincheck(char **cmd);
-char	**ft_pathfinder(char *envp[]);
-int		functionparse_dispatch(char **env, char **cmd, int code);
-int		command_parse(char *cmd, char **env);
+int		builtincheck();
+int		functionparse_dispatch(char **env, char **cmds, int code);
+char	**paths_search(void);
+int		lexer(char *cmd);
 /*message.c*/
 void	error_msg(char *cmd);
 void    exit_msg(char *cmd);
 void    sys_msg(char *reason, int code);
-
 void    free_exect(char **cmd, char **env, char *path);
 
 /*z_echo.c*/
 void	free_echo(char *temp, char *temp2, char **env, int code);
 void	execute_echo(char *path, char **cmd, char **env);
-void	echo_parse(char **cmd, char **env);
+void	echo_parse(char **cmds, char **env);
 
 /*z_pwd.c*/
 void	free_pwd(char *temp, char *temp2, char **env, int code);
