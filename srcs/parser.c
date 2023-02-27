@@ -44,6 +44,9 @@ t_cmd	parse(t_cmd data)
 		keep_builtin(i, &data);//check for redir symbol before
 		keep_option(i, &data);
 		keep_print(i, &data);
+		printf("built int : %s\n", data.built);
+		printf("opt : %s\n", data.opt);
+		printf("print : %s\n", data.print);
 		/*input = keep_redir_input(input, i);
 		input = keep_flag_delim(input, i);
 		//input = keep_delimiter(input, i);

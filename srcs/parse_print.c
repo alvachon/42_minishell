@@ -60,7 +60,7 @@ char *rtrim(char *str)
 	return (str);
 }
 
-char *scan_end(char *file)
+char *scan_end(char *file)//ne pas changer important
 {
 	char **cmd;
 
@@ -85,40 +85,100 @@ char *scan_end(char *file)
 	return (file);
 }
 
-void	trim_guil(t_cmd **data, char c)
+
+int		wordcount(char *str)
+{
+	int w = 0;
+	int c = 0;
+	while (*str)
+	{
+		if (*str > 32)
+		{
+			w = 1;
+			while (*str > 32)
+				str++;
+		}
+		if (*str <= 32 && w == 0)
+		{
+			while (*str <= 32)
+				str++;
+		}
+		if (*str <= 32 && w == 1)
+		{
+			c += w;
+			w = 0;
+		}
+	}
+	printf("%d\n", c);
+	return (c);
+}
+
+char *delguil(char *file, char c)
+{
+	int 	i;
+	int		j;
+	char *copy;
+
+	i = 0;
+	j = 0;
+	copy = file;
+	while (file[i])
+	{
+		if (file[i] == c)
+			i++;
+		copy[j] = file[i];
+		i++;
+		j++;
+	}
+	copy[j] = '\0';
+	return (copy);
+}
+
+void	trim_guil(t_cmd **data, char c)//trig
 {
 	char 	**cmd;
 	char 	*file;
-	int		len_word;
+	int		word;
+	int		i;
 	int		trig;
 
-	trig = 1;
-	if ((**data).input[0] == c)
+	trig = 1;//when no guillemet
+	if ((**data).input[0] == c)//if guill type
 	{
-		(**data).input++;
+		printf("guil\n");
 		trig = 0;
+	}
+	i = 1;
+	file = scan_end((**data).input);
+	word = wordcount(file);
+	if (trig == 1)
+	{
+		file = delguil(file, 34);
+		file = delguil(file, 39);
+	}
+	if (scan(file, 34) == 1)
+	{
+		if (scan(file, 39) == 1)
+		{
+			(**data).print = file;
+			return ;
+		}
 	}
 	cmd = ft_split((**data).input, c);
 	file = cmd[0];
-	(**data).print = file;
-	if (trig == 1)
-		(**data).print = scan_end((**data).print);
-	(**data).print = rtrim((**data).print);
-	if (trig == 1)
+	word -= 1;
+	printf("char split = %c\n", c);
+	printf("cmd[0] = %s\n", cmd[0]);
+	printf("cmd[1] = %s\n", cmd[1]);
+	while (word)
 	{
-		len_word = chartrim((**data).input, c);
-		if ((**data).input[len_word] == '\0')
-			return ;
-		else
-		{
-			while (len_word >= 0)
-			{
-				(**data).input++;
-				len_word--;
-			}
-		}
+		file = ft_strjoin(file, cmd[i]);
+		i++;
+		word--;
+		printf("%s\n", file);
+		exit (1);
 	}
-	free (cmd);
+	printf("%s\n", file);
 }
 
 void	keep_print(int i, t_cmd *data)
@@ -142,7 +202,6 @@ void	keep_print(int i, t_cmd *data)
 	}
 	while (*(*data).input)
 	{
-
 		if (*(*data).input == '<' || *(*data).input == '>' || *(*data).input == '|')
 			break ;
 		(*data).input++;
