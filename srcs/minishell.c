@@ -40,7 +40,7 @@ int main(int ac, char **av, char **env)
 	if (ac != 2)
 	{
 		init_shell(&minishell, env);
-		cmd = g_data.cmd;
+		cmd = NULL;
   		while (FOREGROUND_JOB)
 		{
 			if (isatty(STDIN_FILENO))

@@ -35,7 +35,7 @@ int	chartrim(char *input, char c)
 	len = ft_strlen(input);
 	if (scan(input, c) == 1)
 		return (len);
-	while (input[i] != c)
+	while (input[i] != c && input[i] != '\0')
 	{
 		i++;
 		len--;
@@ -85,7 +85,7 @@ char *scan_end(char *file)
 	return (file);
 }
 
-void	trim_guil(char *input, char c)
+void	trim_guil(t_cmd **data, char c)
 {
 	char 	**cmd;
 	char 	*file;
@@ -93,64 +93,60 @@ void	trim_guil(char *input, char c)
 	int		trig;
 
 	trig = 1;
-	if (input[0] == c)
+	if ((**data).input[0] == c)
 	{
-		input++;
+		(**data).input++;
 		trig = 0;
 	}
-	while (*input)
+	cmd = ft_split((**data).input, c);
+	file = cmd[0];
+	(**data).print = file;
+	if (trig == 1)
+		(**data).print = scan_end((**data).print);
+	(**data).print = rtrim((**data).print);
+	if (trig == 1)
 	{
-		cmd = ft_split(input, c);
-		file = cmd[0];
-		if (g_data.input.print == NULL)
-			g_data.input.print = file;
+		len_word = chartrim((**data).input, c);
+		if ((**data).input[len_word] == '\0')
+			return ;
 		else
-			g_data.input.print = ft_strjoin(g_data.input.print, file);
-		if (trig == 1)
-			g_data.input.print = scan_end(g_data.input.print);
-		g_data.input.print = rtrim(g_data.input.print);
-		if (trig == 1)
 		{
-			len_word = chartrim(input, c);
 			while (len_word >= 0)
 			{
-				input++;
+				(**data).input++;
 				len_word--;
 			}
 		}
-		free (cmd);
 	}
+	free (cmd);
 }
 
-char	*keep_print(char *input, int i)
+void	keep_print(int i, t_cmd *data)
 {
 	(void)i;
-	char *copy;
-	if (input[0] != '<' || input[0] != '>' || input[0] != '|')
+	if ((*data).input[0] != '<' || (*data).input[0] != '>' || (*data).input[0] != '|')
 	{
-		if (input[0] == 34)//"
+		if ((*data).input[0] == 34)//"
 		{
-			trim_guil(input, 34);
+			trim_guil(&data, 34);
 		}
-		else if (input[0] == 39)//'
+		else if ((*data).input[0] == 39)//'
 		{
-			trim_guil(input, 39);
+			trim_guil(&data, 39);
 		}
 		else
 		{
-			trim_guil(input, 34);
-			copy = g_data.input.print;
-			g_data.input.print = NULL;
-			trim_guil(copy, 39);
+			trim_guil(&data, 34);
+			trim_guil(&data, 39);
 		}
 	}
-	while (*input)
+	while (*(*data).input)
 	{
-		if (*input == '<' || *input == '>' || *input == '|')
+
+		if (*(*data).input == '<' || *(*data).input == '>' || *(*data).input == '|')
 			break ;
-		input++;
+		(*data).input++;
 	}
 	//trim aussi le input pour enlever ce qui a apres les flags
-	//g_data.input.print = rtrim(g_data.input.print) implementer enlever espace de fin
-	return (input);
+	//g_(*data).input.print = rtrim(g_(*data).input.print) implementer enlever espace de fin
 }

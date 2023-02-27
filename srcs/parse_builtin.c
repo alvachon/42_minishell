@@ -50,28 +50,26 @@ char *ulstr(char *str)
 	return (str);
 }
 
-char *keep_option(char *input, int i)
+void	keep_option(int i, t_cmd *data)
 {
-	if (input[0] == '-' && input[1] == 'n' && input[2] <= 32)
+	if ((*data).input[0] == '-' && (*data).input[1] == 'n' && (*data).input[2] <= 32)
 	{
-		g_data.input.opt = ft_substr(input, 0, 2);
+		(*data).opt = ft_substr((*data).input, 0, 2);
 		i = 2;
-		input = wordtrim(input, i);
-		input = ltrim(input);
+		(*data).input = wordtrim((*data).input, i);
+		(*data).input = ltrim((*data).input);
 	}
-	return (input);
 }
 
-char *keep_builtin(char *input, int i)
+void	keep_builtin(int i, t_cmd *data)
 {
 	char *str;
-	input = ltrim(input);
-	i = wordlen(input, i);
-	str = ft_substr(input, 0, i);
-	/*if (str[0] >= 'A' && str[0] <= 'Z')
-		str = ulstr(str);*/
-	g_data.input.built = str;
-	input = wordtrim(input, i);
-	input = ltrim(input);
-	return (input);
+	(*data).input = ltrim((*data).input);
+	i = wordlen((*data).input, i);
+	str = ft_substr((*data).input, 0, i);
+	if (str[0] >= 'A' && str[0] <= 'Z')
+		str = ulstr(str);
+	(*data).built = str;
+	(*data).input = wordtrim((*data).input, i);
+	(*data).input = ltrim((*data).input);
 }

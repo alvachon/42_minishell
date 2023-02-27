@@ -50,14 +50,15 @@ enum	e_shell_state
 }
 ;
 
-typedef struct s_parse
+typedef struct s_cmd
 {
+    char    *input;
     char    *built;
     char    *opt;
     char    *print;
     char    *redir_input;
     char    *flag_delim;
-}   t_parse
+}   t_cmd
 ;
 typedef struct s_data
 {
@@ -65,8 +66,6 @@ typedef struct s_data
     char                *built_path;
     char                *pwd;
     char                *oldpwd;
-    char                *cmd;
-    struct s_parse      input;
 	enum e_shell_state	shell_state;
 }	t_data
 ;
@@ -83,25 +82,25 @@ void	set_global(char **env);
 void	init_shell(t_terminal *minishell, char **env);
 
 /*parser.c*/
-char    *keep_redir_input(char *input, int i);
-char    *keep_flag_delim(char *input, int i);
-char    *parse(char *input);
+void	keep_redir_input(t_cmd data, int i);
+void	keep_flag_delim(t_cmd data, int i);
+t_cmd   parse(t_cmd data);
 
 /*parse_builtin.c*/
 char    *ltrim(char *input);
 int	    wordlen(char *input, int i);
 char    *wordtrim(char *input, int i);
 char    *ulstr(char *str);
-char    *keep_option(char *input, int i);
-char    *keep_builtin(char *input, int i);
+void	keep_option(int i, t_cmd *data);
+void	keep_builtin(int i, t_cmd *data);
 
 /*parse_print.c*/
 int     scan(char *input, char c);
 int	    chartrim(char *input, char c);
 char    *rtrim(char *str);
 char    *scan_end(char *file);
-void    trim_guil(char *input, char c);
-char	*keep_print(char *input, int i);
+void	trim_guil(t_cmd **data, char c);
+void	keep_print(int i, t_cmd *data);
 
 /*lexer.c*/
 int		builtincheck();

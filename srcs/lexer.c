@@ -15,13 +15,13 @@
 
 #include "../includes/minishell.h"
 
-int	builtincheck()
+int	builtincheck(t_cmd data)
 {
 	int	i;
 
 	i = 7;
 
-	if (ft_strncmp(g_data.input.built, "echo", 5) == 0)
+	if (ft_strncmp(data.built, "echo", 5) == 0)
 	{
 		i = 1;
 	}
@@ -30,21 +30,21 @@ int	builtincheck()
 		printf("Found cd\n");
 		i = 2;
 	}*/
-	else if (ft_strncmp(g_data.input.built, "pwd", 4) == 0)
+	else if (ft_strncmp(data.built, "pwd", 4) == 0)
 	{
 		printf("Found pwd\n");
 		i = 3;
 	}
-	else if (ft_strncmp(g_data.input.built, "export", 7) == 0)
+	else if (ft_strncmp(data.built, "export", 7) == 0)
 		i = 4;
-	else if (ft_strncmp(g_data.input.built, "unset", 6) == 0)
+	else if (ft_strncmp(data.built, "unset", 6) == 0)
 		i = 5;
-	else if (ft_strncmp(g_data.input.built, "env", 4) == 0)
+	else if (ft_strncmp(data.built, "env", 4) == 0)
 		i = 6;
 	if (i <= 6)
 		return (i);
 	/*else
-		return (envcheck(g_data.input.built));*/
+		return (envcheck(data.built));*/
 	return (0);
 }
 
@@ -81,24 +81,26 @@ int	lexer(char *input)
 {
 	char	**paths;
 	char	**cmds;
+	t_cmd	data;
 	int		i;
 
 	if (ft_strcmp(input, "exit") == 0)//
 		exit_msg(input);
 	cmds = NULL;
+	data.input = input;
 	paths = paths_search();
-	input = parse(input);
-	i = builtincheck();
+	data = parse(data);
+	i = builtincheck(data);
 	if (i == 1)
 	{
-		input = g_data.input.built;
+		input = data.built;
 		input = ft_strjoin(input, "|");
-		if (g_data.input.opt)
+		if (data.opt)
 		{
-			g_data.input.opt = ft_strjoin(g_data.input.opt, "|");
-			input = ft_strjoin(input, g_data.input.opt);
+			data.opt = ft_strjoin(data.opt, "|");
+			input = ft_strjoin(input, data.opt);
 		}
-		input = ft_strjoin(input, g_data.input.print);
+		input = ft_strjoin(input, data.print);
 		cmds = ft_split(input, '|');
 	}
 	if (i == 8)
