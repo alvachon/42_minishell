@@ -98,8 +98,10 @@ void	keep_builtin(int i, t_cmd *data);
 int     scan(char *input, char c);
 int	    chartrim(char *input, char c);
 char    *rtrim(char *str);
-char    *scan_end(char *file);
-void	trim_guil(t_cmd **data, char c);
+char    *scan_end(char *file, int trig);
+int		wordcount(char *str);
+char    *trimchar(char *file, char c);
+void	trim_guil(t_cmd **data, char c, int trig);
 void	keep_print(int i, t_cmd *data);
 
 /*lexer.c*/

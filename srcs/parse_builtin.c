@@ -69,6 +69,7 @@ void	keep_builtin(int i, t_cmd *data)
 	str = ft_substr((*data).input, 0, i);
 	if (str[0] >= 'A' && str[0] <= 'Z')
 		str = ulstr(str);
+	str = trimchar(str, 32);
 	(*data).built = str;
 	(*data).input = wordtrim((*data).input, i);
 	(*data).input = ltrim((*data).input);

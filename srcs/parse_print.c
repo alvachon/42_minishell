@@ -60,10 +60,15 @@ char *rtrim(char *str)
 	return (str);
 }
 
-char *scan_end(char *file)//ne pas changer important
+char *scan_end(char *file, int trig)//ne pas changer important
 {
 	char **cmd;
 
+	if (trig == 0)
+	{
+		printf("Watch out for < after guil \n");
+		return (file);
+	}
 	if (scan(file, '<') == 0)
 	{
 		cmd = ft_split(file, '<');
@@ -84,7 +89,6 @@ char *scan_end(char *file)//ne pas changer important
 	}
 	return (file);
 }
-
 
 int		wordcount(char *str)
 {
@@ -113,7 +117,7 @@ int		wordcount(char *str)
 	return (c);
 }
 
-char *delguil(char *file, char c)
+char *trimchar(char *file, char c)
 {
 	int 	i;
 	int		j;
@@ -134,27 +138,15 @@ char *delguil(char *file, char c)
 	return (copy);
 }
 
-void	trim_guil(t_cmd **data, char c)//trig
+void	trim_guil(t_cmd **data, char c, int trig)
 {
-	char 	**cmd;
 	char 	*file;
-	int		word;
-	int		i;
-	int		trig;
 
-	trig = 1;//when no guillemet
-	if ((**data).input[0] == c)//if guill type
-	{
-		printf("guil\n");
-		trig = 0;
-	}
-	i = 1;
-	file = scan_end((**data).input);
-	word = wordcount(file);
+	file = scan_end((**data).input, trig);
 	if (trig == 1)
 	{
-		file = delguil(file, 34);
-		file = delguil(file, 39);
+		file = trimchar(file, 34);
+		file = trimchar(file, 39);
 	}
 	if (scan(file, 34) == 1)
 	{
@@ -164,48 +156,26 @@ void	trim_guil(t_cmd **data, char c)//trig
 			return ;
 		}
 	}
-	cmd = ft_split((**data).input, c);
-	file = cmd[0];
-	word -= 1;
-	printf("char split = %c\n", c);
-	printf("cmd[0] = %s\n", cmd[0]);
-	printf("cmd[1] = %s\n", cmd[1]);
-	while (word)
-	{
-		file = ft_strjoin(file, cmd[i]);
-		i++;
-		word--;
-		printf("%s\n", file);
-		exit (1);
-	}
-	printf("%s\n", file);
+	if (trig == 0)
+		(**data).print = trimchar(file, c);
 }
 
 void	keep_print(int i, t_cmd *data)
 {
-	(void)i;
+
 	if ((*data).input[0] != '<' || (*data).input[0] != '>' || (*data).input[0] != '|')
 	{
-		if ((*data).input[0] == 34)//"
-		{
-			trim_guil(&data, 34);
-		}
-		else if ((*data).input[0] == 39)//'
-		{
-			trim_guil(&data, 39);
-		}
+		if ((*data).input[0] == 34)
+			trim_guil(&data, 34, 0);
+		else if ((*data).input[0] == 39)
+			trim_guil(&data, 39, 0);
 		else
-		{
-			trim_guil(&data, 34);
-			trim_guil(&data, 39);
-		}
+			trim_guil(&data, 0, 1);
 	}
-	while (*(*data).input)
+	i = ft_strlen((*data).print);
+	while (i)
 	{
-		if (*(*data).input == '<' || *(*data).input == '>' || *(*data).input == '|')
-			break ;
 		(*data).input++;
+		i--;
 	}
-	//trim aussi le input pour enlever ce qui a apres les flags
-	//g_(*data).input.print = rtrim(g_(*data).input.print) implementer enlever espace de fin
 }
