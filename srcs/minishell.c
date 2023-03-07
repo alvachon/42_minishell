@@ -13,7 +13,6 @@
 /* [0]BUILT [1]OPTION [2]REDIRECTION [3]APPEND [4]INFILE
 * [5]PIPE [6]REDIRECTION [7]APPEND [8]OUTFILE */
 #include <ctype.h>//
-
 #include "../includes/minishell.h"
 
 int	envcheck(char **cmd)
@@ -24,10 +23,18 @@ int	envcheck(char **cmd)
 		return (8);
 }
 
+void	ctrl_c_eof(void)
+{
+    rl_on_new_line();
+    rl_redisplay();
+	write(1, "exit\n", 5);
+    exit(EXIT_SUCCESS);
+}
+
 int main(int ac, char **av, char **env)
 {
-	t_terminal		minishell;
-	char			*cmd;
+	t_terminal 	minishell;
+	char		*cmd;
 
 	(void)av;
 	if (ac != 2)
@@ -41,29 +48,17 @@ int main(int ac, char **av, char **env)
     			cmd = readline("\033[0m\033[34mminishell\033[0m\033[35m$ \033[0m");
 				g_data.shell_state = SH_EXEC;
                 if (!cmd)
-                {
-                    rl_on_new_line();
-                    rl_redisplay();
-                    write(1, "exit\n", 5);
-                    exit(EXIT_SUCCESS);
-                }
+					ctrl_c_eof();
     			if (cmd[0] == '\0' || ft_strcmp(cmd, "\n") == 0)
             	{
 					if (cmd)
       		    		free(cmd);
 					continue;
     			}
-				else if (command_parse(cmd, env) == 1)//
-                {
-                    add_history(cmd);
+				else if (lexer(cmd) == 1)
 					error_msg(cmd);
-                }
-				else
-				{
-					printf("Command done and freed, added to the history\n");
-					add_history(cmd);
-    				free(cmd);
-				}
+				add_history(cmd);
+				free(cmd);
 				g_data.shell_state = SH_READ;
 			}
 			else

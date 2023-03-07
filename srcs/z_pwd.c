@@ -38,13 +38,23 @@ void	free_pwd(char *temp, char *temp2, char **env, int code)
 void	execute_pwd(char *path, char **cmd, char **env)
 {
 	pid_t	exe;
+	int		i;
+	int		j;
 
+	i = -1;
+	j = -1;
 	exe = fork();
 	if (exe == 0)
 		execve(path, cmd, env);
 	else
 		wait(0);
-    free_exect(cmd, env, path);
+	while (cmd[i++])
+		free(cmd[i]);
+	while (env[j++])
+		free(env[j]);
+	free (cmd);
+	free (env);
+	free (path);
 	return ;
 }
 

@@ -11,7 +11,9 @@ SRCS			= $(SRCS_DIR)/minishell.c \
 				  $(SRCS_DIR)/init.c \
 				  $(SRCS_DIR)/lexer.c \
 				  $(SRCS_DIR)/message.c \
-				  $(SRCS_DIR)/z_cd.c \
+				  $(SRCS_DIR)/parse_builtin.c \
+				  $(SRCS_DIR)/parse_print.c \
+				  $(SRCS_DIR)/parser.c \
 				  $(SRCS_DIR)/z_echo.c \
 				  $(SRCS_DIR)/z_pwd.c
 OBJS 			= $(SRCS:$(SRCS_DIR)/%.c=$(OBJS_DIR)/%.o)
@@ -90,15 +92,26 @@ fclean: clean
 re: fclean all
 
 check_leak:
-	@valgrind --leak-check=full --show-leak-kinds=all ./minishell
+	@valgrind --show-leak-kinds=all --trace-children=yes --leak-check=full --track-fds=yes --suppressions=supp.txt ./minishell
 
 check_values:
-	@valgrind --track-origins=yes ./minishell
+	@valgrind --track-origins=yes --suppressions=supp.txt ./minishell
 
 check_children:
-	@valgrind --trace-children=yes ./minishell
+	@valgrind --trace-children=yes --suppressions=supp.txt ./minishell
 
 check_fds:
-	@valgrind --track-fds=yes ./minishell
+	@valgrind --track-fds=yes --suppressions=supp.txt ./minishell
+
+build_tester:
+	@cd tester
+	@cmake -S . -B build_tester
+
+build_test:
+	@cd tester
+	@cmake --build build
+
+run_test:
+	@ctest
 
 .PHONY:	all clean fclean re init
