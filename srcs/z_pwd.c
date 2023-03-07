@@ -1,18 +1,18 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   z_echo.c                                           :+:      :+:    :+:   */
+/*   z_pwd.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: alvachon <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/02/15 18:22:05 by alvachon          #+#    #+#             */
-/*   Updated: 2023/02/15 18:22:07 by alvachon         ###   ########.fr       */
+/*   Created: 2023/02/21 14:23:42 by alvachon          #+#    #+#             */
+/*   Updated: 2023/02/21 14:23:44 by alvachon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
 
-void	free_echo(char *temp, char *temp2, char **env, int code)
+void	free_pwd(char *temp, char *temp2, char **env, int code)
 {
 	int	i;
 
@@ -34,54 +34,42 @@ void	free_echo(char *temp, char *temp2, char **env, int code)
 	if (code == 3)
 		free(temp);
 }
-void	execute_echo(char *path, char **cmd, char **env)
+
+void	execute_pwd(char *path, char **cmd, char **env)
 {
 	pid_t	exe;
-	int		i;
-	int		j;
 
-	i = -1;
-	j = -1;
 	exe = fork();
 	if (exe == 0)
 		execve(path, cmd, env);
 	else
 		wait(0);
-	while (cmd[i++])
-		free(cmd[i]);
-	while (env[j++])
-		free(env[j]);
-	free (cmd);
-	free (env);
-	free (path);
+    free_exect(cmd, env, path);
 	return ;
 }
 
-void	echo_parse(char **cmd, char **env)
+void	parse_pwd(char **cmd, char **env)
 {
-	char	*temp;
-	char	*temp2;
+	char	*file;
+	char	*path;
 	int		i;
 
 	i = 0;
-	temp = ft_strjoin("/", cmd[0]);
-	printf("%s\n", temp);
+	file = ft_strjoin("/", cmd[0]);
 	while (env[i])
 	{
-		temp2 = ft_strjoin(env[i], temp);
-		printf("%s\n", temp2);
-		if (access(temp2, F_OK) == 0)
+		path = ft_strjoin(env[i], file);
+		if (access(path, F_OK) == 0)
 		{
-			execute_echo(temp2, cmd, env);
-			free_echo(temp, temp2, env, 3);
+			execute_pwd(path, cmd, env);
+			free_pwd(file, path, env, 3);
 			return ;
 		}
 		else
 		{
 			i++;
-			printf("... \n");
-			free_echo (temp, temp2, env, 1);
+			free_pwd(file, path, env, 1);
 		}
 	}
-	free_echo (temp, temp2, env, 2);
+	free_pwd(file, path, env, 2);
 }

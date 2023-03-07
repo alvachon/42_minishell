@@ -30,12 +30,22 @@ int	builtincheck(char **cmd)
 	int	i;
 
 	i = 7;
+
 	if (ft_strncmp(cmd[0], "echo", 5) == 0)
+	{
+		printf("Found echo\n");
 		i = 1;
-	else if (ft_strncmp(cmd[0], "cd", 3) == 0)
+	}
+	/*else if (ft_strncmp(cmd[0], "cd", 3) == 0)
+	{
+		printf("Found cd\n");
 		i = 2;
+	}*/
 	else if (ft_strncmp(cmd[0], "pwd", 4) == 0)
+	{
+		printf("Found pwd\n");
 		i = 3;
+	}
 	else if (ft_strncmp(cmd[0], "export", 7) == 0)
 		i = 4;
 	else if (ft_strncmp(cmd[0], "unset", 6) == 0)
@@ -53,10 +63,10 @@ int	functionparse_dispatch(char **env, char **cmd, int code)
 	if (code == 1)
 		echo_parse(cmd, env);
 	/*if (code == 2)
-		cd_parse_here(cmd, env);
+		parse_cd(cmd, env);*/
 	if (code == 3)
-		pwd_parse_here(cmd, env);
-	if (code == 4)
+		parse_pwd(cmd, env);
+	/*if (code == 4)
 		export_parse_here(cmd, env);
 	if (code == 5)
 		unset_parse_here(cmd, env);
@@ -67,52 +77,23 @@ int	functionparse_dispatch(char **env, char **cmd, int code)
 	return (0);
 }
 
-int	command_parse(char *cmd, char **env)
+int	command_parse(char *input, char **env)
 {
-	char	**buff;
-	char	**buff2;
+	char	**paths;
+	char	**cmds;
 	int		i;
 
-	buff = ft_pathfinder(env);
-	buff2 = ft_split(cmd, ' ');
-	i = builtincheck(buff2);
+	if (ft_strcmp(input, "exit") == 0)
+		exit_msg(input);
+	paths = ft_pathfinder(env);
+	cmds = ft_split(input, ' ');
+	i = builtincheck(cmds);
 	if (i == 8)
 	{
-
-
 		free (buff);
 		free (buff2);
 		return (1);
 	}
 	else
 		return (functionparse_dispatch(buff, buff2, i));
-}
-
-int	executablechecker(char **path, char **cmd)
-{
-	int		i;
-	char	*exect;
-	char	*path2;
-
-	i = 0;
-	exect = ft_strjoin(cmd[0], '/');
-	while (path[i] != NULL)
-	{
-		path2 = ft_strjoin (path[i], exect);
-		if (access(path2, F_OK) == 0)
-		{
-			free (path2);
-			free (cmd[0]);
-			cmd[0] = ft_strdup(exect);
-			free (exect);
-			return (0);
-		}
-		else
-		{
-			free (path2);
-			i++;
-		}
-	}
-	free (exect);
-	return (builtincheck(cmd));
 }

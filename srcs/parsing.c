@@ -87,3 +87,100 @@ char	**cmd_parse(char *cmd)
 
 /* Pour vérifier que les arguments sont valides :
 1. */
+
+
+char	*get_env_var(char *var, char **env)
+{
+	int		i;
+	char	*s;
+
+	s = make_env_var(var);
+	i = 0;
+	while (env[i] != NULL)
+	{
+		if (ft_strncmp(var, env[i], ft_strlen(var)) == 0)
+			return (convert_env_var(s, env, i));
+		else
+			i++;
+	}
+	free (s);
+	s = ft_calloc (1, sizeof(char));
+	return (s);
+}
+
+char	*make_env_var(char *var)
+{
+	int		i;
+	int		j;
+	char	*s;
+
+	i = 1;
+	j = 0;
+	s = ft_calloc(ft_strlen(var), sizeof(char));
+	while (var[i] != '\0')
+	{
+		s[j] = var[i];
+		i++;
+		j++;
+	}
+	s[j] = '=';
+	return (s);
+}
+
+char	*convert_env_var(char *var, char **env, int index)
+{
+	int		i;
+	int		j;
+	char	*s;
+	char	*temp;
+
+	s = ft_calloc(ft_strlen(env[index]) -  ft_strlen(var) + 1, sizeof(char));
+	i = 0;
+	j = 0;
+	temp = env[index];
+	while (temp[i] != '=')
+		i++;
+	while (temp[i++] != '\0')
+	{
+		s[j] = temp[i];
+		j++;
+	}
+	free (var);
+	return (s);
+}
+
+char	*put_env_var(char *var, char *arg, int varlen)
+{
+	int		i;
+	int		j;
+	int		k;
+	char	*buff;
+
+	buff = ft_calloc(ft_strlen(arg) + ft_strlen(var) - varlen, sizeof(char));
+	i = 0;
+	j = -1;
+	k = 0;
+	while (arg[i] != '\0')
+	{
+		if (arg[i] == '$')
+		{
+			i = advance_index(arg, i);
+			while (var[j++] != '\0')
+			{
+				buff[k] = var[j];
+				k++;
+			}
+		}
+		buff[k] = arg[i];
+		k++;
+		i++;
+	}
+	return (buff);
+}
+
+int	advance_index(char *arg, int i)
+{
+	while (arg[i] != ' ' && arg[i] != '"' && arg[i] != 39 && arg[i] != '\0')
+		i++;
+	return (i);
+}

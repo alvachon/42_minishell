@@ -11,7 +11,9 @@ SRCS			= $(SRCS_DIR)/minishell.c \
 				  $(SRCS_DIR)/init.c \
 				  $(SRCS_DIR)/lexer.c \
 				  $(SRCS_DIR)/message.c \
-				  $(SRCS_DIR)/z_echo.c
+				  $(SRCS_DIR)/z_cd.c \
+				  $(SRCS_DIR)/z_echo.c \
+				  $(SRCS_DIR)/z_pwd.c
 OBJS 			= $(SRCS:$(SRCS_DIR)/%.c=$(OBJS_DIR)/%.o)
 HDRS_FILE		= minishell.h
 HDRS			= $(addprefix $(INCL_DIR)/, $(HDRS_FILE))
@@ -86,5 +88,17 @@ fclean: clean
 	@echo $(RESET_COLOR)$(GREEN) "OK - - - - - - - - - - \n" $(RESET_COLOR)
 
 re: fclean all
+
+check_leak:
+	@valgrind --leak-check=full --show-leak-kinds=all ./minishell
+
+check_values:
+	@valgrind --track-origins=yes ./minishell
+
+check_children:
+	@valgrind --trace-children=yes ./minishell
+
+check_fds:
+	@valgrind --track-fds=yes ./minishell
 
 .PHONY:	all clean fclean re init
