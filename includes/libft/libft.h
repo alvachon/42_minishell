@@ -21,6 +21,9 @@ typedef struct s_list
 	struct s_list	*next;
 }					t_list;
 
+int		ft_strcmp(char *s1, char *s2);
+char	**ft_freeall(char **str);
+
 int		ft_isalpha(int c);
 int		ft_isalnum(int c);
 int		ft_isascii(int c);
@@ -35,7 +38,6 @@ int		ft_lstsize(t_list *lst);
 char	*ft_strchr(const char *s, int c);
 char	*ft_strrchr(const char *s, int c);
 char	*ft_strnstr(const char *haystack, const char *needle, size_t len);
-int		ft_strcmp(char *s1, char *s2);
 char	*ft_strdup(const char *s1);
 char	*ft_substr(char const *s, unsigned int start, size_t len);
 char	*ft_strjoin(char const *s1, char const *s2);
