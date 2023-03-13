@@ -124,6 +124,10 @@ void	echo_parse(char **cmds, char **env);
 void	free_pwd(char *temp, char *temp2, char **env, int code);
 void	execute_pwd(char *path, char **cmd, char **env);
 void	parse_pwd(char **cmd, char **env);
+int	    z_pwd(char **env);
+
+/*z_env.c*/
+int z_env(char **env);
 
 #endif
 

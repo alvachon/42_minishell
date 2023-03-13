@@ -11,8 +11,11 @@
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
+#include "../includes/libft/libft.h"
 
-void	free_pwd(char *temp, char *temp2, char **env, int code)
+int	z_pwd(char **env);
+
+/*void	free_pwd(char *temp, char *temp2, char **env, int code)
 {
 	int	i;
 
@@ -83,3 +86,16 @@ void	parse_pwd(char **cmd, char **env)
 	}
 	free_pwd(file, path, env, 2);
 }
+*/
+
+int	z_pwd(char **env)
+{
+	int	i;
+
+	i = 0;
+	while (env[i] && ft_strncmp(env[i], "PWD=", 4) != 0)
+		i++;
+	printf("%s\n", ft_substr(env[i], 4, ft_strlen(env[i])));
+	return (0);
+}
+
