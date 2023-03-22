@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   z_echo.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: alvachon <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: alvachon <alvachon@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/15 18:22:05 by alvachon          #+#    #+#             */
-/*   Updated: 2023/02/15 18:22:07 by alvachon         ###   ########.fr       */
+/*   Updated: 2023/03/22 15:40:02 by alvachon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,17 +24,18 @@ void	free_echo(char *temp, char *temp2, char **env, int code)
 	{
 		while (env[i])
 		{
-			free (env[i]);
+			free(env[i]);
 			i++;
 		}
-		free (env);
-		free (temp2);
+		free(env);
+		free(temp2);
 		if (*temp)
-			free (temp);
+			free(temp);
 	}
 	if (code == 3)
 		free(temp);
 }
+
 void	execute_echo(char *path, char **cmd, char **env)
 {
 	pid_t	exe;
@@ -52,9 +53,9 @@ void	execute_echo(char *path, char **cmd, char **env)
 		free(cmd[i]);
 	while (env[j++])
 		free(env[j]);
-	free (cmd);
-	free (env);
-	free (path);
+	free(cmd);
+	free(env);
+	free(path);
 	return ;
 }
 
@@ -78,8 +79,8 @@ void	echo_parse(char **cmd, char **env)
 		else
 		{
 			i++;
-			free_echo (temp, temp2, env, 1);
+			free_echo(temp, temp2, env, 1);
 		}
 	}
-	free_echo (temp, temp2, env, 2);
+	free_echo(temp, temp2, env, 2);
 }
