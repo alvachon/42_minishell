@@ -1,12 +1,12 @@
-/*/* ************************************************************************** */
+/* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
 /*   parse_print.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: alvachon <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: alvachon <alvachon@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/23 15:20:24 by alvachon          #+#    #+#             */
-/*   Updated: 2023/02/23 15:20:26 by alvachon         ###   ########.fr       */
+/*   Updated: 2023/03/22 15:15:33 by alvachon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,7 +71,9 @@ char	*rtrim(char *str)
 	return (str);
 }
 
-char	*scan_end(char *file, int trig) //ne pas changer important
+/*
+* End of the parsing for now  ( > | < )*/
+char	*scan_end(char *file, int trig)
 {
 	char **cmd;
 
@@ -101,6 +103,9 @@ char	*scan_end(char *file, int trig) //ne pas changer important
 	return (file);
 }
 
+/*
+! Print the qt of words put I dont remember why [ ]
+Calc how many words in the input*/
 int	wordcount(char *str)
 {
 	int	w;
@@ -131,6 +136,9 @@ int	wordcount(char *str)
 	return (c);
 }
 
+/*
+! Deplace the function into .c for utils_parser [ ]
+Versatile function to delete a specifique character of the input*/
 char	*trimchar(char *file, char c)
 {
 	int		i;
@@ -152,6 +160,8 @@ char	*trimchar(char *file, char c)
 	return (copy);
 }
 
+/*
+1. Function to trim " " ou ' ' with their own specification*/
 void	trim_guil(t_cmd **data, char c, int trig)
 {
 	char	*file;
@@ -174,6 +184,13 @@ void	trim_guil(t_cmd **data, char c, int trig)
 		(**data).print = trimchar(file, c);
 }
 
+/*
+! Regroup all keep_builtin together [ ]
+! Test edge case condition [ ]
+ 1. If not < > | , enter the function
+ 2. Check the guillemet type and do the trim in consequence
+	(Keep the data in the struct)
+ 3. Take the len of the input and clear the data in the str*/
 void	keep_print(int i, t_cmd *data)
 {
 	if ((*data).input[0] != '<' || (*data).input[0] != '>'

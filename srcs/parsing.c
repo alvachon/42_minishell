@@ -3,19 +3,21 @@
 /*                                                        :::      ::::::::   */
 /*   parsing.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fboulang <fboulang@42student.com>          +#+  +:+       +#+        */
+/*   By: alvachon <alvachon@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/16 10:33:40 by fboulang          #+#    #+#             */
-/*   Updated: 2023/02/16 10:33:41 by fboulang         ###   ########.fr       */
+/*   Updated: 2023/03/22 15:19:39 by alvachon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
+
 #include "../includes/minishell.h"
 
+/*
+! Vérifier ce qui est encore bon ici [ ]*/
 /* Fonctions de parsing provisioires;
 cmd_parsesq = parse quand on sait que c'est des single quotes.
 cmd_parsedq = parse quand on sait que c'est des double quotes.
 cmd_parse = figure out c'est quoi la ligne actually. */
-
 char	**cmd_parsesq(char *cmd)
 {
 	char	*buff[3];
@@ -79,7 +81,7 @@ char	**cmd_parse(char *cmd)
 6. Utiliser la commande substr pour découper la commande avec les bonnes proportions plutôt que split.
 7. Retourner le nouveau tableau.*/
 
-/* Pour vérifier que ce que nous avons découpé est une commande : 
+/* Pour vérifier que ce que nous avons découpé est une commande :
 1. ft_strjoin cmd[0] et '/'.
 2. On check si le path complet existe.
 2.a. Si oui, c'est une commande. On arrête ici et on continue le parsing.

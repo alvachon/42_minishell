@@ -3,15 +3,18 @@
 /*                                                        :::      ::::::::   */
 /*   z_pwd.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: alvachon <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: alvachon <alvachon@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/21 14:23:42 by alvachon          #+#    #+#             */
-/*   Updated: 2023/02/21 14:23:44 by alvachon         ###   ########.fr       */
+/*   Updated: 2023/03/22 15:22:52 by alvachon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
 #include "../includes/libft/libft.h"
+
+/*
+! Check what we still need here [ ]*/
 
 int	z_pwd(char **env);
 
