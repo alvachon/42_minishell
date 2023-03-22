@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parser.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: alvachon <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: alvachon <alvachon@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/23 15:14:08 by alvachon          #+#    #+#             */
-/*   Updated: 2023/02/23 15:14:09 by alvachon         ###   ########.fr       */
+/*   Updated: 2023/03/22 14:29:55 by alvachon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,6 +34,10 @@ void	keep_flag_delim(t_cmd data, int i)
 	}
 }
 
+/*
+! Need a new keep to put all the ./../ situation and maybe < or > ... ? [ ]
+ 1. Keep builtin and keep_option is in parse_builtin.c
+ 2. Keep print is in parse_print.c */
 t_cmd	parse(t_cmd data)
 {
 	int i;
@@ -41,7 +45,7 @@ t_cmd	parse(t_cmd data)
 	i = 0;
 	while (1)
 	{
-		keep_builtin(i, &data);//check for redir symbol before
+		keep_builtin(i, &data);
 		keep_option(i, &data);
 		keep_print(i, &data);
 		/*input = keep_redir_input(input, i);
