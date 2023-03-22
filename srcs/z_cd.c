@@ -5,10 +5,12 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: alvachon <alvachon@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/03/10 12:00:29 by fboulang          #+#    #+#             */
-/*   Updated: 2023/03/22 15:34:49 by alvachon         ###   ########.fr       */
+/*   Created: Invalid date        by                   #+#    #+#             */
+/*   Updated: 2023/03/22 15:44:26 by alvachon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
+
+
 
 #include "../includes/minishell.h"
 
@@ -33,3 +35,4 @@ int	z_cd(char *str, char **env)
 }
 
 /* faut parser les ../ pour que ça donne un path complet pour pwd*/
+

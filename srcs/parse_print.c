@@ -1,20 +1,23 @@
-/*/* ************************************************************************** */
+/* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
 /*   parse_print.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: alvachon <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: alvachon <alvachon@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/23 15:20:24 by alvachon          #+#    #+#             */
-/*   Updated: 2023/02/23 15:20:26 by alvachon         ###   ########.fr       */
+/*   Updated: 2023/03/22 15:15:33 by alvachon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
 
-int scan(char *input, char c)
+/*
+! Deplace the function into .c for utils_parser [ ]
+Find a specific ascii char as trigger system*/
+int	scan(char *input, char c)
 {
-	int i;
+	int	i;
 
 	i = 0;
 	while (input[i])
@@ -26,10 +29,15 @@ int scan(char *input, char c)
 	return (1);
 }
 
+/*
+! This function need a new name (other one with a similar) [ ]
+! Not sure why I implement a len -- ... Test edgecase here [ ]
+! Deplace the function into .c for utils_parser [ ]
+Return a strlen until a specific reach */
 int	chartrim(char *input, char c)
 {
-	int i;
-	int len;
+	int	i;
+	int	len;
 
 	i = 0;
 	len = ft_strlen(input);
@@ -43,10 +51,13 @@ int	chartrim(char *input, char c)
 	return (i);
 }
 
-char *rtrim(char *str)
+/*
+! Deplace the function into .c for utils_parser [ ]
+ Trim clear ascii like ' ' on RIGHT */
+char	*rtrim(char *str)
 {
-	int i;
-	int j;
+	int	i;
+	int	j;
 
 	j = -1;
 	i = 0;
@@ -60,7 +71,9 @@ char *rtrim(char *str)
 	return (str);
 }
 
-char *scan_end(char *file, int trig)//ne pas changer important
+/*
+* End of the parsing for now  ( > | < )*/
+char	*scan_end(char *file, int trig)
 {
 	char **cmd;
 
@@ -73,27 +86,33 @@ char *scan_end(char *file, int trig)//ne pas changer important
 	{
 		cmd = ft_split(file, '<');
 		file = cmd[0];
-		free (cmd);
+		free(cmd);
 	}
 	if (scan(file, '>') == 0)
 	{
 		cmd = ft_split(file, '>');
 		file = cmd[0];
-		free (cmd);
+		free(cmd);
 	}
 	if (scan(file, '|') == 0)
 	{
 		cmd = ft_split(file, '>');
 		file = cmd[0];
-		free (cmd);
+		free(cmd);
 	}
 	return (file);
 }
 
-int		wordcount(char *str)
+/*
+! Print the qt of words put I dont remember why [ ]
+Calc how many words in the input*/
+int	wordcount(char *str)
 {
-	int w = 0;
-	int c = 0;
+	int	w;
+	int	c;
+
+	w = 0;
+	c = 0;
 	while (*str)
 	{
 		if (*str > 32)
@@ -117,11 +136,14 @@ int		wordcount(char *str)
 	return (c);
 }
 
-char *trimchar(char *file, char c)
+/*
+! Deplace the function into .c for utils_parser [ ]
+Versatile function to delete a specifique character of the input*/
+char	*trimchar(char *file, char c)
 {
-	int 	i;
+	int		i;
 	int		j;
-	char *copy;
+	char	*copy;
 
 	i = 0;
 	j = 0;
@@ -138,9 +160,11 @@ char *trimchar(char *file, char c)
 	return (copy);
 }
 
+/*
+1. Function to trim " " ou ' ' with their own specification*/
 void	trim_guil(t_cmd **data, char c, int trig)
 {
-	char 	*file;
+	char	*file;
 
 	file = scan_end((**data).input, trig);
 	if (trig == 1)
@@ -160,10 +184,17 @@ void	trim_guil(t_cmd **data, char c, int trig)
 		(**data).print = trimchar(file, c);
 }
 
+/*
+! Regroup all keep_builtin together [ ]
+! Test edge case condition [ ]
+ 1. If not < > | , enter the function
+ 2. Check the guillemet type and do the trim in consequence
+	(Keep the data in the struct)
+ 3. Take the len of the input and clear the data in the str*/
 void	keep_print(int i, t_cmd *data)
 {
-
-	if ((*data).input[0] != '<' || (*data).input[0] != '>' || (*data).input[0] != '|')
+	if ((*data).input[0] != '<' || (*data).input[0] != '>'
+		|| (*data).input[0] != '|')
 	{
 		if ((*data).input[0] == 34)
 			trim_guil(&data, 34, 0);
