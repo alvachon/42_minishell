@@ -23,10 +23,7 @@ int	builtincheck(t_cmd data)
 
 	if (ft_strncmp(data.built, "echo", 5) == 0)
 	{
-<<<<<<< HEAD
 		//printf("Found echo\n");
-=======
->>>>>>> 42alminishell
 
 	if (ft_strncmp(cmd[0], "echo", 5) == 0)
 	{
