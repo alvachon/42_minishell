@@ -3,12 +3,13 @@
 /*                                                        :::      ::::::::   */
 /*   z_env.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fboulang <fboulang@42student.com>          +#+  +:+       +#+        */
+/*   By: alvachon <alvachon@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/10 10:56:22 by fboulang          #+#    #+#             */
-/*   Updated: 2023/03/10 10:56:27 by fboulang         ###   ########.fr       */
+/*   Updated: 2023/03/22 15:21:54 by alvachon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
+
 #include "../includes/minishell.h"
 
 int	z_env(char **env)

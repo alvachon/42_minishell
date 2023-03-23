@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   lexer.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: alvachon <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: alvachon <alvachon@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/15 18:14:25 by alvachon          #+#    #+#             */
-/*   Updated: 2023/02/15 18:14:27 by alvachon         ###   ########.fr       */
+/*   Updated: 2023/03/22 13:47:06 by alvachon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,14 +22,7 @@ int	builtincheck(t_cmd data)
 	i = 7;
 
 	if (ft_strncmp(data.built, "echo", 5) == 0)
-	{
-		//printf("Found echo\n");
-
-	if (ft_strncmp(cmd[0], "echo", 5) == 0)
-	{
-		printf("Found echo\n");
 		i = 1;
-	}
 	/*else if (ft_strncmp(cmd[0], "cd", 3) == 0)
 	{
 		printf("Found cd\n");
@@ -82,6 +75,19 @@ char	**paths_search(void)
 	return (ft_split(g_data.env[i], ':'));
 }
 
+/*
+! Confirm with JU what to do with the exit function in the lexer ... [ ]
+! Verify the error management if the implementation is still logic [ ]
+! Verifiy if segemented data is parsed or not [ ]
+ Lexer Step :
+	1. Take the input as it is and put it in the struct
+	2. Isolate the path from env with paht_search();
+	3. Return a struct with segmented data (parser.c)
+	4. Check if first called built in if from one of our asked implementation
+		 If not, free and return 1 (I think its for error ...)
+		 If yes, will parse the built in ...
+*/
+
 int	lexer(char *input)
 {
 	char	**paths;
@@ -89,7 +95,7 @@ int	lexer(char *input)
 	t_cmd	data;
 	int		i;
 
-	if (ft_strcmp(input, "exit") == 0)//
+	if (ft_strcmp(input, "exit") == 0)
 		exit_msg(input);
 	cmds = NULL;
 	data.input = input;
