@@ -5,13 +5,15 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: alvachon <alvachon@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: Invalid date        by                   #+#    #+#             */
-/*   Updated: 2023/03/22 15:44:33 by alvachon         ###   ########.fr       */
+/*   Created: 2023/03/10 12:00:29 by fboulang          #+#    #+#             */
+/*   Updated: 2023/03/24 16:40:19 by alvachon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
 
+
+/* C quoi que je suis supposé avoir pour str ?*/
 int	z_cd(char *str, char **env)
 {
 	char	*temp;
@@ -33,4 +35,3 @@ int	z_cd(char *str, char **env)
 }
 
 /* faut parser les ../ pour que ça donne un path complet pour pwd*/
-

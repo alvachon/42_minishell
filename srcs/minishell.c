@@ -6,36 +6,62 @@
 /*   By: alvachon <alvachon@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/31 13:27:55 by alvachon          #+#    #+#             */
-/*   Updated: 2023/03/22 14:06:15 by alvachon         ###   ########.fr       */
+/*   Updated: 2023/03/24 15:30:42 by alvachon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-/* [0]BUILT [1]OPTION [2]REDIRECTION [3]APPEND [4]INFILE
-* [5]PIPE [6]REDIRECTION [7]APPEND [8]OUTFILE */
-
 #include "../includes/minishell.h"
-#include <ctype.h> //
 
-/*
-! Move in a .c file for all trigger_utils checker[ ] */
-int	envcheck(char **cmd)
+void	keep_redir_input(t_cmd data, int i)
 {
-	if (ft_strncmp(cmd[0], "$", 1) == 0)
-		return (7);
-	else
-		return (8);
+	(void)i;
+	if (data.input[0] == '<' && data.input[1] <= 32)
+	{
+		data.redir_input = ft_substr(data.input, 0, 1);
+		data.input++;
+		data.input = ltrim(data.input);
+	}
 }
 
-/*
-! Change the function in a .c file with all to do with signal [ ]
-! Verify that this write exit is legit or need implementation built in [ ]
-SHELL -- Ctrl D that act like a ctrl C*/
-void	ctrl_c_eof(void)
+void	keep_flag_delim(t_cmd data, int i)
 {
-	rl_on_new_line();
-	rl_redisplay();
-	write(1, "exit\n", 5);
-	exit(EXIT_SUCCESS);
+	if (data.input[0] == '<' && data.input[1] == '<')
+	{
+		data.flag_delim = ft_substr(data.input, 0, 2);
+		i = 2;
+		data.input = wordtrim(data.input, i);
+		data.input = ltrim(data.input);
+	}
+}
+
+char	*scan_end(char *file, int trig)
+{
+	char	**cmd;
+
+	if (trig == 0)
+	{
+		printf("Watch out for < after guil \n");
+		return (file);
+	}
+	if (scan(file, '<') == 0)
+	{
+		cmd = ft_split(file, '<');
+		file = cmd[0];
+		free(cmd);
+	}
+	if (scan(file, '>') == 0)
+	{
+		cmd = ft_split(file, '>');
+		file = cmd[0];
+		free(cmd);
+	}
+	if (scan(file, '|') == 0)
+	{
+		cmd = ft_split(file, '>');
+		file = cmd[0];
+		free(cmd);
+	}
+	return (file);
 }
 
 /*

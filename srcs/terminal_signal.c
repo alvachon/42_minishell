@@ -1,19 +1,29 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   init.c                                             :+:      :+:    :+:   */
+/*   terminal_signal.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: alvachon <alvachon@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/02/15 17:43:24 by alvachon          #+#    #+#             */
-/*   Updated: 2023/03/22 14:25:16 by alvachon         ###   ########.fr       */
+/*   Created: 2023/03/23 14:31:04 by alvachon          #+#    #+#             */
+/*   Updated: 2023/03/23 15:21:01 by alvachon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
 
 /*
-! Change the function in a .c file with all to do with signal [ ]
+! Verify that this write exit is legit or need implementation built in [ ]
+SHELL -- Ctrl D that act like a ctrl C*/
+void	ctrl_c_eof(void)
+{
+	rl_on_new_line();
+	rl_redisplay();
+	write(1, "exit\n", 5);
+	exit(EXIT_SUCCESS);
+}
+
+/*
  SHELL - Signal Swipe Implementation */
 void	handle_sig(int sign)
 {
@@ -26,43 +36,6 @@ void	handle_sig(int sign)
 	}
 	if (sign == SIGINT && g_data.shell_state == SH_EXEC)
 		return ;
-}
-
-/*
-! Move in a .c file for all collect_utils data[ ]
- UTILS - Isolate a chosen data array from our collected env path */
-char	*set(char *var, int siz_var)
-{
-	int		i;
-	char	**cmd;
-	char	*file;
-
-	i = 0;
-	while (ft_strncmp(var, g_data.env[i], siz_var) != 0)
-		i++;
-	cmd = ft_split(g_data.env[i], ':');
-	file = cmd[0];
-	file = ft_substr(file, siz_var, ft_strlen(file));
-	free(cmd);
-	return (file);
-}
-
-/*
-* If a global data is added, add a printf for information sharing
-! Delete printf on minishell info setting at the end of the project [ ]
- DATA- Struct construction of shared information */
-void	set_global(char **env)
-{
-	g_data.env = env;
-	g_data.shell_state = SH_READ;
-	g_data.built_path = set("PATH=", 5);
-	g_data.pwd = set("PWD=", 4);
-	g_data.oldpwd = set("OLDPWD=", 7);
-	printf("\n MINISHELL INFO SETTING (g_var):\n");
-	printf("- path : %s\n", g_data.built_path);
-	printf("- pwd : %s\n", g_data.pwd);
-	printf("- oldpwd : %s\n", g_data.oldpwd);
-	printf("-----------\n");
 }
 
 /*
