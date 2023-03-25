@@ -6,7 +6,7 @@
 /*   By: alvachon <alvachon@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/02 12:06:16 by fboulang          #+#    #+#             */
-/*   Updated: 2023/02/08 15:53:27 by alvachon         ###   ########.fr       */
+/*   Updated: 2023/03/25 14:51:04 by alvachon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,6 +29,9 @@
 # include <termios.h>
 
 #define FOREGROUND_JOB 1
+#define BL "\033[0m\033[34m"
+#define PK "\033[0m\033[35m"
+#define WT "\033[0m"
 
 typedef struct s_argsandflags
 {
@@ -210,7 +213,7 @@ char *ft_readline()
 	char	*buf;
     int     ix;
     int     ch;
-	
+
     ix = 0;
 	buf_siz = 64;
     buf = malloc(buf_siz);

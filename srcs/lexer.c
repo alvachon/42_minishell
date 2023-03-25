@@ -6,7 +6,7 @@
 /*   By: alvachon <alvachon@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/15 18:14:25 by alvachon          #+#    #+#             */
-/*   Updated: 2023/03/22 13:47:06 by alvachon         ###   ########.fr       */
+/*   Updated: 2023/03/25 15:13:05 by alvachon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -118,7 +118,7 @@ int	lexer(char *input)
 	{
 		free (paths);
 		free (cmds);
-		return (1);
+		return (1);//should return clean error or something
 	}
 	else
 		return (functionparse_dispatch(paths, cmds, i));
