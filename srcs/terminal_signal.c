@@ -13,6 +13,17 @@
 #include "../includes/minishell.h"
 
 /*
+
+! Verify that this write exit is legit or need implementation built in [ ]
+SHELL -- Ctrl D that act like a ctrl C*/
+void	ctrl_c_eof(void)
+{
+	rl_on_new_line();
+	rl_redisplay();
+	write(1, "exit\n", 5);
+	exit(EXIT_SUCCESS);
+}
+
  SHELL - Signal Swipe Implementation */
 void	handle_sig(int sign)
 {
@@ -38,6 +49,7 @@ void	ctrl_c_eof(void)
 }
 
 /*
+
  SHELL - Grab terminal setting and adapt it for the sub (minishell) terminal */
 void	init_shell(t_terminal *minishell, char **env)
 {

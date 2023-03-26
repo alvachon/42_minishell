@@ -13,6 +13,7 @@
 #include "../includes/minishell.h"
 
 /*
+
 1. Function to trim " " ou ' ' with their own specification*/
 void	trim_guil(t_cmd **data, char c, int trig)
 {

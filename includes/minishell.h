@@ -65,6 +65,7 @@ typedef struct s_data
 	char				*built_path;
 	char				*pwd;
 	char				*oldpwd;
+	char				*home;
 	enum e_shell_state	shell_state;
 }						t_data;
 
@@ -108,6 +109,7 @@ int						chartrim(char *input, char c);
 
 /*utils_trim.c*/
 void					trim_guil(t_cmd **data, char c, int trig);
+
 char					*ulstr(char *str);
 char					*ltrim(char *input);
 char					*rtrim(char *str);
@@ -130,7 +132,7 @@ void					z_echo(t_cmd data, char **env);
 /*z_env.c*/
 int						z_env(char **env);
 
-/*z_export*/
+/*z_export.c*/
 int						z_export(char *str, char **env);
 char					**export_env(char *str, char **env);
 char					*new_env_var(char *str, char *var);

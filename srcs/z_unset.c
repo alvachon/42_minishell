@@ -39,6 +39,7 @@ char	**env_unset(char *str, char **env)
 	while (env[i] != NULL)
 		i++;
 	buff = ft_calloc(i - 1, sizeof(char *));
+
 	i = 0;
 	while (env[i] != NULL)
 	{

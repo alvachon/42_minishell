@@ -7,6 +7,7 @@
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: Invalid date        by                   #+#    #+#             */
 /*   Updated: 2023/03/26 17:48:22 by alvachon         ###   ########.fr       */
+
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,6 +65,7 @@ int	z_cd(t_cmd data, char **env)
 	int		i;
 
 	i = 0;
+
 	if (strcmp(data.opt, "BACK") == 0)
 		rewrite(data, delete_last(data));
 	if (strcmp(data.opt, "STAY") == 0)
@@ -85,3 +87,4 @@ int	z_cd(t_cmd data, char **env)
 	free(temp);
 	return (0);
 }
+
