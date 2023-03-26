@@ -6,7 +6,7 @@
 /*   By: alvachon <alvachon@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/15 18:14:25 by alvachon          #+#    #+#             */
-/*   Updated: 2023/03/25 15:13:05 by alvachon         ###   ########.fr       */
+/*   Updated: 2023/03/26 15:56:48 by alvachon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,30 +15,35 @@
 
 #include "../includes/minishell.h"
 
-int	builtincheck(t_cmd data)
+/*void	nulldata(t_cmd *data)
 {
-	int	i;
+	data->built = NULL;
+	data->flag_delim = NULL;
+	data->input = NULL;
+	data->opt = NULL;
+	data->path = NULL;
+	data->print = NULL;
+	data->redir_input = NULL;
+}*/
+
+int	builtincheck(t_cmd data, char **env)
+{
+	int		i;
 
 	i = 7;
-
 	if (ft_strncmp(data.built, "echo", 5) == 0)
-		i = 1;
-	/*else if (ft_strncmp(cmd[0], "cd", 3) == 0)
-	{
-		printf("Found cd\n");
-		i = 2;
-	}*/
+		z_echo(data, env);
+	else if (ft_strncmp(data.built, "cd", 3) == 0)
+		z_cd(data, env);
 	else if (ft_strncmp(data.built, "pwd", 4) == 0)
-	{
-		printf("Found pwd\n");
-		i = 3;
-	}
-	else if (ft_strncmp(data.built, "export", 7) == 0)
-		i = 4;
+		z_pwd(env);
+	/*else if (ft_strncmp(data.built, "export", 7) == 0)
+		z_export(data, env)*/
 	else if (ft_strncmp(data.built, "unset", 6) == 0)
 		i = 5;
 	else if (ft_strncmp(data.built, "env", 4) == 0)
 		i = 6;
+	//nulldata(&data);
 	if (i <= 6)
 		return (i);
 	/*else
@@ -46,26 +51,7 @@ int	builtincheck(t_cmd data)
 	return (0);
 }
 
-int	functionparse_dispatch(char **env, char **cmds, int code)
-{
-	if (code == 1)
-		echo_parse(cmds, env);
-	/*if (code == 2)
-		parse_cd(cmd, env);*/
-	/*if (code == 3)
-		parse_pwd(env);*/
-	/*if (code == 4)
-		export_parse_here(cmd, env);
-	if (code == 5)
-		unset_parse_here(cmd, env);
-	if (code == 6)
-		env_parse_here(cmd, env);
-	if (code == 7)
-		env_parse_here(cmd, env);*/
-	return (0);
-}
-
-char	**paths_search(void)
+char	**paths_search(void)//vers brew bin
 {
 	int	i;
 
@@ -88,38 +74,16 @@ char	**paths_search(void)
 		 If yes, will parse the built in ...
 */
 
-int	lexer(char *input)
+int	lexer(char *input, char **env)
 {
-	char	**paths;
-	char	**cmds;
 	t_cmd	data;
 	int		i;
 
 	if (ft_strcmp(input, "exit") == 0)
 		exit_msg(input);
-	cmds = NULL;
 	data.input = input;
-	paths = paths_search();
+	data.path = g_data.pwd;
 	data = parse(data);
-	i = builtincheck(data);
-	if (i == 1)
-	{
-		input = data.built;
-		input = ft_strjoin(input, "|");
-		if (data.opt)
-		{
-			data.opt = ft_strjoin(data.opt, "|");
-			input = ft_strjoin(input, data.opt);
-		}
-		input = ft_strjoin(input, data.print);
-		cmds = ft_split(input, '|');
-	}
-	if (i == 8)
-	{
-		free (paths);
-		free (cmds);
-		return (1);//should return clean error or something
-	}
-	else
-		return (functionparse_dispatch(paths, cmds, i));
+	i = builtincheck(data, env);
+	return (0);
 }

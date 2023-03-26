@@ -6,7 +6,7 @@
 /*   By: alvachon <alvachon@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/31 13:27:55 by alvachon          #+#    #+#             */
-/*   Updated: 2023/03/25 15:13:04 by alvachon         ###   ########.fr       */
+/*   Updated: 2023/03/26 13:35:17 by alvachon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,7 @@ void	ctrl_c_eof(void)
 }
 
 
-int	shell_process(void)
+int	shell_process(char **env)
 {
 	char		*cmd;
 
@@ -48,7 +48,7 @@ int	shell_process(void)
 			ctrl_c_eof();
 		if (cmd[0] == '\0' || ft_strcmp(cmd, "\n") == 0)
 			continue ;
-		else if (lexer(cmd) == 1)
+		else if (lexer(cmd, env) == 1)
 		{
 			free (cmd);
 			g_data.shell_state = SH_READ;
@@ -72,7 +72,7 @@ int	main(int ac, char **av, char **env)
 		init_shell(&minishell, env);
 		while (FOREGROUND_JOB)
 		{
-			i = shell_process();
+			i = shell_process(env);
 			if (i == 1)
 				sys_msg("Usage: Lexer\n", 2);
 			else if (i == 0)

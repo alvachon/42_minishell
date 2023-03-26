@@ -6,7 +6,7 @@
 /*   By: alvachon <alvachon@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/23 15:17:01 by alvachon          #+#    #+#             */
-/*   Updated: 2023/03/22 14:35:44 by alvachon         ###   ########.fr       */
+/*   Updated: 2023/03/26 15:53:27 by alvachon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,7 +69,15 @@ void	keep_option(int i, t_cmd *data)
 	if ((*data).input[0] == '-' && (*data).input[1] == 'n'
 		&& (*data).input[2] <= 32)
 	{
-		(*data).opt = ft_substr((*data).input, 0, 2);
+		(*data).opt = "-n";
+		i = 2;
+		(*data).input = wordtrim((*data).input, i);
+		(*data).input = ltrim((*data).input);
+	}
+	if ((*data).input[0] == '.' && (*data).input[1] == '.'
+		&& (*data).input[2] <= 32)
+	{
+		(*data).opt = "..";
 		i = 2;
 		(*data).input = wordtrim((*data).input, i);
 		(*data).input = ltrim((*data).input);

@@ -6,7 +6,7 @@
 /*   By: alvachon <alvachon@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/02 12:06:16 by fboulang          #+#    #+#             */
-/*   Updated: 2023/03/25 14:51:04 by alvachon         ###   ########.fr       */
+/*   Updated: 2023/03/26 15:11:04 by alvachon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,9 +29,7 @@
 # include <termios.h>
 
 #define FOREGROUND_JOB 1
-#define BL "\033[0m\033[34m"
-#define PK "\033[0m\033[35m"
-#define WT "\033[0m"
+
 
 typedef struct s_argsandflags
 {
@@ -61,6 +59,7 @@ typedef struct s_cmd
     char    *print;
     char    *redir_input;
     char    *flag_delim;
+    char    *path;
 }   t_cmd
 ;
 typedef struct s_data
@@ -77,6 +76,7 @@ t_data	g_data;
 
 int		envcheck(char **cmd);
 int		ft_getchar(void);
+int	    shell_process(char **env);
 
 /*init.c*/
 void	handle_sig(int sign);
@@ -108,10 +108,10 @@ void	trim_guil(t_cmd **data, char c, int trig);
 void	keep_print(int i, t_cmd *data);
 
 /*lexer.c*/
-int		builtincheck();
+int	    builtincheck(t_cmd data, char **env);
 int		functionparse_dispatch(char **env, char **cmds, int code);
 char	**paths_search(void);
-int		lexer(char *cmd);
+int     lexer(char *input, char **env);
 /*message.c*/
 void	error_msg(char *cmd);
 void    exit_msg(char *cmd);
@@ -121,7 +121,7 @@ void    free_exect(char **cmd, char **env, char *path);
 /*z_echo.c*/
 void	free_echo(char *temp, char *temp2, char **env, int code);
 void	execute_echo(char *path, char **cmd, char **env);
-void	echo_parse(char **cmds, char **env);
+void	z_echo(t_cmd data, char **env);
 
 /*z_pwd.c*/
 void	free_pwd(char *temp, char *temp2, char **env, int code);
@@ -131,6 +131,9 @@ int	    z_pwd(char **env);
 
 /*z_env.c*/
 int z_env(char **env);
+
+/*z_cd*/
+int	z_cd(t_cmd data, char **env);
 
 #endif
 

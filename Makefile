@@ -14,6 +14,7 @@ SRCS			= $(SRCS_DIR)/minishell.c \
 				  $(SRCS_DIR)/parse_builtin.c \
 				  $(SRCS_DIR)/parse_print.c \
 				  $(SRCS_DIR)/parser.c \
+				  $(SRCS_DIR)/z_cd.c \
 				  $(SRCS_DIR)/z_echo.c \
 				  $(SRCS_DIR)/z_pwd.c
 OBJS 			= $(SRCS:$(SRCS_DIR)/%.c=$(OBJS_DIR)/%.o)
