@@ -6,7 +6,7 @@
 /*   By: alvachon <alvachon@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/02 12:06:16 by fboulang          #+#    #+#             */
-/*   Updated: 2023/03/26 15:11:04 by alvachon         ###   ########.fr       */
+/*   Updated: 2023/03/26 17:39:27 by alvachon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -134,6 +134,12 @@ int z_env(char **env);
 
 /*z_cd*/
 int	z_cd(t_cmd data, char **env);
+
+/*z_export*/
+int	    z_export(char *str, char **env);
+char	**export_env(char *str, char **env);
+char	*new_env_var(char *str, char *var);
+
 
 #endif
 

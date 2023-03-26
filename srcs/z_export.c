@@ -6,7 +6,7 @@
 /*   By: alvachon <alvachon@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/10 10:56:34 by fboulang          #+#    #+#             */
-/*   Updated: 2023/03/22 15:21:59 by alvachon         ###   ########.fr       */
+/*   Updated: 2023/03/26 17:39:58 by alvachon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,7 @@ char	**export_env(char *str, char **env)
 		i++;
 	}
 	buff[i] = str;
-	free(env);
+	//free(env);
 	return (buff);
 }
 

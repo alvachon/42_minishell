@@ -6,14 +6,13 @@
 /*   By: alvachon <alvachon@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/15 17:43:24 by alvachon          #+#    #+#             */
-/*   Updated: 2023/03/22 14:25:16 by alvachon         ###   ########.fr       */
+/*   Updated: 2023/03/26 17:46:24 by alvachon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
 
 /*
-! Change the function in a .c file with all to do with signal [ ]
  SHELL - Signal Swipe Implementation */
 void	handle_sig(int sign)
 {
@@ -29,7 +28,6 @@ void	handle_sig(int sign)
 }
 
 /*
-! Move in a .c file for all collect_utils data[ ]
  UTILS - Isolate a chosen data array from our collected env path */
 char	*set(char *var, int siz_var)
 {
@@ -66,7 +64,6 @@ void	set_global(char **env)
 }
 
 /*
-! Delete two lines of options at the end of the project [ ]
  SHELL - Grab terminal setting and adapt it for the sub (minishell) terminal */
 void	init_shell(t_terminal *minishell, char **env)
 {
@@ -75,8 +72,6 @@ void	init_shell(t_terminal *minishell, char **env)
 	{
 		tcgetattr(STDIN_FILENO, &(*minishell).mod_terminal);
 		(*minishell).new_options = (*minishell).mod_terminal;
-		//(*minishell).new_options.c_cc[VEOF]     = 3;
-		//(*minishell).new_options.c_cc[VINTR]    = 4;
 		(*minishell).new_options.c_cc[VQUIT] = 0;
 		tcsetattr(STDIN_FILENO, TCSANOW, &(*minishell).new_options);
 		if (SIGINT)

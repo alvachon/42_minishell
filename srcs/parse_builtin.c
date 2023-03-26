@@ -6,7 +6,7 @@
 /*   By: alvachon <alvachon@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/23 15:17:01 by alvachon          #+#    #+#             */
-/*   Updated: 2023/03/26 15:53:27 by alvachon         ###   ########.fr       */
+/*   Updated: 2023/03/26 17:28:14 by alvachon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,21 +66,43 @@ char	*ulstr(char *str)
  Work only for echo (hardcode option for -n)*/
 void	keep_option(int i, t_cmd *data)
 {
-	if ((*data).input[0] == '-' && (*data).input[1] == 'n'
-		&& (*data).input[2] <= 32)
+	int t;
+
+	t = 0;
+	i = 0;
+	if (strcmp(data->built, "echo") == 0 && strncmp(data->input, "-n ", 3) == 0)
 	{
-		(*data).opt = "-n";
+		data->opt = "-n";
+		t = 1;
 		i = 2;
-		(*data).input = wordtrim((*data).input, i);
-		(*data).input = ltrim((*data).input);
 	}
-	if ((*data).input[0] == '.' && (*data).input[1] == '.'
-		&& (*data).input[2] <= 32)
+	if (strcmp(data->built, "cd") == 0 && strncmp(data->input, "..", 2) == 0)
 	{
-		(*data).opt = "..";
+		data->opt = "BACK";
 		i = 2;
-		(*data).input = wordtrim((*data).input, i);
-		(*data).input = ltrim((*data).input);
+		t = 1;
+	}
+	else if (strcmp(data->built, "cd") == 0 && strncmp(data->input, ".", 1) == 0)
+	{
+		data->opt = "STAY";
+		i = 1;
+		t = 1;
+	}
+	else if (strcmp(data->built, "cd") == 0 && strncmp(data->input, "~/", 2) == 0)
+	{
+		i = chartrim(data->input, ' ');
+		data->opt = "FIND";
+		data->print = trimchar(data->input, ' ');
+		t = 1;
+	}
+	else if (strcmp(data->built, "cd") == 0 && strncmp(data->input, "/", 1) == 0)
+		data->opt = "DIRECT";
+	else if (strcmp(data->built, "cd") == 0)
+		data->opt = "HOME";
+	if (t == 1)
+	{
+		data->input = wordtrim(data->input, i);
+		data->input = ltrim(data->input);
 	}
 }
 
@@ -103,13 +125,13 @@ void	keep_builtin(int i, t_cmd *data)
 {
 	char	*str;
 
-	(*data).input = ltrim((*data).input);
-	i = wordlen((*data).input, i);
-	str = ft_substr((*data).input, 0, i);
+	data->input = ltrim(data->input);
+	i = wordlen(data->input, i);
+	str = ft_substr(data->input, 0, i);
 	if (str[0] >= 'A' && str[0] <= 'Z')
 		str = ulstr(str);
 	str = trimchar(str, 32);
-	(*data).built = str;
-	(*data).input = wordtrim((*data).input, i);
-	(*data).input = ltrim((*data).input);
+	data->built = str;
+	data->input = wordtrim(data->input, i);
+	data->input = ltrim(data->input);
 }
