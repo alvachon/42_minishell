@@ -6,38 +6,15 @@
 /*   By: alvachon <alvachon@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/31 13:27:55 by alvachon          #+#    #+#             */
-/*   Updated: 2023/03/26 13:35:17 by alvachon         ###   ########.fr       */
+/*   Updated: 2023/03/26 19:19:50 by alvachon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
 
-/*
-! Move in a .c file for all trigger_utils checker[ ] */
-int	envcheck(char **cmd)
-{
-	if (ft_strncmp(cmd[0], "$", 1) == 0)
-		return (7);
-	else
-		return (8);
-}
-
-/*
-! Change the function in a .c file with all to do with signal [ ]
-! Verify that this write exit is legit or need implementation built in [ ]
-SHELL -- Ctrl D that act like a ctrl C*/
-void	ctrl_c_eof(void)
-{
-	rl_on_new_line();
-	rl_redisplay();
-	write(1, "exit\n", 5);
-	exit(EXIT_SUCCESS);
-}
-
-
 int	shell_process(char **env)
 {
-	char		*cmd;
+	char	*cmd;
 
 	cmd = NULL;
 	while (isatty(STDIN_FILENO))
@@ -50,7 +27,7 @@ int	shell_process(char **env)
 			continue ;
 		else if (lexer(cmd, env) == 1)
 		{
-			free (cmd);
+			free(cmd);
 			g_data.shell_state = SH_READ;
 			return (1);
 		}

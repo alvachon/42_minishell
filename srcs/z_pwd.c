@@ -6,12 +6,12 @@
 /*   By: alvachon <alvachon@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/21 14:23:42 by alvachon          #+#    #+#             */
-/*   Updated: 2023/03/26 13:54:46 by alvachon         ###   ########.fr       */
+/*   Updated: 2023/03/26 19:21:10 by alvachon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../includes/minishell.h"
 #include "../includes/libft/libft.h"
+#include "../includes/minishell.h"
 
 int	z_pwd(char **env)
 {
