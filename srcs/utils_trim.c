@@ -5,12 +5,37 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: alvachon <alvachon@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/03/23 14:42:59 by alvachon          #+#    #+#             */
-/*   Updated: 2023/03/23 15:37:03 by alvachon         ###   ########.fr       */
+/*   Created: 2023/03/26 18:26:22 by alvachon          #+#    #+#             */
+/*   Updated: 2023/03/26 18:32:47 by alvachon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
+
+/*
+
+1. Function to trim " " ou ' ' with their own specification*/
+void	trim_guil(t_cmd **data, char c, int trig)
+{
+	char	*file;
+
+	file = scan_end((**data).input, trig);
+	if (trig == 1)
+	{
+		file = trimchar(file, 34);
+		file = trimchar(file, 39);
+	}
+	if (scan(file, 34) == 1)
+	{
+		if (scan(file, 39) == 1)
+		{
+			(**data).print = file;
+			return ;
+		}
+	}
+	if (trig == 0)
+		(**data).print = trimchar(file, c);
+}
 
 /*
  Transform MAJ input into small input */
@@ -78,28 +103,3 @@ char	*trimchar(char *file, char c)
 	copy[j] = '\0';
 	return (copy);
 }
-
-/*
-1. Function to trim " " ou ' ' with their own specification*/
-void	trim_guil(t_cmd **data, char c, int trig)
-{
-	char	*file;
-
-	file = scan_end((**data).input, trig);
-	if (trig == 1)
-	{
-		file = trimchar(file, 34);
-		file = trimchar(file, 39);
-	}
-	if (scan(file, 34) == 1)
-	{
-		if (scan(file, 39) == 1)
-		{
-			(**data).print = file;
-			return ;
-		}
-	}
-	if (trig == 0)
-		(**data).print = trimchar(file, c);
-}
-

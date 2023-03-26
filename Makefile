@@ -7,14 +7,15 @@ REL_PATH		=	$(shell pwd)
 INCL_DIR		= ./includes
 SRCS_DIR		= ./srcs
 OBJS_DIR		= ./objs
-SRCS			= $(SRCS_DIR)/input_lexer.c \
-				  $(SRCS_DIR)/input_merge.c \
+SRCS			= $(SRCS_DIR)/lexer.c \
 				  $(SRCS_DIR)/minishell.c \
+				  $(SRCS_DIR)/parse.c \
 				  $(SRCS_DIR)/terminal_signal.c \
-				  $(SRCS_DIR)/terminal_struct.c \
-				  $(SRCS_DIR)/utils_clear.c \
 				  $(SRCS_DIR)/utils_env.c \
+				  $(SRCS_DIR)/utils_global.c \
+				  $(SRCS_DIR)/utils_input.c \
 				  $(SRCS_DIR)/utils_trim.c \
+				  $(SRCS_DIR)/work_in_progress.c \
 				  $(SRCS_DIR)/z_cd.c \
 				  $(SRCS_DIR)/z_echo.c \
 				  $(SRCS_DIR)/z_env.c \

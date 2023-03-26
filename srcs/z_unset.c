@@ -6,7 +6,7 @@
 /*   By: alvachon <alvachon@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/08 12:31:48 by fboulang          #+#    #+#             */
-/*   Updated: 2023/03/24 10:59:53 by alvachon         ###   ########.fr       */
+/*   Updated: 2023/03/26 19:21:06 by alvachon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,8 @@ char	**env_unset(char *str, char **env)
 	j = 0;
 	while (env[i] != NULL)
 		i++;
-	buff = ft_calloc (i - 1, sizeof(char *));
+	buff = ft_calloc(i - 1, sizeof(char *));
+
 	i = 0;
 	while (env[i] != NULL)
 	{
@@ -48,10 +49,10 @@ char	**env_unset(char *str, char **env)
 			i++;
 		}
 		ft_memmove(buff[j], env[i], ft_strlen(env[i]));
-		free (env[i]);
+		free(env[i]);
 		i++;
 		j++;
 	}
-	free (env);
+	free(env);
 	return (buff);
 }

@@ -5,14 +5,15 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: alvachon <alvachon@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/03/23 14:31:04 by alvachon          #+#    #+#             */
-/*   Updated: 2023/03/23 15:21:01 by alvachon         ###   ########.fr       */
+/*   Created: 2023/03/26 18:22:40 by alvachon          #+#    #+#             */
+/*   Updated: 2023/03/26 19:20:08 by alvachon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
 
 /*
+
 ! Verify that this write exit is legit or need implementation built in [ ]
 SHELL -- Ctrl D that act like a ctrl C*/
 void	ctrl_c_eof(void)
@@ -23,7 +24,6 @@ void	ctrl_c_eof(void)
 	exit(EXIT_SUCCESS);
 }
 
-/*
  SHELL - Signal Swipe Implementation */
 void	handle_sig(int sign)
 {
@@ -39,7 +39,17 @@ void	handle_sig(int sign)
 }
 
 /*
-! Delete two lines of options at the end of the project [ ]
+SHELL -- Ctrl D that act like a ctrl C*/
+void	ctrl_c_eof(void)
+{
+	rl_on_new_line();
+	rl_redisplay();
+	write(1, "exit\n", 5);
+	exit(EXIT_SUCCESS);
+}
+
+/*
+
  SHELL - Grab terminal setting and adapt it for the sub (minishell) terminal */
 void	init_shell(t_terminal *minishell, char **env)
 {
@@ -48,8 +58,6 @@ void	init_shell(t_terminal *minishell, char **env)
 	{
 		tcgetattr(STDIN_FILENO, &(*minishell).mod_terminal);
 		(*minishell).new_options = (*minishell).mod_terminal;
-		//(*minishell).new_options.c_cc[VEOF]     = 3;
-		//(*minishell).new_options.c_cc[VINTR]    = 4;
 		(*minishell).new_options.c_cc[VQUIT] = 0;
 		tcsetattr(STDIN_FILENO, TCSANOW, &(*minishell).new_options);
 		if (SIGINT)

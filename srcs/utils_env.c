@@ -5,32 +5,12 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: alvachon <alvachon@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/02/15 17:43:24 by alvachon          #+#    #+#             */
-/*   Updated: 2023/03/24 15:35:55 by alvachon         ###   ########.fr       */
+/*   Created: 2023/03/26 18:34:26 by alvachon          #+#    #+#             */
+/*   Updated: 2023/03/26 19:20:14 by alvachon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
-
-char	*path(char *home)
-{
-	int		i;
-	int		c;
-
-	i = 0;
-	c = 0;
-	while (home[i])
-	{
-		if (home[i] == '/')
-			c++;
-		if (c == 3)
-			break ;
-		i++;
-	}
-	i++;
-	home[i] = '\0';
-	return (home);
-}
 
 /*
  UTILS - Isolate a chosen data array from our collected env path */
@@ -50,15 +30,14 @@ char	*set(char *var, int siz_var)
 	return (file);
 }
 
-/*
- UTILS -  Get Path env system */
-char	**paths_search(void)
+void	option(t_cmd *data, char *option, int trigger, int trim_size)
 {
-	int	i;
-
-	i = 0;
-	while (ft_strncmp("PATH=", g_data.env[i], 5) != 0)
-		i++;
-	return (ft_split(g_data.env[i], ':'));
+	data->opt = option;
+	if (strcmp(option, "FIND") == 0)
+		data->print = trimchar(data->input, ' ');
+	if (trigger == 1)
+	{
+		data->input = wordtrim(data->input, trim_size);
+		data->input = ltrim(data->input);
+	}
 }
-
