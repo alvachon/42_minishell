@@ -20,9 +20,9 @@ int	builtincheck(t_cmd data, char **env)
 		z_cd(data, env);
 	else if (ft_strncmp(data.built, "pwd", 4) == 0)
 		z_pwd(env);
-	/*else if (ft_strncmp(data.built, "export", 7) == 0)
+	/*else if (ft_strncmp(data.built, "export", 7) == 0)  export a=Hello
 		z_export("declare -x", env);*/
-	/*else if (ft_strncmp(data.built, "unset", 6) == 0)
+	/*else if (ft_strncmp(data.built, "unset", 6) == 0) unset varname
 		z_unset();*/
 	else if (ft_strncmp(data.built, "env", 4) == 0)
 		z_env(env);

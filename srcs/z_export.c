@@ -23,7 +23,7 @@ int	z_export(char *str, char **env)
 		env = export_env(str, env);
 	else
 		env[i] = new_env_var(str, env[i]);
-	return (0);
+	return (errno);
 }
 
 char	**export_env(char *str, char **env)

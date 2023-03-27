@@ -25,7 +25,7 @@ int	z_unset(char *str, char **env)
 		return (0);
 	else
 		env = env_unset(str, env);
-	return (0);
+	return (errno);
 }
 
 char	**env_unset(char *str, char **env)

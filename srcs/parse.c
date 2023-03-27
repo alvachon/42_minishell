@@ -36,7 +36,7 @@ void	keep_option(t_cmd *data)
 {
 	if (strcmp(data->built, "echo") == 0 && strncmp(data->input, "-n ", 3) == 0)
 		option(data, "-n", 1, 2);
-	if (strcmp(data->built, "cd") == 0 && strncmp(data->input, "..", 2) == 0)
+	if (strcmp(data->built, "cd") == 0 && strncmp(data->input, "..", 2) == 0) /* cd ../.. && ../minishell/../minishell*/
 		option(data, "BACK", 1, 2);
 	if (strcmp(data->built, "cd") == 0 && strncmp(data->input, ".", 1) == 0)
 		option(data, "STAY", 1, 1);

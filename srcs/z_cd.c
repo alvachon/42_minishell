@@ -68,13 +68,13 @@ int	z_cd(t_cmd data, char **env)
 		rewrite(data, delete_last(data));
 	if (strcmp(data.opt, "STAY") == 0)
 		data.path = data.path;
-	if (strcmp(data.opt, "HOME") == 0)
+	if (strcmp(data.opt, "HOME") == 0) /* ~ = Home* (i.e. Users/alvachon). ~ doit être formatté comme suis : ~/[...], sinon on le gère comme '~' plutôt que Home.*/
 		keep_user(data);
-	/*if (strcmp(data.opt, "FIND") == 0)
-		data.path = g_data.pwd;
-	if (strcmp(data.opt, "DIRECT") == 0)
+	/*if (strcmp(data.opt, "DIRECT") == 0)
 		data.path = data.print;*/
 	chdir(data.path);
+	if (data.path[0] == '\0')
+		data.path[0] = '/';
 	while (env[i] && ft_strncmp(env[i], "PWD=", 4) != 0)
 		i++;
 	temp = ft_substr(env[i], 4, ft_strlen(env[i]));
@@ -83,5 +83,5 @@ int	z_cd(t_cmd data, char **env)
 		i++;
 	env[i] = ft_strjoin("OLDPWD=", temp);
 	free(temp);
-	return (0);
+	return (errno);
 }
