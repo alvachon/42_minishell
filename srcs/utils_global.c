@@ -1,16 +1,32 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   message.c                                          :+:      :+:    :+:   */
+/*   utils_global.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: alvachon <alvachon@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/02/15 18:27:43 by alvachon          #+#    #+#             */
-/*   Updated: 2023/03/22 13:47:52 by alvachon         ###   ########.fr       */
+/*   Created: 2023/03/26 18:35:32 by alvachon          #+#    #+#             */
+/*   Updated: 2023/03/26 19:20:21 by alvachon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
+
+/*
+ DATA- Struct construction of shared information */
+void	set_global(char **env)
+{
+	g_data.env = env;
+	g_data.shell_state = SH_READ;
+	g_data.built_path = set("PATH=", 5);
+	g_data.pwd = set("PWD=", 4);
+	g_data.oldpwd = set("OLDPWD=", 7);
+	printf("\n MINISHELL INFO SETTING (g_var):\n");
+	printf("- path : %s\n", g_data.built_path);
+	printf("- pwd : %s\n", g_data.pwd);
+	printf("- oldpwd : %s\n", g_data.oldpwd);
+	printf("-----------\n");
+}
 
 void	error_msg(char *cmd)
 {

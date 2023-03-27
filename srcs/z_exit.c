@@ -1,25 +1,25 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   z_pwd.c                                            :+:      :+:    :+:   */
+/*   z_exit.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: alvachon <alvachon@student.42.fr>          +#+  +:+       +#+        */
+/*   By: fboulang <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/02/21 14:23:42 by alvachon          #+#    #+#             */
-/*   Updated: 2023/03/26 19:21:10 by alvachon         ###   ########.fr       */
+/*   Created: 2023/03/15 09:07:14 by fboulang          #+#    #+#             */
+/*   Updated: 2023/03/15 09:07:15 by fboulang         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
-
-#include "../includes/libft/libft.h"
 #include "../includes/minishell.h"
 
-int	z_pwd(char **env)
+int	z_exit(int status)
 {
-	int	i;
-
-	i = 0;
-	while (env[i] && ft_strncmp(env[i], "PWD=", 4) != 0)
-		i++;
-	printf("%s\n", ft_substr(env[i], 4, ft_strlen(env[i])));
-	return (0);
+	free(g_data.built_path);
+	while (*g_data.env)
+	{
+		free(*g_data.env);
+		*g_data.env++;
+	}
+	free(g_data.pwd);
+	free(g_data.oldpwd);
+	return (status);
 }
