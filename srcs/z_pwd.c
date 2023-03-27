@@ -21,5 +21,5 @@ int	z_pwd(char **env)
 	while (env[i] && ft_strncmp(env[i], "PWD=", 4) != 0)
 		i++;
 	printf("%s\n", ft_substr(env[i], 4, ft_strlen(env[i])));
-	return (0);
+	return (errno);
 }

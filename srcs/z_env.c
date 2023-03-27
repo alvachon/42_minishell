@@ -22,5 +22,5 @@ int	z_env(char **env)
 		printf("%s\n", env[i]);
 		i++;
 	}
-	return (0);
+	return (errno);
 }

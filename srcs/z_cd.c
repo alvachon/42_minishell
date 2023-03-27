@@ -83,5 +83,5 @@ int	z_cd(t_cmd data, char **env)
 		i++;
 	env[i] = ft_strjoin("OLDPWD=", temp);
 	free(temp);
-	return (0);
+	return (errno);
 }
