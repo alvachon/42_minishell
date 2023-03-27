@@ -6,12 +6,9 @@
 /*   By: alvachon <alvachon@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/15 18:14:25 by alvachon          #+#    #+#             */
-/*   Updated: 2023/03/26 19:19:45 by alvachon         ###   ########.fr       */
+/*   Updated: 2023/03/27 09:23:57 by alvachon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
-
-/* [0]BUILT [1]OPTION [2]REDIRECTION [3]APPEND [4]INFILE
- [5]PIPE [6]REDIRECTION [7]APPEND [8]OUTFILE */
 
 #include "../includes/minishell.h"
 

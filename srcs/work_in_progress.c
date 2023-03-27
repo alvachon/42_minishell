@@ -6,7 +6,7 @@
 /*   By: alvachon <alvachon@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/23 15:17:01 by alvachon          #+#    #+#             */
-/*   Updated: 2023/03/26 19:21:15 by alvachon         ###   ########.fr       */
+/*   Updated: 2023/03/27 09:58:08 by alvachon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,34 +25,39 @@ void	keep_redir_input(t_cmd data, int i)
 
 /*
 * End of the parsing for now  ( > | < )*/
-char	*scan_end(char *file, int trig)
+char	*scan_end(t_cmd *data, int trig)
 {
 	char	**cmd;
+	int		i;
 
+	i = 0;
 	if (trig == 0)
 	{
 		printf("Watch out for < after guil \n");
-		return (file);
+		return (data->input);
 	}
-	if (scan(file, '<') == 0)
+	if (scan(data->input, '<') == 0)
 	{
-		cmd = ft_split(file, '<');
-		file = cmd[0];
+		i = chartrim(data->input, '<');
+		if (strcmp(data->built, "echo") == 0)
+			data->print = trimchar(data->input, '<');
+		while (i > 0)
+		{
+			data->input++;
+			i--;
+		}
+		printf("%s\n", data->input);
+	}
+	if (scan(data->input, '>') == 0)
+	{
+		cmd = ft_split(data->input, '>');
 		free(cmd);
 	}
-	if (scan(file, '>') == 0)
+	if (scan(data->input, '|') == 0)
 	{
-		cmd = ft_split(file, '>');
-		file = cmd[0];
 		free(cmd);
 	}
-	if (scan(file, '|') == 0)
-	{
-		cmd = ft_split(file, '>');
-		file = cmd[0];
-		free(cmd);
-	}
-	return (file);
+	return (data->input);
 }
 
 void	keep_flag_delim(t_cmd data, int i)

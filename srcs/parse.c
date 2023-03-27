@@ -6,7 +6,7 @@
 /*   By: alvachon <alvachon@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/23 15:14:08 by alvachon          #+#    #+#             */
-/*   Updated: 2023/03/26 19:20:02 by alvachon         ###   ########.fr       */
+/*   Updated: 2023/03/27 09:51:22 by alvachon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,20 +14,20 @@
 
 void	keep_print(int i, t_cmd *data)
 {
-	if ((*data).input[0] != '<' || (*data).input[0] != '>'
-		|| (*data).input[0] != '|')
+	if (data->input[0] != '<' || data->input[0] != '>'
+		|| data->input[0] != '|')
 	{
-		if ((*data).input[0] == 34)
-			trim_guil(&data, 34, 0);
-		else if ((*data).input[0] == 39)
-			trim_guil(&data, 39, 0);
+		if (data->input[0] == 34)
+			trim_guil(data, 34, 0);
+		else if (data->input[0] == 39)
+			trim_guil(data, 39, 0);
 		else
-			trim_guil(&data, 0, 1);
+			trim_guil(data, 0, 1);
 	}
-	i = ft_strlen((*data).print);
+	i = ft_strlen(data->print);
 	while (i)
 	{
-		(*data).input++;
+		data->input++;
 		i--;
 	}
 }

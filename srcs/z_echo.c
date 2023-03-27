@@ -6,7 +6,7 @@
 /*   By: alvachon <alvachon@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/15 18:22:05 by alvachon          #+#    #+#             */
-/*   Updated: 2023/03/26 13:43:45 by alvachon         ###   ########.fr       */
+/*   Updated: 2023/03/27 09:32:51 by alvachon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,5 +15,8 @@
 void	z_echo(t_cmd data, char **env)
 {
 	(void)env;
-	printf("%s\n", data.print);
+	if (strcmp(data.opt, "-n") == 0)
+		printf("%s", data.print);
+	else
+		printf("%s\n", data.print);
 }
