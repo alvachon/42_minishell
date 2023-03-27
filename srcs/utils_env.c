@@ -6,7 +6,7 @@
 /*   By: alvachon <alvachon@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/26 18:34:26 by alvachon          #+#    #+#             */
-/*   Updated: 2023/03/26 19:20:14 by alvachon         ###   ########.fr       */
+/*   Updated: 2023/03/27 14:54:49 by alvachon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,9 @@ void	option(t_cmd *data, char *option, int trigger, int trim_size)
 {
 	data->opt = option;
 	if (strcmp(option, "FIND") == 0)
-		data->print = trimchar(data->input, ' ');
+		remake_path(data);
+	if (strcmp(option, "DIRECT") == 0)
+		hard_path(data);
 	if (trigger == 1)
 	{
 		data->input = wordtrim(data->input, trim_size);

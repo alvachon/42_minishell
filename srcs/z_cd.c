@@ -6,7 +6,7 @@
 /*   By: alvachon <alvachon@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: Invalid date        by                   #+#    #+#             */
-/*   Updated: 2023/03/26 17:48:22 by alvachon         ###   ########.fr       */
+/*   Updated: 2023/03/27 15:20:43 by alvachon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,6 +42,49 @@ void	rewrite(t_cmd data, int i)
 	data.path[i] = '\0';
 }
 
+void	remake_path(t_cmd *data)
+{
+	int	c;
+	int	i;
+
+	c = 0;
+	i = 0;
+	while (c != 3)
+	{
+		if (data->path[i] == '/')
+			c++;
+		i++;
+	}
+	data->input++;
+	while (data->input[0] != '|' || data->input[0] != '<' || \
+		data->input[0] != '>')
+	{
+		if (data->input[0] == '\0')
+			break ;
+		data->path[i - 1] = data->input[0];
+		data->input++;
+		i++;
+	}
+	data->path[i] = '\0';
+}
+
+void	hard_path(t_cmd *data)
+{
+	int	i;
+
+	i = 0;
+	while (data->input[0] != '|' || data->input[0] != '<' || \
+		data->input[0] != '>')
+	{
+		if (data->input[0] == '\0')
+			break ;
+		data->path[i] = data->input[0];
+		data->input++;
+		i++;
+	}
+	data->path[i] = '\0';
+}
+
 void	keep_user(t_cmd data)
 {
 	int	c;
@@ -66,9 +109,9 @@ int	z_cd(t_cmd data, char **env)
 	i = 0;
 	if (strcmp(data.opt, "BACK") == 0)
 		rewrite(data, delete_last(data));
-	if (strcmp(data.opt, "STAY") == 0)
+	if (strcmp(data.opt, "STAY") == 0 || strcmp(data.opt, "FIND") == 0)
 		data.path = data.path;
-	if (strcmp(data.opt, "HOME") == 0) /* ~ = Home* (i.e. Users/alvachon). ~ doit être formatté comme suis : ~/[...], sinon on le gère comme '~' plutôt que Home.*/
+	if (strcmp(data.opt, "HOME") == 0)
 		keep_user(data);
 	/*if (strcmp(data.opt, "DIRECT") == 0)
 		data.path = data.print;*/

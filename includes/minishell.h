@@ -6,7 +6,7 @@
 /*   By: alvachon <alvachon@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/02 12:06:16 by fboulang          #+#    #+#             */
-/*   Updated: 2023/03/27 09:41:51 by alvachon         ###   ########.fr       */
+/*   Updated: 2023/03/27 14:55:17 by alvachon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -130,7 +130,9 @@ void					keep_flag_delim(t_cmd data, int i);
 int						delete_last(t_cmd data);
 void					rewrite(t_cmd data, int i);
 void					keep_user(t_cmd data);
+void					remake_path(t_cmd *data);
 int						z_cd(t_cmd data, char **env);
+void					hard_path(t_cmd *data);
 
 /*z_echo.c*/
 void					z_echo(t_cmd data, char **env);
