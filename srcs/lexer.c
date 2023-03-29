@@ -19,15 +19,15 @@ int	builtincheck(t_cmd data, char **env)
 {
 	int	r;
 	
-	r = 0
+	r = 0;
 	if (ft_strncmp(data.built, "echo", 5) == 0)
-		r = z_echo(data, g_data.env);
+		z_echo(data, g_data.env);
 	else if (ft_strncmp(data.built, "cd", 3) == 0)
 		r = z_cd(data, g_data.env);
 	else if (ft_strncmp(data.built, "pwd", 4) == 0)
 		z_pwd(g_data.env);
 	else if (ft_strncmp(data.built, "export", 7) == 0)
-		z_export(data.rawinput, g_data.env);
+		z_export(data.input, g_data.env);
 	else if (ft_strncmp(data.built, "unset", 6) == 0)
 		z_unset(data.rawinput, g_data.env);
 	else if (ft_strncmp(data.built, "env", 4) == 0)
