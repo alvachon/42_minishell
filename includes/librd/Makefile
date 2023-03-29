@@ -31,7 +31,7 @@ PACKAGE_TARNAME = readline
 srcdir = .
 
 top_srcdir = .
-BUILD_DIR = /Users/alvachon/Documents/minishell/includes/librd
+BUILD_DIR = .
 
 INSTALL = /usr/bin/install -c
 INSTALL_PROGRAM = ${INSTALL}

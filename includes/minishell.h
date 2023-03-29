@@ -58,6 +58,7 @@ typedef struct s_cmd
 	char				*redir_input;
 	char				*flag_delim;
 	char				*path;
+	char				*rawinput;
 }						t_cmd;
 typedef struct s_data
 {
@@ -141,5 +142,6 @@ int						z_pwd(char **env);
 /*z_unset.c*/
 int						z_unset(char *str, char **env);
 char					**env_unset(char *str, char **env);
+int						ft_unsetcomp(const char *str, char *var);
 
 #endif

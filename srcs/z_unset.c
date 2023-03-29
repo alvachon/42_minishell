@@ -14,17 +14,21 @@
 
 int	z_unset(char *str, char **env)
 {
-	int	i;
-	int	j;
+	int		i;
+	int		j;
+	char	**temp;
 
 	i = 0;
 	j = 0;
-	while (env[i] && ft_strncmp(str, env[i], ft_strlen(str)) != 0)
+	temp = ft_split(str, ' ');
+	while (env[i] && ft_strncmp(temp[1], env[i], ft_strlen(temp[1])) != 0)
 		i++;
 	if (env[i] == NULL)
 		return (0);
 	else
-		env = env_unset(str, env);
+	{
+		g_data.env = env_unset(temp[1], g_data.env);
+	}
 	return (errno);
 }
 
@@ -42,16 +46,18 @@ char	**env_unset(char *str, char **env)
 	i = 0;
 	while (env[i] != NULL)
 	{
-		if (ft_strncmp(str, env[i], ft_strlen(str)) == 0)
+		if (ft_unsetcomp(str, env[i]) == 0)
 		{
-			free(env[i]);
+			//free(env[i]);
 			i++;
 		}
-		ft_memmove(buff[j], env[i], ft_strlen(env[i]));
-		free(env[i]);
+		if (env[i] != NULL)
+			buff[j] = ft_strdup(env[i]);
+		else
+			return (buff);
+		//free(env[i]);
 		i++;
 		j++;
 	}
-	free(env);
 	return (buff);
 }

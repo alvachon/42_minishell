@@ -1,27 +1,34 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   z_env.c                                            :+:      :+:    :+:   */
+/*   utils_unport.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: alvachon <alvachon@student.42.fr>          +#+  +:+       +#+        */
+/*   By: fboulang <fboulang@42student.com>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/03/10 10:56:22 by fboulang          #+#    #+#             */
-/*   Updated: 2023/03/22 15:21:54 by alvachon         ###   ########.fr       */
+/*   Created: 2023/03/28 11:57:15 by fboulang          #+#    #+#             */
+/*   Updated: 2023/03/28 11:57:17 by fboulang         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
-
 #include "../includes/minishell.h"
 
-int	z_env(char **env)
+int	ft_unsetcomp(const char *str, char *var)
 {
-	int	i;
+	int				i;
+	int				j;
+	unsigned char	*a;
+	unsigned char	*b;
 
+	a = (unsigned char *)str;
+	b = (unsigned char *)var;
+	j = ft_strlen(str);
 	i = 0;
-	(void)env;
-	while (g_data.env[i] != NULL)
+	while (i < j)
 	{
-		printf("%s\n", g_data.env[i]);
+		if (a[i] != b[i])
+			return (1);
 		i++;
 	}
-	return (errno);
+	if (var[i] == '=')
+		return (0);
+	return(1);
 }

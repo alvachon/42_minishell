@@ -15,14 +15,16 @@
 int	z_export(char *str, char **env)
 {
 	int	i;
+	char	**temp;
 
 	i = 0;
-	while (env[i] && ft_strncmp(env[i], str, ft_strlen(str)) != 0)
+	temp = ft_split(str, ' ');
+	while (env[i] && ft_strncmp(env[i], temp[1], ft_strlen(str)) != 0)
 		i++;
 	if (env[i] == NULL)
-		env = export_env(str, env);
+		g_data.env = export_env(temp[1], env);
 	else
-		env[i] = new_env_var(str, env[i]);
+		env[i] = new_env_var(temp[1], env[i]);
 	return (errno);
 }
 
@@ -38,18 +40,20 @@ char	**export_env(char *str, char **env)
 	i = 0;
 	while (env[i])
 	{
-		ft_memmove(buff[i], env[i], ft_strlen(env[i]));
-		free(env[i]);
+		buff[i] = ft_strdup(env[i]);
+		printf("%s\n", buff[i]);
+		//free(env[i]);
 		i++;
 	}
-	buff[i] = str;
+	buff[i] = ft_strdup(str);
+	printf("%s\n", buff[i]);
 	//free(env);
 	return (buff);
 }
 
 char	*new_env_var(char *str, char *var)
 {
-	free(var);
+	//free(var);
 	var = ft_strdup(str);
 	return (var);
 }
