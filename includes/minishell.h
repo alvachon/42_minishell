@@ -6,7 +6,7 @@
 /*   By: alvachon <alvachon@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/02 12:06:16 by fboulang          #+#    #+#             */
-/*   Updated: 2023/03/29 14:32:57 by alvachon         ###   ########.fr       */
+/*   Updated: 2023/03/29 15:38:35 by alvachon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,7 +87,7 @@ typedef struct s_data
 t_data					g_data;
 
 /*lexer.c*/
-int						builtincheck(t_cmd data, char **env);
+int						builtincheck(t_cmd *data, char **env);
 int						lexer(char *input, char **env);
 
 /*minishell.c*/
@@ -97,7 +97,7 @@ int						shell_process(char **env);
 void					keep_print(t_cmd *data);
 void					keep_option(t_cmd *data);
 void					keep_builtin(int i, t_cmd *data);
-t_cmd					parse(t_cmd data);
+void					parse(t_cmd *data);
 void					trim_guil(t_cmd *data, char c);
 
 /*terminal_signal.c*/
@@ -137,15 +137,15 @@ char					*scan_end(t_cmd *data, int trig);
 void					keep_flag_delim(t_cmd data, int i);
 
 /*z_cd*/
-int						delete_last(t_cmd data);
-void					rewrite(t_cmd data, int i);
-void					keep_user(t_cmd data);
+int						delete_last(t_cmd *data);
+void					rewrite(t_cmd *data, int i);
+void					keep_user(t_cmd *data);
 void					remake_path(t_cmd *data);
-int						z_cd(t_cmd data, char **env);
+int						z_cd(t_cmd *data, char **env);
 void					hard_path(t_cmd *data);
 
 /*z_echo.c*/
-void					z_echo(t_cmd data, char **env);
+void					z_echo(t_cmd *data);
 
 /*z_env.c*/
 int						z_env(char **env);

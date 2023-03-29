@@ -6,7 +6,7 @@
 /*   By: alvachon <alvachon@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/26 18:26:22 by alvachon          #+#    #+#             */
-/*   Updated: 2023/03/29 14:35:24 by alvachon         ###   ########.fr       */
+/*   Updated: 2023/03/29 15:25:55 by alvachon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,20 +21,20 @@ void	trim_guil(t_cmd *data, char c)
 
 	file = data->input;
 	i = 0;
-	if (file[i] == c)
+	if (file[0] == c)
 	{
-		i++;
+		file++;
 		while (file[i] != c)
 			i++;
 	}
 	else
 	{
-		while (file[i] != c || file[i] != '\0')
+		while (file[i] != c)
 			i++;
 	}
 	data->print = file;
-	printf("%s\n", data->print);
 	data->print[i] = '\0';
+	i++;
 	while (i)
 	{
 		data->input++;

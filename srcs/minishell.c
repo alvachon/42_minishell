@@ -6,7 +6,7 @@
 /*   By: alvachon <alvachon@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/31 13:27:55 by alvachon          #+#    #+#             */
-/*   Updated: 2023/03/29 11:39:58 by alvachon         ###   ########.fr       */
+/*   Updated: 2023/03/29 15:27:54 by alvachon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,6 @@ int	shell_process(char **env)
 		}
 		add_history(cmd);
 		free(cmd);
-		printf("-\n");
 		g_data.shell_state = SH_READ;
 	}
 	return (0);

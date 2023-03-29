@@ -6,7 +6,7 @@
 /*   By: alvachon <alvachon@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/23 15:17:01 by alvachon          #+#    #+#             */
-/*   Updated: 2023/03/29 13:55:10 by alvachon         ###   ########.fr       */
+/*   Updated: 2023/03/29 15:43:45 by alvachon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,5 +36,5 @@ void	keep_redir_input(t_cmd *data, int i)
 	}
 	data->input = wordtrim(data->input, i);
 	data->input = ltrim(data->input);
-	//printf("%s\n", data->redir_input);
+	printf("redir input %s\n", data->redir_input);
 }

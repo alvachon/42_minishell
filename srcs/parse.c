@@ -6,7 +6,7 @@
 /*   By: alvachon <alvachon@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/23 15:14:08 by alvachon          #+#    #+#             */
-/*   Updated: 2023/03/29 14:35:04 by alvachon         ###   ########.fr       */
+/*   Updated: 2023/03/29 15:41:58 by alvachon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,20 +65,16 @@ void	keep_builtin(int i, t_cmd *data)
 	data->input = ltrim(data->input);
 }
 
-t_cmd	parse(t_cmd data)
+void	parse(t_cmd *data)
 {
 	int	i;
 
 	i = 0;
-	while (1)
-	{
-		keep_builtin(i, &data);
-		keep_option(&data);
-		keep_print(&data);
-		keep_redir_input(&data, i);
+	keep_builtin(i, data);
+	keep_option(data);
+	keep_print(data);
+	keep_redir_input(data, i);
 		/*input = keep_flag_delim(input, i);
 		//input = keep_delimiter(input, i);
 		printf("parse : %s\n", input);*/
-		return (data);
-	}
 }
