@@ -16,7 +16,7 @@
  DATA- Struct construction of shared information */
 void	set_global(char **env)
 {
-	g_data.env = env;
+	g_data.env = ft_setenv(env); /* malloqué un tableau ici pour mieux intéragir avec mes foncitons*/
 	g_data.shell_state = SH_READ;
 	g_data.built_path = set("PATH=", 5);
 	g_data.pwd = set("PWD=", 4);
@@ -58,4 +58,21 @@ void	sys_msg(char *reason, int code)
 		perror(reason);
 		exit(EXIT_FAILURE);
 	}
+}
+
+char	**ft_setenv(char **env)
+{
+	int		i;
+	int		j;
+	char	**buff;
+	
+	i = 0;
+	j = -1;
+	while (env[i])
+		i++;
+	buff = ft_calloc(i + 1, sizeof(char *));
+	while (++j < i)
+		buff[j] = ft_strdup(env[j]);
+	buff[j] = NULL;
+	return (buff);
 }

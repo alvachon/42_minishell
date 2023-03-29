@@ -99,6 +99,7 @@ void					set_global(char **env);
 void					error_msg(char *cmd);
 void					exit_msg(char *cmd);
 void					sys_msg(char *reason, int code);
+char					**ft_setenv(char **env);
 
 /*utils_input.c*/
 int						wordlen(char *input, int i);
@@ -132,16 +133,17 @@ void					z_echo(t_cmd data, char **env);
 int						z_env(char **env);
 
 /*z_export*/
-int						z_export(char *str, char **env);
-char					**export_env(char *str, char **env);
-char					*new_env_var(char *str, char *var);
+int						z_export(char *str);
+char					**export_env(char *str);
+char					*new_env_var(char *str, int pos);
+int						ft_exportcomp(const char *str, char *var);
 
 /*z_pwd.c*/
 int						z_pwd(char **env);
 
 /*z_unset.c*/
-int						z_unset(char *str, char **env);
-char					**env_unset(char *str, char **env);
+int						z_unset(char *str);
+char					**env_unset(char *str);
 int						ft_unsetcomp(const char *str, char *var);
 
 #endif

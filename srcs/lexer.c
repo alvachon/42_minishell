@@ -25,11 +25,11 @@ int	builtincheck(t_cmd data, char **env)
 	else if (ft_strncmp(data.built, "cd", 3) == 0)
 		r = z_cd(data, g_data.env);
 	else if (ft_strncmp(data.built, "pwd", 4) == 0)
-		z_pwd(g_data.env);
+		z_pwd(env);
 	else if (ft_strncmp(data.built, "export", 7) == 0)
-		z_export(data.input, g_data.env);
+		z_export(data.print);
 	else if (ft_strncmp(data.built, "unset", 6) == 0)
-		z_unset(data.rawinput, g_data.env);
+		z_unset(data.print);
 	else if (ft_strncmp(data.built, "env", 4) == 0)
 		z_env(g_data.env);
 	return (0);

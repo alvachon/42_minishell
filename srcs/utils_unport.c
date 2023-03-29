@@ -32,3 +32,25 @@ int	ft_unsetcomp(const char *str, char *var)
 		return (0);
 	return(1);
 }
+
+int	ft_exportcomp(const char *str, char *var)
+{
+	int				i;
+	int				j;
+	unsigned char	*a;
+	unsigned char	*b;
+
+	a = (unsigned char *)str;
+	b = (unsigned char *)var;
+	j = ft_strlen(str);
+	i = 0;
+	while (i < j && a[i] != '=')
+	{
+		if (a[i] != b[i])
+			return (1);
+		i++;
+	}
+	if (var[i] == '=')
+		return (0);
+	return(1);
+}

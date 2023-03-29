@@ -12,27 +12,25 @@
 
 #include "../includes/minishell.h"
 
-int	z_unset(char *str, char **env)
+int	z_unset(char *str)
 {
-	int		i;
-	int		j;
-	char	**temp;
+	int	i;
+	int	j;
 
 	i = 0;
 	j = 0;
-	temp = ft_split(str, ' ');
-	while (env[i] && ft_strncmp(temp[1], env[i], ft_strlen(temp[1])) != 0)
+	while (g_data.env[i] && ft_strncmp(str, g_data.env[i], ft_strlen(str)) != 0)
 		i++;
-	if (env[i] == NULL)
-		return (0);
+	if (g_data.env[i] == NULL)
+		return (errno);
 	else
 	{
-		g_data.env = env_unset(temp[1], g_data.env);
+		g_data.env = env_unset(str);
 	}
 	return (errno);
 }
 
-char	**env_unset(char *str, char **env)
+char	**env_unset(char *str)
 {
 	char	**buff;
 	int		i;
@@ -40,22 +38,22 @@ char	**env_unset(char *str, char **env)
 
 	i = 0;
 	j = 0;
-	while (env[i] != NULL)
+	while (g_data.env[i] != NULL)
 		i++;
-	buff = ft_calloc(i - 1, sizeof(char *));
+	buff = ft_calloc(i, sizeof(char *));
 	i = 0;
-	while (env[i] != NULL)
+	while (g_data.env[i] != NULL)
 	{
-		if (ft_unsetcomp(str, env[i]) == 0)
+		if (ft_unsetcomp(str, g_data.env[i]) == 0)
 		{
-			//free(env[i]);
+			free(g_data.env[i]);
 			i++;
 		}
-		if (env[i] != NULL)
-			buff[j] = ft_strdup(env[i]);
+		if (g_data.env[i] != NULL)
+			buff[j] = ft_strdup(g_data.env[i]);
 		else
 			return (buff);
-		//free(env[i]);
+		free(g_data.env[i]);
 		i++;
 		j++;
 	}

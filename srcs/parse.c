@@ -55,11 +55,11 @@ void	keep_builtin(int i, t_cmd *data)
 	data->input = ltrim(data->input);
 	i = wordlen(data->input, i);
 	str = ft_substr(data->input, 0, i);
-	str = ulstr(str);
+	str = ulstr(str);//echo seulement
 	str = trimchar(str, 32);
 	data->built = str;
 	data->input = wordtrim(data->input, i);
-	data->input = ltrim(data->input);
+	data->input = ltrim(data->input); //echo hello < world -> must not work.
 }
 
 t_cmd	parse(t_cmd data)
