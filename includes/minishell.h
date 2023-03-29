@@ -6,15 +6,23 @@
 /*   By: alvachon <alvachon@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/02 12:06:16 by fboulang          #+#    #+#             */
-/*   Updated: 2023/03/27 14:55:17 by alvachon         ###   ########.fr       */
+/*   Updated: 2023/03/29 14:32:57 by alvachon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef MINISHELL_H
 # define MINISHELL_H
 
-/* [0]BUILT [1]OPTION [2]REDIRECTION [3]APPEND [4]INFILE
- [5]PIPE [6]REDIRECTION [7]APPEND [8]OUTFILE */
+/*
+*[0]BUILT
+*[1]OPTION
+*[2]REDIRECTION
+![3]APPEND
+4]INFILE
+[5]PIPE
+[6]REDIRECTION
+[7]APPEND
+[8]OUTFILE */
 
 # include <stdio.h>
 # include "history.h"
@@ -86,10 +94,11 @@ int						lexer(char *input, char **env);
 int						shell_process(char **env);
 
 /*parse.c*/
-void					keep_print(int i, t_cmd *data);
+void					keep_print(t_cmd *data);
 void					keep_option(t_cmd *data);
 void					keep_builtin(int i, t_cmd *data);
 t_cmd					parse(t_cmd data);
+void					trim_guil(t_cmd *data, char c);
 
 /*terminal_signal.c*/
 void					handle_sig(int sign);
@@ -115,14 +124,15 @@ int						scan(char *input, char c);
 int						chartrim(char *input, char c);
 
 /*utils_trim.c*/
-void					trim_guil(t_cmd *data, char c, int trig);
 char					*ulstr(char *str);
 char					*ltrim(char *input);
 char					*rtrim(char *str);
 char					*trimchar(char *file, char c);
+int						sizebetweenchar(char *file, char c);
+int						len_until_trigger(char *file, char c, int j);
 
 /*work_in_progress.c*/
-void					keep_redir_input(t_cmd data, int i);
+void					keep_redir_input(t_cmd *data, int i);
 char					*scan_end(t_cmd *data, int trig);
 void					keep_flag_delim(t_cmd data, int i);
 

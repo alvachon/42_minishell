@@ -6,7 +6,7 @@
 /*   By: alvachon <alvachon@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/26 18:26:22 by alvachon          #+#    #+#             */
-/*   Updated: 2023/03/27 09:41:49 by alvachon         ###   ########.fr       */
+/*   Updated: 2023/03/29 14:35:24 by alvachon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,26 +14,32 @@
 
 /*
 1. Function to trim " " ou ' ' with their own specification*/
-void	trim_guil(t_cmd *data, char c, int trig)
+void	trim_guil(t_cmd *data, char c)
 {
 	char	*file;
+	int		i;
 
-	file = scan_end(data, trig);
-	if (trig == 1)
+	file = data->input;
+	i = 0;
+	if (file[i] == c)
 	{
-		file = trimchar(file, 34);
-		file = trimchar(file, 39);
+		i++;
+		while (file[i] != c)
+			i++;
 	}
-	if (scan(file, 34) == 1)
+	else
 	{
-		if (scan(file, 39) == 1)
-		{
-			data->print = file;
-			return ;
-		}
+		while (file[i] != c || file[i] != '\0')
+			i++;
 	}
-	if (trig == 0)
-		data->print = trimchar(file, c);
+	data->print = file;
+	printf("%s\n", data->print);
+	data->print[i] = '\0';
+	while (i)
+	{
+		data->input++;
+		i--;
+	}
 }
 
 /*
@@ -101,4 +107,35 @@ char	*trimchar(char *file, char c)
 	}
 	copy[j] = '\0';
 	return (copy);
+}
+
+int	len_until_trigger(char *file, char c, int j)
+{
+	int i;
+
+	i = 0;
+	while (j > 0)
+	{
+		if (file[i] == c)
+			j--;
+		i++;
+	}
+	return (i);
+}
+/*
+Versatile function to delete a specifique character of the input*/
+int	sizebetweenchar(char *file, char c)
+{
+	int		i;
+	int		j;
+
+	i = 0;
+	j = 0;
+	while (file[i])
+	{
+		if (file[i] == c)
+			j++;
+		i++;
+	}
+	return (j);
 }
