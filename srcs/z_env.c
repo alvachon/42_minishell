@@ -15,12 +15,14 @@
 int	z_env(char **env)
 {
 	int	i;
+	int	j;
 
 	i = 0;
-	while (env[i] != NULL)
-	{
-		printf("%s\n", env[i]);
+	j = -1;
+	(void)env;
+	while (g_data.env[i] != NULL)
 		i++;
-	}
+	while (++j < i)
+		printf("%s\n", env[j]);
 	return (errno);
 }

@@ -6,7 +6,7 @@
 /*   By: alvachon <alvachon@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/02 12:06:16 by fboulang          #+#    #+#             */
-/*   Updated: 2023/03/29 15:38:35 by alvachon         ###   ########.fr       */
+/*   Updated: 2023/03/29 16:08:41 by alvachon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -115,6 +115,7 @@ void					set_global(char **env);
 void					error_msg(char *cmd);
 void					exit_msg(char *cmd);
 void					sys_msg(char *reason, int code);
+char					**ft_setenv(char **env);
 
 /*utils_input.c*/
 int						wordlen(char *input, int i);
@@ -130,6 +131,10 @@ char					*rtrim(char *str);
 char					*trimchar(char *file, char c);
 int						sizebetweenchar(char *file, char c);
 int						len_until_trigger(char *file, char c, int j);
+
+/**/
+int						ft_unsetcomp(const char *str, char *var);
+int						ft_exportcomp(const char *str, char *var);
 
 /*work_in_progress.c*/
 void					keep_redir_input(t_cmd *data, int i);
@@ -151,15 +156,15 @@ void					z_echo(t_cmd *data);
 int						z_env(char **env);
 
 /*z_export*/
-int						z_export(char *str, char **env);
-char					**export_env(char *str, char **env);
-char					*new_env_var(char *str, char *var);
+int						z_export(char *str);
+char					**export_env(char *str);
+char					*new_env_var(char *str, int pos);
 
 /*z_pwd.c*/
 int						z_pwd(char **env);
 
 /*z_unset.c*/
-int						z_unset(char *str, char **env);
-char					**env_unset(char *str, char **env);
+int						z_unset(char *str);
+char					**env_unset(char *str);
 
 #endif

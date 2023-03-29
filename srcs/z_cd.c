@@ -6,7 +6,7 @@
 /*   By: alvachon <alvachon@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: Invalid date        by                   #+#    #+#             */
-/*   Updated: 2023/03/29 15:34:09 by alvachon         ###   ########.fr       */
+/*   Updated: 2023/03/29 16:28:00 by alvachon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,7 @@ int	delete_last(t_cmd *data)
 
 	i = 0;
 	str = data->path;
+	printf("last : %s\n", data->path);
 	while (str[i])
 		i++;
 	c = i;

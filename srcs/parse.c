@@ -6,7 +6,7 @@
 /*   By: alvachon <alvachon@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/23 15:14:08 by alvachon          #+#    #+#             */
-/*   Updated: 2023/03/29 15:41:58 by alvachon         ###   ########.fr       */
+/*   Updated: 2023/03/29 16:29:41 by alvachon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,9 +35,15 @@ void	keep_option(t_cmd *data)
 		keep_option(data);
 	}
 	if (strcmp(data->built, "cd") == 0 && strncmp(data->input, "..", 2) == 0)
+	{
 		option(data, "BACK", 1, 2);
+		return ;
+	}
 	if (strcmp(data->built, "cd") == 0 && strncmp(data->input, ".", 1) == 0)
+	{
 		option(data, "STAY", 1, 1);
+		return ;
+	}
 	if (strcmp(data->built, "cd") == 0 && strncmp(data->input, "./", 2) == 0)
 	{
 		option(data, "STAY", 1, 2);
@@ -48,7 +54,7 @@ void	keep_option(t_cmd *data)
 	if (strcmp(data->built, "cd") == 0 && strncmp(data->input, "/", 1) == 0)
 		option(data, "DIRECT", 1, 0);
 	else if (strcmp(data->built, "cd") == 0)
-		option(data, "HOME", 1, 0);
+		option(data, "HOME", 1, 0);//bug here
 }
 
 void	keep_builtin(int i, t_cmd *data)
@@ -58,11 +64,11 @@ void	keep_builtin(int i, t_cmd *data)
 	data->input = ltrim(data->input);
 	i = wordlen(data->input, i);
 	str = ft_substr(data->input, 0, i);
-	str = ulstr(str);
+	str = ulstr(str);//echo seulement
 	str = trimchar(str, 32);
 	data->built = str;
 	data->input = wordtrim(data->input, i);
-	data->input = ltrim(data->input);
+	data->input = ltrim(data->input); //echo hello < world -> must not work.
 }
 
 void	parse(t_cmd *data)
