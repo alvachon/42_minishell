@@ -6,7 +6,7 @@
 /*   By: alvachon <alvachon@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/26 18:35:32 by alvachon          #+#    #+#             */
-/*   Updated: 2023/03/26 19:20:21 by alvachon         ###   ########.fr       */
+/*   Updated: 2023/03/31 12:53:30 by alvachon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,7 +65,7 @@ char	**ft_setenv(char **env)
 	int		i;
 	int		j;
 	char	**buff;
-	
+
 	i = 0;
 	j = -1;
 	while (env[i])
