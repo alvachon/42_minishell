@@ -15,11 +15,15 @@
 
 int	z_pwd(char **env)
 {
-	int	i;
+	int		i;
+	char	*temp;
 
 	i = 0;
-	while (env[i] && ft_strncmp(env[i], "PWD=", 4) != 0)
+	(void)env;
+	while (env[i] && ft_strncmp(g_data.env[i], "PWD=", 4) != 0)
 		i++;
-	printf("%s\n", ft_substr(env[i], 4, ft_strlen(env[i])));
+	temp = ft_substr(g_data.env[i], 4, ft_strlen(env[i]));
+	printf("%s\n", temp);
+	free (temp);
 	return (errno);
 }
