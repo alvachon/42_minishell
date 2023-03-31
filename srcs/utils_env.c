@@ -24,8 +24,13 @@ char	*set(char *var, int siz_var)
 	while (ft_strncmp(var, g_data.env[i], siz_var) != 0)
 		i++;
 	cmd = ft_split(g_data.env[i], ':');
-	file = cmd[0];
-	file = ft_substr(file, siz_var, ft_strlen(file));
+	file = ft_substr(cmd[0], siz_var, ft_strlen(file));
+	i = 0;
+	while (cmd[i] != NULL)
+	{
+		free(cmd[i]);
+		i++;
+	}
 	free(cmd);
 	return (file);
 }
