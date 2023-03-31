@@ -72,7 +72,7 @@ int	z_cd(t_cmd data, char **env)
 		keep_user(data);
 	/*if (strcmp(data.opt, "DIRECT") == 0)
 		data.path = data.print;*/
-	chdir(data.path);
+	chdir(data.print);
 	if (data.path[0] == '\0')
 		data.path[0] = '/';
 	while (env[i] && ft_strncmp(env[i], "PWD=", 4) != 0)

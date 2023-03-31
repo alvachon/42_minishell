@@ -14,20 +14,20 @@
 
 void	keep_print(int i, t_cmd *data)
 {
-	if ((*data).input[0] != '<' || (*data).input[0] != '>'
-		|| (*data).input[0] != '|')
+	if (data->input[0] != '<' || data->input[0] != '>'
+		|| data->input[0] != '|')
 	{
-		if ((*data).input[0] == 34)
+		if (data->input[0] == 34)
 			trim_guil(&data, 34, 0);
-		else if ((*data).input[0] == 39)
+		else if (data->input[0] == 39)
 			trim_guil(&data, 39, 0);
 		else
 			trim_guil(&data, 0, 1);
 	}
-	i = ft_strlen((*data).print);
+	i = ft_strlen(data->print);
 	while (i)
 	{
-		(*data).input++;
+		data->input++;
 		i--;
 	}
 }
@@ -66,7 +66,8 @@ void	keep_builtin(int i, t_cmd *data)
 	str = ft_substr(data->input, 0, i);
 	str = ulstr(str);//echo seulement
 	str = trimchar(str, 32);
-	data->built = str;
+	data->built = ft_strdup(str);
+	free (str);
 	data->input = wordtrim(data->input, i);
 	data->input = ltrim(data->input); //echo hello < world -> must not work.
 }

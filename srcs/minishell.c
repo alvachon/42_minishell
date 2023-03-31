@@ -25,11 +25,11 @@ int	shell_process(char **env)
 			ctrl_c_eof();
 		if (cmd[0] == '\0' || ft_strcmp(cmd, "\n") == 0)
 			continue ;
-		else if (lexer(cmd, env) == 1)
+		else if (lexer(cmd, env) > 0)
 		{
 			free(cmd);
 			g_data.shell_state = SH_READ;
-			return (1);
+			return (errno);
 		}
 		add_history(cmd);
 		free(cmd);
@@ -50,7 +50,7 @@ int	main(int ac, char **av, char **env)
 		while (FOREGROUND_JOB)
 		{
 			i = shell_process(env);
-			if (i == 1)
+			if (i > 0)
 				sys_msg("Usage: Lexer\n", 2);
 			else if (i == 0)
 				sys_msg("Usage: Pipe job\n", 2);

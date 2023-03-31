@@ -15,6 +15,9 @@
 int	z_echo(t_cmd data, char **env)
 {
 	(void)env;
-	printf("%s\n", data.print);
+	if (ft_strncmp(data.opt, "-n", 2) == 0)
+		printf("%s", data.print);
+	else
+		printf("%s\n", data.print);
 	return (errno);
 }

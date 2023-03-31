@@ -11,15 +11,24 @@
 /* ************************************************************************** */
 #include "../includes/minishell.h"
 
-int	z_exit(int status)
+int	z_exit(t_cmd data, int status)
 {
+	int	i;
+
+	i = 0;
+	if (!status)
+		status = 0;
 	free(g_data.built_path);
-	while (*g_data.env)
+	while (g_data.env[i] != NULL)
 	{
-		free(*g_data.env);
-		*g_data.env++;
+		free(g_data.env[i]);
+		i++;
 	}
-	free(g_data.pwd);
-	free(g_data.oldpwd);
-	return (status);
+	free (data.print);
+	free (data.input);
+	free (data.built);
+	free (g_data.pwd);
+	free (g_data.env);
+	free (data.path);
+	exit (status);
 }
