@@ -6,7 +6,7 @@
 /*   By: alvachon <alvachon@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/15 18:14:25 by alvachon          #+#    #+#             */
-/*   Updated: 2023/03/26 19:19:45 by alvachon         ###   ########.fr       */
+/*   Updated: 2023/03/31 13:35:32 by alvachon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ int ft_error(int code)
 int	builtincheck(t_cmd data, char **env)
 {
 	int	r;
-	
+
 	r = 0;
 	if (ft_strncmp(data.built, "echo", 5) == 0)
 		r = z_echo(data, g_data.env);

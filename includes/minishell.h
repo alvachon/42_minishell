@@ -6,7 +6,7 @@
 /*   By: alvachon <alvachon@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/02 12:06:16 by fboulang          #+#    #+#             */
-/*   Updated: 2023/03/26 19:21:42 by alvachon         ###   ########.fr       */
+/*   Updated: 2023/03/31 13:38:06 by alvachon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,8 +92,9 @@ void					init_shell(t_terminal *minishell, char **env);
 
 /*utils_env.c*/
 char					*set(char *var, int siz_var);
-void					option(t_cmd *data, char *option, int trigger,
-							int trim_size);
+void					option(t_cmd *data, char *option, int trigger, int trim_size);
+void					hard_path(t_cmd *data);
+void					remake_path(t_cmd *data);
 
 /*utils_global.c*/
 void					set_global(char **env);
@@ -123,8 +124,8 @@ void					keep_flag_delim(t_cmd data, int i);
 
 /*z_cd*/
 int						delete_last(t_cmd data);
-void					rewrite(t_cmd data, int i);
-void					keep_user(t_cmd data);
+char					*rewrite(t_cmd *data, int i);
+void					keep_user(t_cmd *data);
 int						z_cd(t_cmd data, char **env);
 
 /*z_echo.c*/

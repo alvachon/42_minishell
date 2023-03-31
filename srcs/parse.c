@@ -6,7 +6,7 @@
 /*   By: alvachon <alvachon@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/23 15:14:08 by alvachon          #+#    #+#             */
-/*   Updated: 2023/03/31 13:00:36 by alvachon         ###   ########.fr       */
+/*   Updated: 2023/03/31 13:23:47 by alvachon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,13 +48,21 @@ void	keep_option(t_cmd *data)
 		return ;
 	}
 	if (strcmp(data->built, "cd") == 0 && strncmp(data->input, ".", 1) == 0)
+	{
 		option(data, "STAY", 1, 1);
+		return ;
+	}
+	if (strcmp(data->built, "cd") == 0 && strncmp(data->input, "./", 2) == 0)
+	{
+		option(data, "STAY", 1, 1);
+		keep_option(data);
+	}
 	if (strcmp(data->built, "cd") == 0 && strncmp(data->input, "~/", 2) == 0)
-		option(data, "FIND", 1, chartrim(data->input, ' '));
+		option(data, "FIND", 1, 0);
 	if (strcmp(data->built, "cd") == 0 && strncmp(data->input, "/", 1) == 0)
 		option(data, "DIRECT", 0, 0);
 	else if (strcmp(data->built, "cd") == 0)
-		option(data, "HOME", 0, 0);
+		option(data, "HOME", 0, 0);//bug here
 }
 
 void	keep_builtin(int i, t_cmd *data)

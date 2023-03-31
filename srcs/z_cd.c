@@ -6,7 +6,7 @@
 /*   By: alvachon <alvachon@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: Invalid date        by                   #+#    #+#             */
-/*   Updated: 2023/03/26 17:48:22 by alvachon         ###   ########.fr       */
+/*   Updated: 2023/03/31 13:42:29 by alvachon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,21 +28,22 @@ int	delete_last(t_cmd data)
 	return (c - i);
 }
 
-void	rewrite(t_cmd data, int i)
+char	*rewrite(t_cmd *data, int i)
 {
 	int	j;
 
 	j = 0;
-	while (data.path[j])
+	while (data->path[j])
 		j++;
 	j -= i;
 	i = 0;
 	while (i < j)
 		i++;
-	data.path[i] = '\0';
+	data->path[i] = '\0';
+	return (data->path);
 }
 
-void	keep_user(t_cmd data)
+void	keep_user(t_cmd *data)
 {
 	int	c;
 	int	i;
@@ -51,11 +52,11 @@ void	keep_user(t_cmd data)
 	i = 0;
 	while (c != 3)
 	{
-		if (data.path[i] == '/')
+		if (data->path[i] == '/')
 			c++;
 		i++;
 	}
-	data.path[i - 1] = '\0';
+	data->path[i - 1] = '\0';
 }
 
 int	z_cd(t_cmd data, char **env)
@@ -65,14 +66,15 @@ int	z_cd(t_cmd data, char **env)
 
 	i = 0;
 	if (strcmp(data.opt, "BACK") == 0)
-		rewrite(data, delete_last(data));
-	if (strcmp(data.opt, "STAY") == 0)
+		data.path = rewrite(&data, delete_last(data));
+	if (strcmp(data.opt, "STAY") == 0 || strcmp(data.opt, "FIND") == 0)
 		data.path = data.path;
-	if (strcmp(data.opt, "HOME") == 0) /* ~ = Home* (i.e. Users/alvachon). ~ doit être formatté comme suis : ~/[...], sinon on le gère comme '~' plutôt que Home.*/
-		keep_user(data);
-	/*if (strcmp(data.opt, "DIRECT") == 0)
-		data.path = data.print;*/
-	chdir(data.print);
+	if (strcmp(data.opt, "HOME") == 0)
+		keep_user(&data);
+	/*if (strcmp(data->opt, "DIRECT") == 0)
+		data->path = data->print;*/
+	printf("%s\n", data.path);
+	chdir(data.path);
 	if (data.path[0] == '\0')
 		data.path[0] = '/';
 	while (env[i] && ft_strncmp(env[i], "PWD=", 4) != 0)
