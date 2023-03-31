@@ -22,7 +22,8 @@ SRCS			= $(SRCS_DIR)/lexer.c \
 				  $(SRCS_DIR)/z_export.c \
 				  $(SRCS_DIR)/z_pwd.c \
 				  $(SRCS_DIR)/z_unset.c \
-				  $(SRCS_DIR)/utils_unport.c
+				  $(SRCS_DIR)/utils_unport.c \
+				  $(SRCS_DIR)/z_exit.c
 OBJS 			= $(SRCS:$(SRCS_DIR)/%.c=$(OBJS_DIR)/%.o)
 HDRS_FILE		= minishell.h
 HDRS			= $(addprefix $(INCL_DIR)/, $(HDRS_FILE))

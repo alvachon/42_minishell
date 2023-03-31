@@ -39,6 +39,8 @@ int	builtincheck(t_cmd data, char **env)
 		r = z_unset(data.print);
 	else if (ft_strncmp(data.built, "env", 4) == 0)
 		r = z_env(g_data.env);
+	else if (ft_strncmp(data.built, "exit", 5) == 0)
+		return (z_exit(data, ft_atoi(data.input)));
 	return (ft_error(r));
 }
 
@@ -47,11 +49,11 @@ int	lexer(char *input, char **env)
 	t_cmd	data; /* a changer de nom*/
 	int		i;
 
-	if (ft_strcmp(input, "exit") == 0)
-		exit_msg(input);
+	//if (ft_strcmp(input, "exit") == 0)
+		//exit_msg(input);
 	data.input = input;
 	//data.rawinput = input;
-	data.path = g_data.pwd;
+	data.path = ft_strdup(g_data.pwd);
 	data = parse(data);
 	i = builtincheck(data, env);
 	return (0);

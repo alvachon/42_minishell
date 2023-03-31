@@ -57,5 +57,6 @@ char	**env_unset(char *str)
 		i++;
 		j++;
 	}
+	free (g_data.env);
 	return (buff);
 }

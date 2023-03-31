@@ -147,4 +147,7 @@ int						z_unset(char *str);
 char					**env_unset(char *str);
 int						ft_unsetcomp(const char *str, char *var);
 
+/*z_exit.c*/
+int						z_exit(t_cmd data, int status);
+
 #endif
