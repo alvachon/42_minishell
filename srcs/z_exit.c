@@ -18,17 +18,22 @@ int	z_exit(t_cmd data, int status)
 	i = 0;
 	if (!status)
 		status = 0;
-	free(g_data.built_path);
 	while (g_data.env[i] != NULL)
 	{
 		free(g_data.env[i]);
 		i++;
 	}
-	free (data.print);
-	free (data.input);
-	free (data.built);
+	data_free(&data);
+	free(g_data.env);
 	free (g_data.pwd);
-	free (g_data.env);
-	free (data.path);
 	exit (status);
+}
+
+void	data_free(t_cmd *data)
+{
+	if (data->built)
+		free (data->built);
+	if (data->path)
+		free (data->path);
+	return ;
 }

@@ -149,5 +149,6 @@ int						ft_unsetcomp(const char *str, char *var);
 
 /*z_exit.c*/
 int						z_exit(t_cmd data, int status);
+void					data_free(t_cmd *data);
 
 #endif

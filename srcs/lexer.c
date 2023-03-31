@@ -41,18 +41,16 @@ int	builtincheck(t_cmd data, char **env)
 		r = z_env(g_data.env);
 	else if (ft_strncmp(data.built, "exit", 5) == 0)
 		return (z_exit(data, ft_atoi(data.input)));
+	data_free(&data);
 	return (ft_error(r));
 }
 
 int	lexer(char *input, char **env)
 {
-	t_cmd	data; /* a changer de nom*/
+	t_cmd	data;
 	int		i;
 
-	//if (ft_strcmp(input, "exit") == 0)
-		//exit_msg(input);
 	data.input = input;
-	//data.rawinput = input;
 	data.path = ft_strdup(g_data.pwd);
 	data = parse(data);
 	i = builtincheck(data, env);
