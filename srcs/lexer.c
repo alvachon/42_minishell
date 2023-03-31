@@ -15,24 +15,31 @@
 
 #include "../includes/minishell.h"
 
+int ft_error(int code)
+{
+	if (code > 0)
+		perror("Error:");
+	return (code);
+}
+
 int	builtincheck(t_cmd data, char **env)
 {
 	int	r;
 	
 	r = 0;
 	if (ft_strncmp(data.built, "echo", 5) == 0)
-		z_echo(data, g_data.env);
+		r = z_echo(data, g_data.env);
 	else if (ft_strncmp(data.built, "cd", 3) == 0)
 		r = z_cd(data, g_data.env);
 	else if (ft_strncmp(data.built, "pwd", 4) == 0)
-		z_pwd(env);
+		r = z_pwd(env);
 	else if (ft_strncmp(data.built, "export", 7) == 0)
-		z_export(data.print);
+		r = z_export(data.print);
 	else if (ft_strncmp(data.built, "unset", 6) == 0)
-		z_unset(data.print);
+		r = z_unset(data.print);
 	else if (ft_strncmp(data.built, "env", 4) == 0)
-		z_env(g_data.env);
-	return (0);
+		r = z_env(g_data.env);
+	return (ft_error(r));
 }
 
 int	lexer(char *input, char **env)

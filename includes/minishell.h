@@ -72,6 +72,7 @@ typedef struct s_data
 t_data					g_data;
 
 /*lexer.c*/
+int 					ft_error(int code);
 int						builtincheck(t_cmd data, char **env);
 int						lexer(char *input, char **env);
 
@@ -127,7 +128,7 @@ void					keep_user(t_cmd data);
 int						z_cd(t_cmd data, char **env);
 
 /*z_echo.c*/
-void					z_echo(t_cmd data, char **env);
+int						z_echo(t_cmd data, char **env);
 
 /*z_env.c*/
 int						z_env(char **env);
