@@ -6,7 +6,7 @@
 /*   By: alvachon <alvachon@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: Invalid date        by                   #+#    #+#             */
-/*   Updated: 2023/03/31 13:42:29 by alvachon         ###   ########.fr       */
+/*   Updated: 2023/03/31 13:58:08 by alvachon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,6 +65,7 @@ int	z_cd(t_cmd data, char **env)
 	int		i;
 
 	i = 0;
+	printf("%s\n", data.path);
 	if (strcmp(data.opt, "BACK") == 0)
 		data.path = rewrite(&data, delete_last(data));
 	if (strcmp(data.opt, "STAY") == 0 || strcmp(data.opt, "FIND") == 0)
@@ -73,7 +74,6 @@ int	z_cd(t_cmd data, char **env)
 		keep_user(&data);
 	/*if (strcmp(data->opt, "DIRECT") == 0)
 		data->path = data->print;*/
-	printf("%s\n", data.path);
 	chdir(data.path);
 	if (data.path[0] == '\0')
 		data.path[0] = '/';

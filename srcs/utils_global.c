@@ -6,7 +6,7 @@
 /*   By: alvachon <alvachon@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/26 18:35:32 by alvachon          #+#    #+#             */
-/*   Updated: 2023/03/31 12:53:30 by alvachon         ###   ########.fr       */
+/*   Updated: 2023/03/31 14:00:30 by alvachon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,11 +21,11 @@ void	set_global(char **env)
 	//g_data.built_path = set("PATH=", 5);
 	g_data.pwd = set("PWD=", 4);
 	//g_data.oldpwd = set("OLDPWD=", 7);
-	//printf("\n MINISHELL INFO SETTING (g_var):\n");
+	printf("\n MINISHELL INFO SETTING (g_var):\n");
 	//printf("- path : %s\n", g_data.built_path);
-	//printf("- pwd : %s\n", g_data.pwd);
+	printf("- pwd : %s\n", g_data.pwd);
 	//printf("- oldpwd : %s\n", g_data.oldpwd);
-	//printf("-----------\n");
+	printf("-----------\n");
 }
 
 void	error_msg(char *cmd)

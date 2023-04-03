@@ -39,9 +39,9 @@ void	option(t_cmd *data, char *option, int trigger, int trim_size)
 {
 	data->opt = option;
 	if (strcmp(option, "FIND") == 0)
-		remake_path(data);
+		remake_path(data);//
 	if (strcmp(option, "DIRECT") == 0)
-		hard_path(data);
+		hard_path(data);//
 	if (trigger == 1)
 	{
 		data->input = wordtrim(data->input, trim_size);

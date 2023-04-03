@@ -6,7 +6,7 @@
 /*   By: alvachon <alvachon@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/23 15:14:08 by alvachon          #+#    #+#             */
-/*   Updated: 2023/03/31 13:23:47 by alvachon         ###   ########.fr       */
+/*   Updated: 2023/03/31 13:56:17 by alvachon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,8 +61,8 @@ void	keep_option(t_cmd *data)
 		option(data, "FIND", 1, 0);
 	if (strcmp(data->built, "cd") == 0 && strncmp(data->input, "/", 1) == 0)
 		option(data, "DIRECT", 0, 0);
-	else if (strcmp(data->built, "cd") == 0)
-		option(data, "HOME", 0, 0);//bug here
+	/*else if (strcmp(data->built, "cd") == 0)
+		option(data, "HOME", 0, 0);//bug here*/
 }
 
 void	keep_builtin(int i, t_cmd *data)
