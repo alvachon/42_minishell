@@ -64,6 +64,7 @@ int	z_cd(t_cmd data, char **env)
 	int		i;
 
 	i = 0;
+	(void)env;
 	if (strcmp(data.opt, "BACK") == 0)
 		rewrite(data, delete_last(data));
 	if (strcmp(data.opt, "STAY") == 0)
@@ -72,16 +73,16 @@ int	z_cd(t_cmd data, char **env)
 		keep_user(data);
 	/*if (strcmp(data.opt, "DIRECT") == 0)
 		data.path = data.print;*/
-	chdir(data.print);
+	chdir(data.path);
 	if (data.path[0] == '\0')
 		data.path[0] = '/';
-	while (env[i] && ft_strncmp(env[i], "PWD=", 4) != 0)
+	while (g_data.env[i] && ft_strncmp(g_data.env[i], "PWD=", 4) != 0)
 		i++;
-	temp = ft_substr(env[i], 4, ft_strlen(env[i]));
-	env[i] = ft_strjoin("PWD=", data.path);
-	while (env[i] && ft_strncmp(env[i], "OLDPWD=", 7) != 0)
+	temp = ft_substr(g_data.env[i], 4, ft_strlen(g_data.env[i]));
+	g_data.env[i] = ft_strjoin("PWD=", data.path);
+	while (g_data.env[i] && ft_strncmp(g_data.env[i], "OLDPWD=", 7) != 0)
 		i++;
-	env[i] = ft_strjoin("OLDPWD=", temp);
+	g_data.env[i] = ft_strjoin("OLDPWD=", temp);
 	free(temp);
 	return (errno);
 }
