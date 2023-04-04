@@ -6,7 +6,7 @@
 /*   By: alvachon <alvachon@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/23 15:14:08 by alvachon          #+#    #+#             */
-/*   Updated: 2023/04/04 11:14:35 by alvachon         ###   ########.fr       */
+/*   Updated: 2023/04/04 12:02:22 by alvachon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,7 +78,7 @@ void	add_section(t_cmd *data)
 	if (ft_strncmp(temp, "..", 2) == 0 && ft_strncmp(data->input, "..", 2) == 0)
 	{
 		free(temp);
-		option(data, "", 1, 2);//chnager option trigger plus tard
+		option(data, "", 1, 2);
 	}
 	buff = ft_strpaste(buff, temp);
 	while (i--)

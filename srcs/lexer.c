@@ -6,7 +6,7 @@
 /*   By: alvachon <alvachon@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/15 18:14:25 by alvachon          #+#    #+#             */
-/*   Updated: 2023/04/03 13:24:37 by alvachon         ###   ########.fr       */
+/*   Updated: 2023/04/04 12:03:14 by alvachon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,7 +52,6 @@ int	lexer(char *input, char **env)
 
 	data.input = input;
 	data.path = ft_strdup(g_data.pwd);
-	printf("%s\n", data.path);
 	data = parse(data);
 	i = builtincheck(data, env);
 	return (0);
