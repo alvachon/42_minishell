@@ -83,6 +83,7 @@ int						shell_process(char **env);
 void					keep_print(int i, t_cmd *data);
 void					keep_option(t_cmd *data);
 void					keep_builtin(int i, t_cmd *data);
+char					*ft_strpaste(char *already_here, char *new);
 t_cmd					parse(t_cmd data);
 
 /*terminal_signal.c*/
