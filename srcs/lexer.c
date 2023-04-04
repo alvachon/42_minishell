@@ -52,7 +52,6 @@ int	lexer(char *input, char **env)
 
 	data.input = input;
 	data.path = ft_strdup(g_data.pwd);
-	printf("%s\n", data.path);
 	data = parse(data);
 	i = builtincheck(data, env);
 	return (0);
