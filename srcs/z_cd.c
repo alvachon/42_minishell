@@ -6,7 +6,7 @@
 /*   By: alvachon <alvachon@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: Invalid date        by                   #+#    #+#             */
-/*   Updated: 2023/04/04 12:31:44 by alvachon         ###   ########.fr       */
+/*   Updated: 2023/04/04 15:07:46 by alvachon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,6 +58,7 @@ void	keep_user(t_cmd *data)
 	}
 	data->path[i - 1] = '\0';
 }
+
 int	z_cd(t_cmd data, char **env)
 {
 	char	*temp;
@@ -67,7 +68,17 @@ int	z_cd(t_cmd data, char **env)
 	i = 0;
 	(void)env;
 	if (strcmp(data.opt, "BACK") == 0)
+	{
+		while (g_data.env[i] && ft_strncmp(g_data.env[i], "PWD=", 4) != 0)
+			i++;
+		data.path = ft_substr(g_data.env[i], 4, ft_strlen(g_data.env[i]));
 		data.path = rewrite(&data, delete_last(data));
+		if (data.path[0] == '\0')
+		{
+			data.path[0] = '/';
+			data.path[1] = '\0';
+		}
+	}
 	if (strcmp(data.opt, "STAY") == 0 || strcmp(data.opt, "FIND") == 0 || strcmp(data.opt, "DIRECT") == 0)
 		data.path = data.path;
 	if (strcmp(data.opt, "HOME") == 0)
