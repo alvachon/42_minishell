@@ -6,7 +6,7 @@
 /*   By: alvachon <alvachon@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/02 12:06:16 by fboulang          #+#    #+#             */
-/*   Updated: 2023/03/31 13:38:06 by alvachon         ###   ########.fr       */
+/*   Updated: 2023/04/04 12:26:38 by alvachon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,7 +65,7 @@ typedef struct s_data
 	char				**env;
 	char				*built_path;
 	char				*pwd;
-	char				*oldpwd;
+	char				*home;
 	enum e_shell_state	shell_state;
 }						t_data;
 
@@ -91,7 +91,7 @@ void					ctrl_c_eof(void);
 void					init_shell(t_terminal *minishell, char **env);
 
 /*utils_env.c*/
-char					*set(char *var, int siz_var);
+char					*set(int code);
 void					option(t_cmd *data, char *option, int trigger, int trim_size);
 void					hard_path(t_cmd *data);
 void					remake_path(t_cmd *data);
