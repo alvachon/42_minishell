@@ -6,7 +6,7 @@
 /*   By: alvachon <alvachon@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: Invalid date        by                   #+#    #+#             */
-/*   Updated: 2023/04/04 12:03:33 by alvachon         ###   ########.fr       */
+/*   Updated: 2023/04/04 12:12:32 by alvachon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,7 +58,6 @@ void	keep_user(t_cmd *data)
 	}
 	data->path[i - 1] = '\0';
 }
-
 int	z_cd(t_cmd data, char **env)
 {
 	char	*temp;
