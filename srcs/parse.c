@@ -48,6 +48,8 @@ char	*ft_strpaste(char *already_here, char *new)
 	fusion = ft_calloc((ft_strlen(already_here) + ft_strlen(new)) + 1, sizeof(char));
 	if (!fusion)
 		return (NULL);
+	if (ft_strlen(already_here) == 1 && already_here[0] == '/' && new[0] == '/')
+		new++;
 	while (already_here[i] != '\0')
 	{
 		fusion[i] = already_here[i];
@@ -59,8 +61,8 @@ char	*ft_strpaste(char *already_here, char *new)
 		j++;
 	}
 	fusion[i + j] = '\0';
-	/*if (already_here)
-		free((char *)already_here);*/
+	if (already_here)
+		free(already_here);
 	return (fusion);
 }
 
@@ -69,22 +71,40 @@ void	add_section(t_cmd *data)
 	int		i;
 	char	*temp;
 	char	*buff;
+	int		index;
 
 	i = 0;
 	buff = ft_substr(data->input, 0, 1);
 	data->input++;
 	i = chartrim(data->input, '/');
 	temp = ft_substr(data->input, 0, i);
-	if (ft_strncmp(temp, "..", 2) == 0 && ft_strncmp(data->input, "..", 2) == 0)
+	printf ("%s\n", temp);
+	//if (ft_strncmp(temp, "..", 2) == 0 && ft_strncmp(data->input, "..", 2) == 0)
+		//option(data, "DIRECT", 1, 2);
+	if (ft_strncmp(data->input, "..", 2) != 0)
 	{
+		buff = ft_strpaste(buff, temp);
+		data->path = ft_strpaste(data->path, buff);
 		free(temp);
-		option(data, "", 1, 2);
 	}
-	buff = ft_strpaste(buff, temp);
+	else
+	{
+		index = 0;
+		while (data->path[ft_strlen(data->path) - index] != '/')
+			index++;
+		index = ft_strlen(data->path) - index;
+		if (index == 0)
+			index = 1;
+		free (temp);
+		temp = ft_substr(data->path, 0, index);
+		free(data->path);
+		data->path = ft_strdup(temp);
+		free (temp);
+	}
 	while (i--)
 		data->input++;
-	free (temp);
-	data->path = ft_strpaste(data->path, buff);
+	if (buff != NULL)
+		free(buff);
 }
 
 void	keep_option(t_cmd *data)
@@ -103,7 +123,6 @@ void	keep_option(t_cmd *data)
 	}
 	if (strcmp(data->built, "cd") == 0 && strncmp(data->input, "/", 1) == 0)
 	{
-		data->path = NULL;
 		while (data->input[0] == '/')
 			add_section(data);
 	}
