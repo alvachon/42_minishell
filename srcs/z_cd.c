@@ -65,6 +65,7 @@ int	z_cd(t_cmd data, char **env)
 
 	i = 0;
 	(void)env;
+	//(void)env;
 	if (strcmp(data.opt, "BACK") == 0)
 		data.path = rewrite(&data, delete_last(data));
 	if (strcmp(data.opt, "STAY") == 0 || strcmp(data.opt, "FIND") == 0)
@@ -73,13 +74,14 @@ int	z_cd(t_cmd data, char **env)
 		keep_user(&data);
 	/*if (strcmp(data->opt, "DIRECT") == 0)
 		data->path = data->print;*/
+	//printf("%s\n", data.path);
 	chdir(data.path);
 	if (data.path[0] == '\0')
 		data.path[0] = '/';
 	while (g_data.env[i] && ft_strncmp(g_data.env[i], "PWD=", 4) != 0)
 		i++;
-	temp = ft_substr(g_data.env[i], 4, ft_strlen(g_data.env[i]));
-	g_data.env[i] = ft_strjoin("PWD=", data.path);
+	temp = ft_strjoin("PWD=", data.path);
+	z_export(temp);
 	while (g_data.env[i] && ft_strncmp(g_data.env[i], "OLDPWD=", 7) != 0)
 		i++;
 	g_data.env[i] = ft_strjoin("OLDPWD=", temp);

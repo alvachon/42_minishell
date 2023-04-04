@@ -14,25 +14,22 @@
 
 /*
  UTILS - Isolate a chosen data array from our collected env path */
-char	*set(char *var, int siz_var)
+char	*set(int code)
 {
 	int		i;
-	char	**cmd;
-	char	*file;
 
 	i = 0;
-	while (ft_strncmp(var, g_data.env[i], siz_var) != 0)
-		i++;
-	cmd = ft_split(g_data.env[i], ':');
-	file = ft_substr(cmd[0], siz_var, ft_strlen(file));
-	i = 0;
-	while (cmd[i] != NULL)
+	if (code == 1)
 	{
-		free(cmd[i]);
-		i++;
+		while (g_data.env[i] && ft_strncmp(g_data.env[i], "PWD=", 4) != 0)
+			i++;
 	}
-	free(cmd);
-	return (file);
+	else if (code == 2)
+	{
+		while (g_data.env[i] && ft_strncmp(g_data.env[i], "HOME=", 5) != 0)
+			i++;
+	}
+	return (g_data.env[i]);
 }
 
 void	option(t_cmd *data, char *option, int trigger, int trim_size)
