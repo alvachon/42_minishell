@@ -6,7 +6,7 @@
 /*   By: alvachon <alvachon@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: Invalid date        by                   #+#    #+#             */
-/*   Updated: 2023/04/03 11:25:47 by alvachon         ###   ########.fr       */
+/*   Updated: 2023/04/04 12:03:33 by alvachon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,7 +66,7 @@ int	z_cd(t_cmd data, char **env)
 
 	i = 0;
 	(void)env;
-	//printf("%s\n", data.path);
+	//(void)env;
 	if (strcmp(data.opt, "BACK") == 0)
 		data.path = rewrite(&data, delete_last(data));
 	if (strcmp(data.opt, "STAY") == 0 || strcmp(data.opt, "FIND") == 0)

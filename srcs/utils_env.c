@@ -6,7 +6,7 @@
 /*   By: alvachon <alvachon@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/26 18:34:26 by alvachon          #+#    #+#             */
-/*   Updated: 2023/03/31 13:26:57 by alvachon         ###   ########.fr       */
+/*   Updated: 2023/04/03 13:24:30 by alvachon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,8 +60,7 @@ void	remake_path(t_cmd *data)
 		i++;
 	}
 	data->input++;
-	while (data->input[0] != '|' || data->input[0] != '<' || \
-		data->input[0] != '>')
+	while (data->input)
 	{
 		if (data->input[0] == '\0')
 			break ;
