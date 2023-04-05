@@ -59,36 +59,30 @@ void	keep_user(t_cmd *data)
 	data->path[i - 1] = '\0';
 }
 
-int	z_cd(t_cmd data, char **env)
+int	z_cd(t_cmd data)
 {
 	char	*temp;
 	char	*temp2;
 	int		i;
 
 	i = 0;
-	(void)env;
-	//(void)env;
-	if (strcmp(data.opt, "BACK") == 0)
-		data.path = rewrite(&data, delete_last(data));
-	if (strcmp(data.opt, "STAY") == 0 || strcmp(data.opt, "FIND") == 0 || strcmp(data.opt, "DIRECT") == 0)
-		data.path = data.path;
-	if (strcmp(data.opt, "HOME") == 0)
-		keep_user(&data);
 	i = chdir(data.path);
 	if (i == -1)
 		return (errno);
-	if (data.path[0] == '\0')
-		data.path[0] = '/';
-	i = 0;
-	while (g_data.env[i] && ft_strncmp(g_data.env[i], "PWD=", 4) != 0)
-		i++;
-	temp2 = ft_substr(g_data.env[i], 4, ft_strlen(g_data.env[i]));
-	temp = ft_strjoin ("OLDPWD=", temp2);
+	temp = ft_strjoin("OLDPWD=", g_data.pwd);
 	z_export(temp);
+	free (g_data.pwd);
+	if (data.path[ft_strlen(data.path) -1] == '/')
+	{
+		temp2 = ft_substr(data.path, 0, ft_strlen(data.path) - 1);
+		g_data.pwd = ft_strdup (temp2);
+		free (temp2);
+	}
+	else
+		g_data.pwd = ft_strdup(data.path);
 	free (temp);
-	temp = ft_strjoin("PWD=", data.path);
+	temp = ft_strjoin("PWD=", g_data.pwd);
 	z_export(temp);
-	free(temp2);
 	free(temp);
 	return (errno);
 }

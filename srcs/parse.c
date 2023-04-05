@@ -93,10 +93,21 @@ void	keep_option(t_cmd *data)
 {
 	if (strcmp(data->built, "echo") == 0 && strncmp(data->input, "-n ", 3) == 0)
 		option(data, "-n", 1, 2);
-	if (strcmp(data->built, "cd") == 0 && strncmp(data->input, "/", 1) == 0)
+	if (strcmp(data->built, "cd") == 0 && strncmp(data->input, "/", 1) != 0)
 	{
-		while (ft_isalnum(data->input[0]) != 1)
-			remove_section(data);
+		data->path = ft_strpaste(data->path, g_data.pwd);
+		if (data->path[ft_strlen(data->path) - 1] != '/')
+			data->path = ft_strpaste(data->path, "/");
+		while (data->input[0] == '/' || ft_isalnum(data->input[0]) == 1 || ft_strncmp(data->input, "..", 2) == 0)
+		{
+			if (data->input[0] == '/' || ft_isalnum(data->input[0]) == 1)
+				add_section(data);
+			else if (ft_strncmp(data->input, "..", 2) == 0)
+				remove_section(data);
+			if (ft_strncmp(data->input, "./", 2) == 0)
+				data->input += 2;
+			printf("%s\n", data->path);
+		}		
 	}
 	if (strcmp(data->built, "cd") == 0 && strncmp(data->input, ".", 1) == 0)
 	{

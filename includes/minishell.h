@@ -128,7 +128,7 @@ void					keep_flag_delim(t_cmd data, int i);
 int						delete_last(t_cmd data);
 char					*rewrite(t_cmd *data, int i);
 void					keep_user(t_cmd *data);
-int						z_cd(t_cmd data, char **env);
+int						z_cd(t_cmd data);
 
 /*z_echo.c*/
 int						z_echo(t_cmd data, char **env);
