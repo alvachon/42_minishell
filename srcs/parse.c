@@ -6,29 +6,102 @@
 /*   By: alvachon <alvachon@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/23 15:14:08 by alvachon          #+#    #+#             */
-/*   Updated: 2023/04/05 14:00:49 by alvachon         ###   ########.fr       */
+/*   Updated: 2023/04/05 15:23:58 by alvachon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
 
+/*
+	data->input : "allo", 'allo', allo allo allo, allo"allo allo"allo
+	note : $
+	1. Envoyer le data dans print, tasser data-input;
+
+	2. dans data->print, checker pour les $
+	3. si oui, mettre le mot temporaire dans la ft temp.
+	4. Modifier le mot en ajoutant un = la fin et enlever le $
+	5. Checker si le mot est dans env,
+		si oui : Print le mot
+		si non : pass;
+	6. a la fin, trim guil
+	7 : set la donnee dans print.
+*/
+
+int	token_reach(int i, char *str)
+{
+	i = chartrim(str, '|');
+	if (i > chartrim(str, '<'))
+		i = chartrim(str, '<');
+	if (i > chartrim(str, '>'))
+		i = chartrim(str, '>');
+	return (i);
+}
+
+int	sp_token_reach(int i, char *str)
+{
+	i = token_reach(i, str);
+	if (i > chartrim(str, ' '))
+		i = chartrim(str, ' ');
+	return (i);
+}
+
+char *repurpose(char *str)
+{
+	int i;
+	char *copy;
+
+	i = 0;
+	copy = str;
+	while (str[i + 1] != '\0')
+	{
+		str[i] = copy[i + 1];
+		i++;
+	}
+	str[i] = '=';
+	printf("%s\n", str);
+	return (str);
+}
+
 void	keep_print(int i, t_cmd *data)
 {
-	if (data->input[0] != '<' || data->input[0] != '>'
-		|| data->input[0] != '|')
-	{
-		if (data->input[0] == 34)
-			trim_guil(data, 34, 1);
-		else if (data->input[0] == 39)
-			trim_guil(data, 39, 1);
-		else
-			trim_guil(data, 0, 0);
-	}
-	i = ft_strlen(data->print);
-	while (i)
+	char c;
+	char *paste_env;
+	int j;
+
+	c = data->input[0];
+	if (data->input[0] == 34 || data->input[0] == 39)
 	{
 		data->input++;
-		i--;
+		i = chartrim(data->input, c);
+		data->print = ft_substr(data->input, 0, i);
+		while (i-- + 1)
+			data->input++;
+	}
+	else
+	{
+		i = token_reach(i, data->input);
+		data->print = ft_substr(data->input, 0, i);
+		while (i--)
+			data->input++;
+	}
+	printf("input:%s\n", data->input);
+	printf("print:%s\n", data->print);
+	if (scan(data->print, '$') == 0)
+	{
+		i = chartrim(data->print, '$');
+		printf("%d\n", i);
+		j = i;
+		while (data->print[j])
+		{
+			if (data->print[j] == 32)
+				break ;
+			j++;
+		}
+		j -= i;
+		printf("%d\n", j);
+		paste_env = ft_substr(data->print, i, j);
+		printf("%s\n", paste_env);
+		paste_env = repurpose(paste_env);
 	}
 }
 
