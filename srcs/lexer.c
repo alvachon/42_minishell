@@ -30,7 +30,7 @@ int	builtincheck(t_cmd data, char **env)
 	if (ft_strncmp(data.built, "echo", 5) == 0)
 		r = z_echo(data, g_data.env);
 	else if (ft_strncmp(data.built, "cd", 3) == 0)
-		r = z_cd(data, g_data.env);
+		r = z_cd(data);
 	else if (ft_strncmp(data.built, "pwd", 4) == 0)
 		r = z_pwd(env);
 	else if (ft_strncmp(data.built, "export", 7) == 0)

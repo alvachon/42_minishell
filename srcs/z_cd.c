@@ -6,7 +6,7 @@
 /*   By: alvachon <alvachon@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: Invalid date        by                   #+#    #+#             */
-/*   Updated: 2023/04/04 15:07:46 by alvachon         ###   ########.fr       */
+/*   Updated: 2023/04/05 14:01:04 by alvachon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,42 +59,30 @@ void	keep_user(t_cmd *data)
 	data->path[i - 1] = '\0';
 }
 
-int	z_cd(t_cmd data, char **env)
+int	z_cd(t_cmd data)
 {
 	char	*temp;
 	char	*temp2;
 	int		i;
 
 	i = 0;
-	(void)env;
-	if (strcmp(data.opt, "BACK") == 0)
+	i = chdir(data.path);
+	if (i == -1)
+		return (errno);
+	temp = ft_strjoin("OLDPWD=", g_data.pwd);
+	z_export(temp);
+	free (g_data.pwd);
+	if (data.path[ft_strlen(data.path) -1] == '/')
 	{
-		while (g_data.env[i] && ft_strncmp(g_data.env[i], "PWD=", 4) != 0)
-			i++;
-		data.path = ft_substr(g_data.env[i], 4, ft_strlen(g_data.env[i]));
-		data.path = rewrite(&data, delete_last(data));
-		if (data.path[0] == '\0')
-		{
-			data.path[0] = '/';
-			data.path[1] = '\0';
-		}
+		temp2 = ft_substr(data.path, 0, ft_strlen(data.path) - 1);
+		g_data.pwd = ft_strdup (temp2);
+		free (temp2);
 	}
-	if (strcmp(data.opt, "STAY") == 0 || strcmp(data.opt, "FIND") == 0 || strcmp(data.opt, "DIRECT") == 0)
-		data.path = data.path;
-	if (strcmp(data.opt, "HOME") == 0)
-		keep_user(&data);
-	chdir(data.path);
-	if (data.path[0] == '\0')
-		data.path[0] = '/';
-	while (g_data.env[i] && ft_strncmp(g_data.env[i], "PWD=", 4) != 0)
-		i++;
-	temp2 = ft_substr(g_data.env[i], 4, ft_strlen(g_data.env[i]));
-	temp = ft_strjoin ("OLDPWD=", temp2);
-	z_export(temp);
+	else
+		g_data.pwd = ft_strdup(data.path);
 	free (temp);
-	temp = ft_strjoin("PWD=", data.path);
+	temp = ft_strjoin("PWD=", g_data.pwd);
 	z_export(temp);
-	free(temp2);
 	free(temp);
 	return (errno);
 }

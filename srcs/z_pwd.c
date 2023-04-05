@@ -31,7 +31,7 @@ int	z_pwd(char **env)
 			i++;
 		temp = ft_substr(env[i], 4, ft_strlen(env[i]));
 	}
-	printf("%s\n", temp);
+	printf("%s\n", g_data.pwd);
 	free (temp);
 	return (errno);
 }
