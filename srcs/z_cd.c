@@ -74,9 +74,12 @@ int	z_cd(t_cmd data, char **env)
 		data.path = data.path;
 	if (strcmp(data.opt, "HOME") == 0)
 		keep_user(&data);
-	chdir(data.path);
+	i = chdir(data.path);
+	if (i == -1)
+		return (errno);
 	if (data.path[0] == '\0')
 		data.path[0] = '/';
+	i = 0;
 	while (g_data.env[i] && ft_strncmp(g_data.env[i], "PWD=", 4) != 0)
 		i++;
 	temp2 = ft_substr(g_data.env[i], 4, ft_strlen(g_data.env[i]));

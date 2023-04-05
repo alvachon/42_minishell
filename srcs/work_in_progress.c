@@ -65,3 +65,41 @@ void	keep_flag_delim(t_cmd data, int i)
 		data.input = ltrim(data.input);
 	}
 }
+
+void	remove_section(t_cmd *data)
+{
+	int		index;
+	char	*temp;
+
+	index = 0;
+	if (data->path[ft_strlen(data->path) - 1] == '/')
+		index = 1;
+	while (data->path[ft_strlen(data->path) - index - 1] != '/')
+		index++;
+	index = ft_strlen(data->path) - index;
+	temp = ft_substr(data->path, 0, index);
+	free(data->path);
+	data->path = ft_strdup(temp);
+	index = 2;
+	while (index--)
+		data->input++;
+	free(temp);
+}
+
+/*int		index;
+	char	*temp;
+
+	index = 0;
+	while (data->path[ft_strlen(data->path) - index] != '/')
+		index++;
+	index = ft_strlen(data->path) - index;
+	if (index == 0)
+		index = 1;
+	temp = ft_substr(data->path, 0, index);
+	free(data->path);
+	data->path = ft_strdup(temp);
+	index = 3;
+	while (index--)
+		data->input++;
+	printf("%s/n", data->path);
+	free (temp);*/
