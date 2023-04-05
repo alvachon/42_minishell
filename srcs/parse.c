@@ -6,7 +6,7 @@
 /*   By: alvachon <alvachon@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/23 15:14:08 by alvachon          #+#    #+#             */
-/*   Updated: 2023/04/05 15:23:58 by alvachon         ###   ########.fr       */
+/*   Updated: 2023/04/05 16:47:45 by alvachon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,21 +45,68 @@ int	sp_token_reach(int i, char *str)
 	return (i);
 }
 
-char *repurpose(char *str)
+char *repurpose(char *str, int code)
 {
 	int i;
 	char *copy;
 
 	i = 0;
 	copy = str;
+	if (code == 0)
+	{
+		while (str[i] != '$')
+			i++;
+	}
 	while (str[i + 1] != '\0')
 	{
 		str[i] = copy[i + 1];
 		i++;
 	}
-	str[i] = '=';
-	printf("%s\n", str);
+	if (code == 1)
+		str[i] = '=';
+	else
+		str[i] = '\0';
 	return (str);
+}
+
+char	*add_content(char *content, char *add, int position)
+{
+	char *mod;
+	int i;
+	int j;
+	int k;
+
+	i = 0;
+	j = 0;
+	k = 0;
+	mod = ft_calloc(1, (ft_strlen(content) - 1) + ft_strlen(add));
+	while (1)
+	{
+		while (i != position)
+		{
+			mod[i] = content[i];
+			i++;
+		}
+		k = i + 1;
+		while (add[j])
+		{
+			mod[i] = add[j];
+			i++;
+			j++;
+		}
+		while (content[k] > 32)
+			k++;
+		while (content[k])
+		{
+			mod[i] = content[k];
+			i++;
+			k++;
+		}
+		break ;
+	}
+	mod[i] = '\0';
+	content = mod;
+	return (content);
 }
 
 void	keep_print(int i, t_cmd *data)
@@ -84,12 +131,9 @@ void	keep_print(int i, t_cmd *data)
 		while (i--)
 			data->input++;
 	}
-	printf("input:%s\n", data->input);
-	printf("print:%s\n", data->print);
-	if (scan(data->print, '$') == 0)
+	while (scan(data->print, '$') == 0)
 	{
 		i = chartrim(data->print, '$');
-		printf("%d\n", i);
 		j = i;
 		while (data->print[j])
 		{
@@ -98,10 +142,13 @@ void	keep_print(int i, t_cmd *data)
 			j++;
 		}
 		j -= i;
-		printf("%d\n", j);
 		paste_env = ft_substr(data->print, i, j);
-		printf("%s\n", paste_env);
-		paste_env = repurpose(paste_env);
+		paste_env = repurpose(paste_env, 1);
+		paste_env = print_var(paste_env);
+		if (paste_env[0] == '\0')
+			data->print = repurpose(data->print, 0);
+		else
+			data->print = add_content(data->print, paste_env, i);
 	}
 }
 

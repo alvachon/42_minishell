@@ -6,7 +6,7 @@
 /*   By: alvachon <alvachon@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/02 12:06:16 by fboulang          #+#    #+#             */
-/*   Updated: 2023/04/05 14:37:58 by alvachon         ###   ########.fr       */
+/*   Updated: 2023/04/05 15:29:15 by alvachon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -123,6 +123,7 @@ char					*trimchar(char *file, char c);
 void					keep_redir_input(t_cmd data, int i);
 char					*scan_end(t_cmd *data, int trig, char c);
 void					keep_flag_delim(t_cmd data, int i);
+char					*print_var(char *var);
 
 /*z_cd*/
 int						delete_last(t_cmd data);

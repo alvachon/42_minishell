@@ -6,7 +6,7 @@
 /*   By: alvachon <alvachon@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/23 15:17:01 by alvachon          #+#    #+#             */
-/*   Updated: 2023/04/05 13:58:41 by alvachon         ###   ########.fr       */
+/*   Updated: 2023/04/05 15:29:27 by alvachon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -100,6 +100,7 @@ char	*print_var(char *var)
 	char	*temp;
 	int		i;
 
+	i = 0;
 	while (g_data.env[i] && ft_strncmp(g_data.env[i], var, ft_strlen(var)) != 0)
 		i++;
 	if (g_data.env[i] != NULL)
