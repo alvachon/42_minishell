@@ -86,20 +86,16 @@ void	remove_section(t_cmd *data)
 	free(temp);
 }
 
-/*int		index;
+char	*print_var(char *var)
+{
 	char	*temp;
+	int		i;
 
-	index = 0;
-	while (data->path[ft_strlen(data->path) - index] != '/')
-		index++;
-	index = ft_strlen(data->path) - index;
-	if (index == 0)
-		index = 1;
-	temp = ft_substr(data->path, 0, index);
-	free(data->path);
-	data->path = ft_strdup(temp);
-	index = 3;
-	while (index--)
-		data->input++;
-	printf("%s/n", data->path);
-	free (temp);*/
+	while (g_data.env[i] && ft_strncmp(g_data.env[i], var, ft_strlen(var)) != 0)
+		i++;
+	if (g_data.env[i] != NULL)
+		temp = ft_substr(g_data.env[i], ft_strlen(var), ft_strlen(g_data.env[i]));
+	else
+		temp = "\0";
+	return (temp);
+}
