@@ -6,7 +6,7 @@
 /*   By: alvachon <alvachon@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/23 15:14:08 by alvachon          #+#    #+#             */
-/*   Updated: 2023/04/04 15:31:27 by alvachon         ###   ########.fr       */
+/*   Updated: 2023/04/05 13:55:10 by alvachon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,11 +18,11 @@ void	keep_print(int i, t_cmd *data)
 		|| data->input[0] != '|')
 	{
 		if (data->input[0] == 34)
-			trim_guil(&data, 34, 0);
+			trim_guil(data, 34, 1);
 		else if (data->input[0] == 39)
-			trim_guil(&data, 39, 0);
+			trim_guil(data, 39, 1);
 		else
-			trim_guil(&data, 0, 1);
+			trim_guil(data, 0, 0);
 	}
 	i = ft_strlen(data->print);
 	while (i)

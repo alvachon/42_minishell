@@ -6,7 +6,7 @@
 /*   By: alvachon <alvachon@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/26 18:26:22 by alvachon          #+#    #+#             */
-/*   Updated: 2023/04/05 13:02:45 by alvachon         ###   ########.fr       */
+/*   Updated: 2023/04/05 13:58:20 by alvachon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,26 +14,19 @@
 
 /*
 1. Function to trim " " ou ' ' with their own specification*/
-void	trim_guil(t_cmd **data, char c, int trig)
+void	trim_guil(t_cmd *data, char c, int trig)
 {
 	char	*file;
 
-	file = scan_end((**data).input, trig);
+	file = NULL;
+	data->print = scan_end(data, trig, c);
 	if (trig == 1)
 	{
-		file = trimchar(file, 34);
-		file = trimchar(file, 39);
-	}
-	if (scan(file, 34) == 1)
-	{
-		if (scan(file, 39) == 1)
-		{
-			(**data).print = file;
-			return ;
-		}
+		file = trimchar(file, c);
+		printf("file : %s\n", file);
 	}
 	if (trig == 0)
-		(**data).print = trimchar(file, c);
+		data->print = trimchar(file, c);
 }
 
 /*

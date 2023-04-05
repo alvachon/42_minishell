@@ -6,7 +6,7 @@
 /*   By: alvachon <alvachon@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/02 12:06:16 by fboulang          #+#    #+#             */
-/*   Updated: 2023/04/04 12:26:38 by alvachon         ###   ########.fr       */
+/*   Updated: 2023/04/05 13:54:54 by alvachon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -112,7 +112,7 @@ int						scan(char *input, char c);
 int						chartrim(char *input, char c);
 
 /*utils_trim.c*/
-void					trim_guil(t_cmd **data, char c, int trig);
+void					trim_guil(t_cmd *data, char c, int trig);
 char					*ulstr(char *str);
 char					*ltrim(char *input);
 char					*rtrim(char *str);
@@ -120,7 +120,7 @@ char					*trimchar(char *file, char c);
 
 /*work_in_progress.c*/
 void					keep_redir_input(t_cmd data, int i);
-char					*scan_end(char *file, int trig);
+char					*scan_end(t_cmd *data, int trig, char c);
 void					keep_flag_delim(t_cmd data, int i);
 
 /*z_cd*/

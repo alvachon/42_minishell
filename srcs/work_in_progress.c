@@ -6,7 +6,7 @@
 /*   By: alvachon <alvachon@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/23 15:17:01 by alvachon          #+#    #+#             */
-/*   Updated: 2023/03/26 19:21:15 by alvachon         ###   ########.fr       */
+/*   Updated: 2023/04/05 13:58:41 by alvachon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,16 +25,25 @@ void	keep_redir_input(t_cmd data, int i)
 
 /*
 * End of the parsing for now  ( > | < )*/
-char	*scan_end(char *file, int trig)
+char	*scan_end(t_cmd *data, int trig, char c)
 {
-	char	**cmd;
+	//char	**cmd;
+	int		len;
+	char	*file;
 
-	if (trig == 0)
+	file = NULL;
+	if (trig == 1)
 	{
-		printf("Watch out for < after guil \n");
+		len = chartrim(data->input, c) - 1;
+		file = ft_substr(data->input, 0, len);
+		while (len--)
+			data->input++;
+		printf("se file : %s\n", file);
+		printf("datas->input : %s\n", data->input);
+		exit(1);
 		return (file);
 	}
-	if (scan(file, '<') == 0)
+	/*if (scan(file, '<') == 0)
 	{
 		cmd = ft_split(file, '<');
 		file = cmd[0];
@@ -51,7 +60,7 @@ char	*scan_end(char *file, int trig)
 		cmd = ft_split(file, '>');
 		file = cmd[0];
 		free(cmd);
-	}
+	}*/
 	return (file);
 }
 
