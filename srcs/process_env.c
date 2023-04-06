@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   utils_global.c                                     :+:      :+:    :+:   */
+/*   process_env.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: alvachon <alvachon@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/26 18:35:32 by alvachon          #+#    #+#             */
-/*   Updated: 2023/03/31 14:00:30 by alvachon         ###   ########.fr       */
+/*   Updated: 2023/04/05 19:48:33 by alvachon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,37 +18,30 @@ void	set_global(char **env)
 {
 	g_data.env = ft_setenv(env); /* malloqué un tableau ici pour mieux intéragir avec mes foncitons*/
 	g_data.shell_state = SH_READ;
-	//g_data.built_path = set("PATH=", 5);
 	g_data.pwd = ft_substr(set(1), 4, ft_strlen(set(1)));
 	g_data.home = ft_substr(set(2), 5, ft_strlen(set(2)));
 	printf("\n MINISHELL INFO SETTING (g_var):\n");
-	//printf("- path : %s\n", g_data.built_path);
 	printf("- pwd : %s\n", g_data.pwd);
 	printf("- home : %s\n", g_data.home);
 	printf("-----------\n");
 }
 
-void	error_msg(char *cmd)
+char	*set(int code)
 {
-	char	**buff;
+	int		i;
 
-	buff = ft_split(cmd, ' ');
-	write(2, "minishell: ", 12);
-	write(2, buff[0], ft_strlen(buff[0]));
-	write(2, " : Command not found.\n", 23);
-	ft_freeall(buff);
-	return ;
-}
-
-void	exit_msg(char *cmd)
-{
-	if (cmd)
+	i = 0;
+	if (code == 1)
 	{
-		write(1, "exit\n", 5);
-		free(cmd);
+		while (g_data.env[i] && ft_strncmp(g_data.env[i], "PWD=", 4) != 0)
+			i++;
 	}
-	rl_clear_history();
-	exit(EXIT_SUCCESS);
+	else if (code == 2)
+	{
+		while (g_data.env[i] && ft_strncmp(g_data.env[i], "HOME=", 5) != 0)
+			i++;
+	}
+	return (g_data.env[i]);
 }
 
 void	sys_msg(char *reason, int code)

@@ -6,7 +6,7 @@
 /*   By: alvachon <alvachon@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/02 12:06:16 by fboulang          #+#    #+#             */
-/*   Updated: 2023/04/05 15:29:15 by alvachon         ###   ########.fr       */
+/*   Updated: 2023/04/05 20:20:01 by alvachon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,12 +58,11 @@ typedef struct s_cmd
 	char				*redir_input;
 	char				*flag_delim;
 	char				*path;
-	char				*rawinput;
 }						t_cmd;
+
 typedef struct s_data
 {
 	char				**env;
-	char				*built_path;
 	char				*pwd;
 	char				*home;
 	enum e_shell_state	shell_state;
@@ -72,70 +71,65 @@ typedef struct s_data
 t_data					g_data;
 
 /*lexer.c*/
+/*piper here ?*/
+t_cmd					parse(t_cmd data);
 int 					ft_error(int code);
+void					data_free(t_cmd *data);
 int						builtincheck(t_cmd data, char **env);
 int						lexer(char *input, char **env);
 
-/*minishell.c*/
-int						shell_process(char **env);
-
 /*parse.c*/
-void					keep_print(int i, t_cmd *data);
+void					keep_redir_input(t_cmd data, int i);
+void					keep_flag_delim(t_cmd data, int i);
+void					keep_print(int i, t_cmd *data);//
 void					keep_option(t_cmd *data);
 void					keep_builtin(int i, t_cmd *data);
-char					*ft_strpaste(char *already_here, char *new);
-void					remove_section(t_cmd *data);
-t_cmd					parse(t_cmd data);
 
-/*terminal_signal.c*/
+/*process_shell.c*/
 void					handle_sig(int sign);
 void					ctrl_c_eof(void);
 void					init_shell(t_terminal *minishell, char **env);
+int						shell_process(char **env);
 
-/*utils_env.c*/
-char					*set(int code);
-void					option(t_cmd *data, char *option, int trigger, int trim_size);
-void					hard_path(t_cmd *data);
-void					remake_path(t_cmd *data);
-
-/*utils_global.c*/
+/*process_env.c*/
 void					set_global(char **env);
-void					error_msg(char *cmd);
-void					exit_msg(char *cmd);
+char					*set(int code);
 void					sys_msg(char *reason, int code);
 char					**ft_setenv(char **env);
 
-/*utils_input.c*/
+/*utils_built*/
 int						wordlen(char *input, int i);
-char					*wordtrim(char *input, int i);
-int						wordcount(char *str);
-int						scan(char *input, char c);
-int						chartrim(char *input, char c);
-
-/*utils_trim.c*/
-void					trim_guil(t_cmd *data, char c, int trig);
-char					*ulstr(char *str);
 char					*ltrim(char *input);
-char					*rtrim(char *str);
+char					*wordtrim(char *input, int i);
+char					*ulstr(char *str);
 char					*trimchar(char *file, char c);
 
-/*work_in_progress.c*/
-void					keep_redir_input(t_cmd data, int i);
-char					*scan_end(t_cmd *data, int trig, char c);
-void					keep_flag_delim(t_cmd data, int i);
+/*utils_print.c*/
+int						scan(char *input, char c);
+int						chartrim(char *input, char c);
+char 					*repurpose(char *str, int code);
 char					*print_var(char *var);
+int						token_reach(int i, char *str);
 
 /*z_cd*/
-int						delete_last(t_cmd data);
-char					*rewrite(t_cmd *data, int i);
-void					keep_user(t_cmd *data);
+char					*ft_strpaste(char *already_here, char *new);
+void					remove_section(t_cmd *data);
+void					add_section(t_cmd *data);
+void					do_relative_path(t_cmd *data);
+void					do_direct_path(t_cmd *data);
 int						z_cd(t_cmd data);
 
 /*z_echo.c*/
+char					*add_content(char *content, char *add, int position);
+void					do_guil(t_cmd *data, int i);
+void					do_sp(t_cmd *data, int i);
+void					do_ref(t_cmd *data, int i);
 int						z_echo(t_cmd data, char **env);
 
-/*z_env.c*/
+/*z_print.c*/
 int						z_env(char **env);
+int						z_pwd(char **env);
+int						z_exit(t_cmd data, int status);
 
 /*z_export*/
 int						z_export(char *str);
@@ -143,16 +137,9 @@ char					**export_env(char *str);
 char					*new_env_var(char *str, int pos);
 int						ft_exportcomp(const char *str, char *var);
 
-/*z_pwd.c*/
-int						z_pwd(char **env);
-
 /*z_unset.c*/
 int						z_unset(char *str);
 char					**env_unset(char *str);
 int						ft_unsetcomp(const char *str, char *var);
-
-/*z_exit.c*/
-int						z_exit(t_cmd data, int status);
-void					data_free(t_cmd *data);
 
 #endif

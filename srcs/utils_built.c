@@ -1,32 +1,45 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   utils_trim.c                                       :+:      :+:    :+:   */
+/*   utils_built.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: alvachon <alvachon@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/03/26 18:26:22 by alvachon          #+#    #+#             */
-/*   Updated: 2023/04/05 13:58:20 by alvachon         ###   ########.fr       */
+/*   Created: 2023/02/23 15:17:01 by alvachon          #+#    #+#             */
+/*   Updated: 2023/04/05 19:57:16 by alvachon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
 
 /*
-1. Function to trim " " ou ' ' with their own specification*/
-void	trim_guil(t_cmd *data, char c, int trig)
+ Calc the size of str until a clear ascii like ' ' */
+int	wordlen(char *input, int i)
 {
-	char	*file;
+	while (input[i] > 32)
+		i++;
+	return (i);
+}
 
-	file = NULL;
-	data->print = scan_end(data, trig, c);
-	if (trig == 1)
+/*
+ Trim clear ascii like ' ' on LEFT */
+char	*ltrim(char *input)
+{
+	while (*input <= 32)
+		input++;
+	return (input);
+}
+
+/*
+ Clear a word that have been parsed */
+char	*wordtrim(char *input, int i)
+{
+	while (i >= 0)
 	{
-		file = trimchar(file, c);
-		printf("file : %s\n", file);
+		input++;
+		i--;
 	}
-	if (trig == 0)
-		data->print = trimchar(file, c);
+	return (input);
 }
 
 /*
@@ -42,34 +55,6 @@ char	*ulstr(char *str)
 			str[i] += ' ';
 		i++;
 	}
-	return (str);
-}
-
-/*
- Trim clear ascii like ' ' on LEFT */
-char	*ltrim(char *input)
-{
-	while (*input <= 32)
-		input++;
-	return (input);
-}
-
-/*
- Trim clear ascii like ' ' on RIGHT */
-char	*rtrim(char *str)
-{
-	int	i;
-	int	j;
-
-	j = -1;
-	i = 0;
-	while (str[i] != '\0')
-	{
-		if (str[i] > 32)
-			j = i;
-		i++;
-	}
-	str[j + 1] = '\0';
 	return (str);
 }
 

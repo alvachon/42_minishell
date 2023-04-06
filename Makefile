@@ -10,20 +10,15 @@ OBJS_DIR		= ./objs
 SRCS			= $(SRCS_DIR)/lexer.c \
 				  $(SRCS_DIR)/minishell.c \
 				  $(SRCS_DIR)/parse.c \
-				  $(SRCS_DIR)/terminal_signal.c \
-				  $(SRCS_DIR)/utils_env.c \
-				  $(SRCS_DIR)/utils_global.c \
-				  $(SRCS_DIR)/utils_input.c \
-				  $(SRCS_DIR)/utils_trim.c \
-				  $(SRCS_DIR)/work_in_progress.c \
+				  $(SRCS_DIR)/process_env.c \
+				  $(SRCS_DIR)/process_shell.c \
+				  $(SRCS_DIR)/utils_built.c \
+				  $(SRCS_DIR)/utils_print.c \
 				  $(SRCS_DIR)/z_cd.c \
 				  $(SRCS_DIR)/z_echo.c \
-				  $(SRCS_DIR)/z_env.c \
+				  $(SRCS_DIR)/z_print.c \
 				  $(SRCS_DIR)/z_export.c \
-				  $(SRCS_DIR)/z_pwd.c \
-				  $(SRCS_DIR)/z_unset.c \
-				  $(SRCS_DIR)/utils_unport.c \
-				  $(SRCS_DIR)/z_exit.c
+				  $(SRCS_DIR)/z_unset.c
 OBJS 			= $(SRCS:$(SRCS_DIR)/%.c=$(OBJS_DIR)/%.o)
 HDRS_FILE		= minishell.h
 HDRS			= $(addprefix $(INCL_DIR)/, $(HDRS_FILE))

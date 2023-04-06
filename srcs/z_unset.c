@@ -6,7 +6,7 @@
 /*   By: alvachon <alvachon@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/08 12:31:48 by fboulang          #+#    #+#             */
-/*   Updated: 2023/03/26 19:21:06 by alvachon         ###   ########.fr       */
+/*   Updated: 2023/04/05 20:21:10 by alvachon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,6 +57,28 @@ char	**env_unset(char *str)
 		i++;
 		j++;
 	}
-	free (g_data.env);
+	free(g_data.env);
 	return (buff);
+}
+
+int	ft_unsetcomp(const char *str, char *var)
+{
+	int				i;
+	int				j;
+	unsigned char	*a;
+	unsigned char	*b;
+
+	a = (unsigned char *)str;
+	b = (unsigned char *)var;
+	j = ft_strlen(str);
+	i = 0;
+	while (i < j)
+	{
+		if (a[i] != b[i])
+			return (1);
+		i++;
+	}
+	if (var[i] == '=')
+		return (0);
+	return (1);
 }
