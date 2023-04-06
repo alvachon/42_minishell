@@ -6,7 +6,7 @@
 /*   By: alvachon <alvachon@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/02 12:06:16 by fboulang          #+#    #+#             */
-/*   Updated: 2023/04/06 11:45:08 by alvachon         ###   ########.fr       */
+/*   Updated: 2023/04/06 15:57:21 by alvachon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,7 +55,6 @@ typedef struct s_cmd
 	char				*built;
 	char				*opt;
 	char				*print;
-	char				*redir_input;
 	char				*flag_delim;
 	char				*path;
 }						t_cmd;
@@ -84,6 +83,7 @@ void					keep_redir_input(int i, t_cmd *data);
 void					keep_print(int i, t_cmd *data);//
 void					keep_option(t_cmd *data);
 void					keep_builtin(int i, t_cmd *data);
+int						ft_stristr(const char *haystack, const char *needle, size_t len);
 
 /*process_shell.c*/
 void					handle_sig(int sign);

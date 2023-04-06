@@ -6,7 +6,7 @@
 /*   By: alvachon <alvachon@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/23 15:14:08 by alvachon          #+#    #+#             */
-/*   Updated: 2023/04/06 11:51:11 by alvachon         ###   ########.fr       */
+/*   Updated: 2023/04/06 16:13:41 by alvachon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,7 +78,29 @@ void	*ft_realloc(void *ptr, size_t size)
 	return (new);
 }
 
-char	*ft_readline(int fd)
+int	ft_stristr(const char *haystack, const char *needle, size_t len)
+{
+	unsigned int	i;
+	unsigned int	j;
+
+	i = 0;
+	if (needle[i] == '\0')
+		return (0);
+	while (i < len && haystack[i] != '\0')
+	{
+		j = 0;
+		while ((haystack[i + j] == needle[j]) && ((i + j) < len))
+		{
+			j++;
+			if (j == ft_strlen(needle))
+				return (i);
+		}
+		i++;
+	}
+	return (0);
+}
+
+char	*ft_readline(int fd, int trigger, char *delim)
 {
 	int		buf_siz;
 	int		str_siz;
@@ -113,46 +135,51 @@ char	*ft_readline(int fd)
 		ix++;
 	}
 	buf[ix] = '\0';
+	if (trigger == 2)
+	{
+		ix = ft_stristr(buf, delim, ft_strlen(buf));
+		if (ix != 0)
+			buf = ft_substr(buf, 0, ix);
+	}
 	return (buf);
 }
 
 void	keep_redir_input(int i, t_cmd *data)
 {
-	char	*file;
 	char	*read;
 	int		fd;
+	int		t;
 
+	t = 0;
 	if (data->input[0] == '<' && data->input[1] <= 32)
 	{
-		data->redir_input = ft_substr(data->input, 0, 1);
 		data->input++;
-		ltrim(data->input);
-			data->input = ltrim(data->input);
-		file = ft_substr(data->input, 0, wordlen(data->input, i));
-		fd = open(file, O_RDONLY);
-		if (fd == -1)
-			return ;//
-		read = ft_readline(fd);
-		printf("%s\n", read);
-		close(fd);
+		t = 1;
 	}
 	if (data->input[0] == '<' && data->input[1] == '<')
 	{
-		data->flag_delim = ft_substr(data->input, 0, 2);
 		data->input += 2;
+		t = 2;
+	}
+	if (t > 0)
+	{
+		ltrim(data->input);
+			data->input = ltrim(data->input);
+		fd = open(ft_substr(data->input, 0, wordlen(data->input, i)), O_RDONLY);
+		if (fd == -1)
+			return ;//
+		read = ft_readline(fd, t, NULL);//->> Je voulais mettre delim a la place de null pour un trigger de sortie.
+		if (ft_strcmp(data->built, "cd") == 0)
+			data->path = read;
+		else
+			data->print = read;
+		close(fd);
+		while (data->input[0] > 32)
+			data->input++;
+		ltrim(data->input);
 	}
 }
 
-void	keep_flag_delim(t_cmd *data, int i)
-{
-	if (data->input[0] == '<' && data->input[1] == '<')
-	{
-		data->flag_delim = ft_substr(data->input, 0, 2);
-		i = 2;
-		data->input = wordtrim(data->input, i);
-		ltrim(data->input);
-	}
-}
 
 void	keep_print(int i, t_cmd *data)
 {
