@@ -6,7 +6,7 @@
 /*   By: alvachon <alvachon@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/02 12:06:16 by fboulang          #+#    #+#             */
-/*   Updated: 2023/04/05 20:20:01 by alvachon         ###   ########.fr       */
+/*   Updated: 2023/04/06 11:45:08 by alvachon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,8 +79,8 @@ int						builtincheck(t_cmd data, char **env);
 int						lexer(char *input, char **env);
 
 /*parse.c*/
-void					keep_redir_input(t_cmd data, int i);
-void					keep_flag_delim(t_cmd data, int i);
+void					keep_redir_input(int i, t_cmd *data);
+/*void					keep_flag_delim(t_cmd data, int i);*/
 void					keep_print(int i, t_cmd *data);//
 void					keep_option(t_cmd *data);
 void					keep_builtin(int i, t_cmd *data);
