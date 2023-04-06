@@ -6,31 +6,46 @@
 /*   By: alvachon <alvachon@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/23 15:14:08 by alvachon          #+#    #+#             */
-/*   Updated: 2023/04/05 20:07:26 by alvachon         ###   ########.fr       */
+/*   Updated: 2023/04/06 11:03:16 by alvachon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
 
-void	keep_redir_input(t_cmd data, int i)
+/*
+cd < test.txt "/Users/alvachon" WORK
+
+echo < test.txt BLANK
+
+a=5
+export < test.txt "a" WORK
+env < test.txt WORK (rien de special)
+
+*/
+void	keep_redir_input(t_cmd *data)
 {
-	(void)i;
-	if (data.input[0] == '<' && data.input[1] <= 32)
+	if (data->input[0] == '<' && data->input[1] <= 32)
 	{
-		data.redir_input = ft_substr(data.input, 0, 1);
-		data.input++;
-		data.input = ltrim(data.input);
+		data->redir_input = ft_substr(data->input, 0, 1);
+		data->input++;
+		data->input = ltrim(data->input);
 	}
+	if (data->input[0] == '<' && data->input[1] == '<')
+	{
+		data->flag_delim = ft_substr(data->input, 0, 2);
+		data->input += 2;
+	}
+	data->input = ltrim(data->input);
 }
 
 void	keep_flag_delim(t_cmd data, int i)
 {
-	if (data.input[0] == '<' && data.input[1] == '<')
+	if (data->input[0] == '<' && data->input[1] == '<')
 	{
-		data.flag_delim = ft_substr(data.input, 0, 2);
+		data->flag_delim = ft_substr(data->input, 0, 2);
 		i = 2;
-		data.input = wordtrim(data.input, i);
-		data.input = ltrim(data.input);
+		data->input = wordtrim(data->input, i);
+		data->input = ltrim(data->input);
 	}
 }
 
