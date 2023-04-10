@@ -6,7 +6,7 @@
 /*   By: alvachon <alvachon@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/23 15:14:08 by alvachon          #+#    #+#             */
-/*   Updated: 2023/04/10 10:08:46 by alvachon         ###   ########.fr       */
+/*   Updated: 2023/04/10 11:10:10 by alvachon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -100,6 +100,20 @@ int	ft_stristr(const char *haystack, const char *needle, size_t len)
 	return (0);
 }
 
+int	check_buffer(int *buf_siz, char **buf, int str_siz)
+{
+	int	copy;
+
+	copy = buf_siz;
+	if (!buf_siz)
+		return (0);
+	buf_siz += copy;
+	buf = ft_realloc(buf, buf_siz);
+	str_siz = buf_siz;
+	return (str_siz);
+}
+
+//rendu la rapetisser la fonction
 char	*ft_readline(int fd, int trigger, char *delim)
 {
 	int		buf_siz;
@@ -116,11 +130,9 @@ char	*ft_readline(int fd, int trigger, char *delim)
 	{
 		if (ix == str_siz - 1)
 		{
-			if (!buf_siz)
+			str_siz = check_buffer(&buf_siz, &buf, str_siz);
+			if (str_siz == 0)
 				break ;
-			buf_siz += buf_siz;
-			buf = ft_realloc(buf, buf_siz);
-			str_siz = buf_siz;
 		}
 		ch = ft_getchar(fd);
 		if (ch == EOF)
@@ -187,7 +199,7 @@ void	keep_print(int i, t_cmd *data)
 	if (data->input[0] == 34 || data->input[0] == 39)
 		do_guil(data, i);
 	else
-		do_sp(data, i);
+		do_sp(data, i);//
 	while (scan(data->print, '$') == 0)
 		do_ref(data, i);
 }
