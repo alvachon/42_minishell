@@ -20,8 +20,8 @@ t_cmd	parse(t_cmd data)
 	while (1)
 	{
 		keep_builtin(i, &data);
-		keep_option(&data);
 		keep_print(i, &data);
+		keep_option(&data);
 		keep_redir_input(i, &data);
 		/*input = keep_redir_input(input, i);
 		input = keep_flag_delim(input, i);
@@ -66,6 +66,8 @@ int	builtincheck(t_cmd data, char **env)
 		r = z_env(g_data.env);
 	else if (ft_strncmp(data.built, "exit", 5) == 0)
 		return (z_exit(data, ft_atoi(data.input)));
+	//else if (ft_strncmp(data.built, "/", 1) == 0)
+		//access(data.built, F_OK), -> si ça existe, execve.
 	data_free(&data);
 	return (ft_error(r));
 }

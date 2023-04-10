@@ -144,6 +144,7 @@ char	*ft_readline(int fd, int trigger, char *delim)
 	return (buf);
 }
 
+
 void	keep_redir_input(int i, t_cmd *data)
 {
 	char	*read;
@@ -193,19 +194,19 @@ void	keep_print(int i, t_cmd *data)
 
 void	keep_option(t_cmd *data)
 {
-	if (strcmp(data->built, "echo") == 0 && strncmp(data->input, "-n ", 3) == 0)
+	/*if (strcmp(data->built, "echo") == 0 && strncmp(data->input, "-n ", 3) == 0)
 	{
 		data->opt = "-n";
 		data->input = wordtrim(data->input, 2);
 		data->input = ltrim(data->input);
-	}
+	}*/
 	if (strcmp(data->built, "cd") == 0)
 	{
-		if (strncmp(data->input, "/", 1) != 0)
+		if (strncmp(data->print, "/", 1) != 0)
 			do_relative_path(data);
-		if (strncmp(data->input, ".", 1) == 0)
-			data->input++;
-		if (strncmp(data->input, "/", 1) == 0)
+		if (strncmp(data->print, ".", 1) == 0)
+			data->print++;
+		if (strncmp(data->print, "/", 1) == 0)
 			do_direct_path(data);
 	}
 }

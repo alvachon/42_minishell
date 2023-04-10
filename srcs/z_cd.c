@@ -62,7 +62,7 @@ void	remove_section(t_cmd *data)
 	data->path = ft_strdup(temp);
 	index = 2;
 	while (index--)
-		data->input++;
+		data->print++;
 	free(temp);
 }
 
@@ -72,19 +72,19 @@ void	add_section(t_cmd *data)
 	char	*buff;
 
 	i = 0;
-	i = chartrim(data->input, '/');
+	i = chartrim(data->print, '/');
 	if (i == 0)
 		i = 1;
-	buff = ft_substr(data->input, 0, i);
+	buff = ft_substr(data->print, 0, i);
 	if (buff[0] == '/' && data->path[ft_strlen(data->path) - 1] == '/')
 	{
 		free (buff);
-		data->input++;
+		data->print++;
 		return ;
 	}
 	data->path = ft_strpaste(data->path, buff);
 	while (i--)
-		data->input++;
+		data->print++;
 	if (buff != NULL)
 		free(buff);
 }
@@ -94,29 +94,29 @@ void	do_relative_path(t_cmd *data)
 	data->path = ft_strpaste(data->path, g_data.pwd);
 	if (data->path[ft_strlen(data->path) - 1] != '/')
 		data->path = ft_strpaste(data->path, "/");
-	while (data->input[0] == '/' || ft_isalnum(data->input[0]) == 1 || \
-		ft_strncmp(data->input, "..", 2) == 0)
+	while (data->print[0] == '/' || ft_isalnum(data->print[0]) == 1 || \
+		ft_strncmp(data->print, "..", 2) == 0)
 	{
-		if (data->input[0] == '/' || ft_isalnum(data->input[0]) == 1)
+		if (data->print[0] == '/' || ft_isalnum(data->print[0]) == 1)
 			add_section(data);
-		else if (ft_strncmp(data->input, "..", 2) == 0)
+		else if (ft_strncmp(data->print, "..", 2) == 0)
 			remove_section(data);
-		if (ft_strncmp(data->input, "./", 2) == 0)
-			data->input += 2;
+		if (ft_strncmp(data->print, "./", 2) == 0)
+			data->print += 2;
 	}
 }
 
 void	do_direct_path(t_cmd *data)
 {
-	while (data->input[0] == '/' || ft_isalnum(data->input[0]) == 1 || \
-		ft_strncmp(data->input, "..", 2) == 0)
+	while (data->print[0] == '/' || ft_isalnum(data->print[0]) == 1 || \
+		ft_strncmp(data->print, "..", 2) == 0)
 	{
-		if (data->input[0] == '/' || ft_isalnum(data->input[0]) == 1)
+		if (data->print[0] == '/' || ft_isalnum(data->print[0]) == 1)
 			add_section(data);
-		else if (ft_strncmp(data->input, "..", 2) == 0)
+		else if (ft_strncmp(data->print, "..", 2) == 0)
 			remove_section(data);
-		if (ft_strncmp(data->input, "./", 2) == 0)
-			data->input += 2;
+		if (ft_strncmp(data->print, "./", 2) == 0)
+			data->print += 2;
 	}
 }
 
