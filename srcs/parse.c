@@ -6,7 +6,7 @@
 /*   By: alvachon <alvachon@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/23 15:14:08 by alvachon          #+#    #+#             */
-/*   Updated: 2023/04/06 16:13:41 by alvachon         ###   ########.fr       */
+/*   Updated: 2023/04/10 10:08:46 by alvachon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -217,7 +217,8 @@ void	keep_builtin(int i, t_cmd *data)
 	data->input = ltrim(data->input);
 	i = wordlen(data->input, i);
 	str = ft_substr(data->input, 0, i);
-	str = ulstr(str); //echo seulement
+	if (ft_strncmp(str, "ECHO", 5) == 0)
+		str = ulstr(str);
 	str = trimchar(str, 32);
 	data->built = ft_strdup(str);
 	free(str);
