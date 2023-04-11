@@ -56,7 +56,7 @@ void	do_sp(t_cmd *data, int i)
 {
 	i = token_reach(i, data->input);
 	data->print = ft_substr(data->input, 0, i);
-	while (i--)
+	while (i-- && *data->input != '\0')
 		data->input++;
 }
 

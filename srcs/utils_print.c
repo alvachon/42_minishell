@@ -89,10 +89,32 @@ char	*print_var(char *var)
 
 int	token_reach(int i, char *str)
 {
+	if (!str)
+		return (0);
 	i = chartrim(str, '|');
 	if (i > chartrim(str, '<'))
 		i = chartrim(str, '<');
 	if (i > chartrim(str, '>'))
 		i = chartrim(str, '>');
+	return (i);
+}
+
+int distance_finder(t_cmd *data)
+{
+	int i;
+
+	i = 0;
+	while (data->input[i] != '\0')
+	{
+		if ((data->input[i] == 34 || data->input[i] == 39) && i == 0)
+			i = 1;
+		else if ((data->input[i] == 34 || data->input[i] == 39) && i == 1)
+			i = 0;
+		if (i == 0 &&
+		(data->input[i] == '|' || data->input[i] == '>' ||
+			data->input[i] == '<'))
+			return (i);
+		i++;
+	}
 	return (i);
 }

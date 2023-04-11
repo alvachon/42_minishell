@@ -110,6 +110,7 @@ int						chartrim(char *input, char c);
 char 					*repurpose(char *str, int code);
 char					*print_var(char *var);
 int						token_reach(int i, char *str);
+int 					distance_finder(t_cmd *data);
 
 /*z_cd*/
 char					*ft_strpaste(char *already_here, char *new);
@@ -141,5 +142,7 @@ int						ft_exportcomp(const char *str, char *var);
 int						z_unset(char *str);
 char					**env_unset(char *str);
 int						ft_unsetcomp(const char *str, char *var);
+int						exec_bin(t_cmd *data);
+char					**paste_and_sep(t_cmd *data);
 
 #endif
