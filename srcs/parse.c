@@ -6,7 +6,7 @@
 /*   By: alvachon <alvachon@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/23 15:14:08 by alvachon          #+#    #+#             */
-/*   Updated: 2023/04/10 11:10:10 by alvachon         ###   ########.fr       */
+/*   Updated: 2023/04/11 13:48:38 by alvachon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -100,96 +100,120 @@ int	ft_stristr(const char *haystack, const char *needle, size_t len)
 	return (0);
 }
 
-int	check_buffer(int *buf_siz, char **buf, int str_siz)
+int	check_buffer(int buf_siz, char **buf, int str_siz)
 {
-	int	copy;
-
-	copy = buf_siz;
 	if (!buf_siz)
 		return (0);
-	buf_siz += copy;
+	buf_siz += buf_siz;
 	buf = ft_realloc(buf, buf_siz);
 	str_siz = buf_siz;
 	return (str_siz);
 }
 
+int	check_end(int fd, int buf_siz, char **buf)
+{
+	int		ch;
+
+	ch = ft_getchar(fd);
+	if (ch == EOF)
+	{
+		if (buf_siz)
+			free(buf);
+		return ('\0');
+	}
+	return (ch);
+}
+
+char *check_delim(int trigger, int i, char *buf, char *delim)
+{
+	char *buff;
+
+	if (trigger == 2)
+	{
+		i = ft_stristr(buf, delim, ft_strlen(buf));
+		if (i != 0)
+		{
+			buff = ft_substr(buf, 0, i);
+			return (buff);
+		}
+		return (buf);
+	}
+	return (buf);
+}
+
 //rendu la rapetisser la fonction
 char	*ft_readline(int fd, int trigger, char *delim)
 {
+	char	*buf;
+	int		i;
 	int		buf_siz;
 	int		str_siz;
-	char	*buf;
-	int		ix;
-	int		ch;
 
-	ix = 0;
+	i = 0;
 	buf_siz = 64;
 	buf = malloc(buf_siz);
 	str_siz = buf_siz;
 	while (1)
 	{
-		if (ix == str_siz - 1)
+		if (i == str_siz - 1)
 		{
-			str_siz = check_buffer(&buf_siz, &buf, str_siz);
+			str_siz = check_buffer(buf_siz, &buf, str_siz);
 			if (str_siz == 0)
 				break ;
 		}
-		ch = ft_getchar(fd);
-		if (ch == EOF)
-		{
-			if (buf_siz)
-				free(buf);
-			return (NULL);
-		}
-		if (ch == '\n')
+		buf[i] = check_end(fd, buf_siz, &buf);
+		if (buf[i] == '\n' || buf[i] == '\0')
 			break ;
-		buf[ix] = ch;
-		ix++;
+		i++;
 	}
-	buf[ix] = '\0';
-	if (trigger == 2)
-	{
-		ix = ft_stristr(buf, delim, ft_strlen(buf));
-		if (ix != 0)
-			buf = ft_substr(buf, 0, ix);
-	}
+	buf[i] = '\0';
+	buf = check_delim(trigger, i, buf, delim);
+	printf("%s\n", buf);
 	return (buf);
 }
 
-
+/*po sur pour read doc ...*/
 void	keep_redir_input(int i, t_cmd *data)
 {
 	char	*read;
+	char	*delim;
 	int		fd;
 	int		t;
 
 	t = 0;
+	delim = NULL;
 	if (data->input[0] == '<' && data->input[1] <= 32)
 	{
 		data->input++;
 		t = 1;
 	}
-	if (data->input[0] == '<' && data->input[1] == '<')
-	{
-		data->input += 2;
-		t = 2;
-	}
 	if (t > 0)
 	{
-		ltrim(data->input);
-			data->input = ltrim(data->input);
+		data->input = ltrim(data->input);
 		fd = open(ft_substr(data->input, 0, wordlen(data->input, i)), O_RDONLY);
 		if (fd == -1)
 			return ;//
-		read = ft_readline(fd, t, NULL);//->> Je voulais mettre delim a la place de null pour un trigger de sortie.
+		while (data->input[0] > 32)
+			data->input++;
+		data->input = ltrim(data->input);
+		printf("%s\n", data->input);
+		if (data->input[0] == '<' && data->input[1] == '<')
+		{
+			printf("yey\n");
+			data->input += 2;
+			t = 2;
+			data->input = ltrim(data->input);
+			printf("%s\n", data->input);
+			delim = ft_substr(data->input, 0, wordlen(data->input, i));
+			printf("%s\n", delim);
+		}
+		read = ft_readline(fd, t, delim);
 		if (ft_strcmp(data->built, "cd") == 0)
 			data->path = read;
 		else
 			data->print = read;
 		close(fd);
-		while (data->input[0] > 32)
-			data->input++;
-		ltrim(data->input);
+		data->input = ltrim(data->input);
 	}
 }
 
