@@ -6,7 +6,7 @@
 /*   By: alvachon <alvachon@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/23 15:14:08 by alvachon          #+#    #+#             */
-/*   Updated: 2023/04/11 13:48:38 by alvachon         ###   ########.fr       */
+/*   Updated: 2023/04/11 13:55:11 by alvachon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -151,7 +151,7 @@ char	*ft_readline(int fd, int trigger, char *delim)
 
 	i = 0;
 	buf_siz = 64;
-	buf = malloc(buf_siz);
+	buf = ft_calloc(1, buf_siz);
 	str_siz = buf_siz;
 	while (1)
 	{
@@ -221,9 +221,9 @@ void	keep_redir_input(int i, t_cmd *data)
 void	keep_print(int i, t_cmd *data)
 {
 	if (data->input[0] == 34 || data->input[0] == 39)
-		do_guil(data, i);
-	else
-		do_sp(data, i);//
+			do_guil(data, i);
+		else
+			do_sp(data, i);
 	while (scan(data->print, '$') == 0)
 		do_ref(data, i);
 }
