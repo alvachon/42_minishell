@@ -11,9 +11,11 @@ SRCS			= $(SRCS_DIR)/lexer.c \
 				  $(SRCS_DIR)/minishell.c \
 				  $(SRCS_DIR)/parse.c \
 				  $(SRCS_DIR)/process_env.c \
+				  $(SRCS_DIR)/process_read.c \
 				  $(SRCS_DIR)/process_shell.c \
 				  $(SRCS_DIR)/utils_built.c \
 				  $(SRCS_DIR)/utils_print.c \
+				  $(SRCS_DIR)/utils_read.c \
 				  $(SRCS_DIR)/z_cd.c \
 				  $(SRCS_DIR)/z_echo.c \
 				  $(SRCS_DIR)/z_print.c \

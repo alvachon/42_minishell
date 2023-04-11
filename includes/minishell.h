@@ -6,7 +6,7 @@
 /*   By: alvachon <alvachon@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/02 12:06:16 by fboulang          #+#    #+#             */
-/*   Updated: 2023/04/06 15:57:21 by alvachon         ###   ########.fr       */
+/*   Updated: 2023/04/11 14:52:26 by alvachon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,13 +83,19 @@ void					keep_redir_input(int i, t_cmd *data);
 void					keep_print(int i, t_cmd *data);//
 void					keep_option(t_cmd *data);
 void					keep_builtin(int i, t_cmd *data);
-int						ft_stristr(const char *haystack, const char *needle, size_t len);
 
 /*process_shell.c*/
 void					handle_sig(int sign);
 void					ctrl_c_eof(void);
 void					init_shell(t_terminal *minishell, char **env);
 int						shell_process(char **env);
+
+/*process_read.c*/
+int						check_buffer(int buf_siz, char **buf, int str_siz);
+int						check_end(int fd, int buf_siz, char **buf);
+char					*check_delim(int trigger, int i, char *buf, char *delim);
+char					*ft_readline(int fd, int trigger, char *delim);
+
 
 /*process_env.c*/
 void					set_global(char **env);
@@ -111,6 +117,11 @@ char 					*repurpose(char *str, int code);
 char					*print_var(char *var);
 int						token_reach(int i, char *str);
 int 					distance_finder(t_cmd *data);
+
+/*utils_read.c*/
+int						ft_getchar(int fd);
+void					*ft_realloc(void *ptr, size_t size);
+int						ft_stristr(const char *haystack, const char *needle, size_t len);
 
 /*z_cd*/
 char					*ft_strpaste(char *already_here, char *new);
