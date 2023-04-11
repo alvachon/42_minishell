@@ -25,7 +25,7 @@ int	wordlen(char *input, int i)
  Trim clear ascii like ' ' on LEFT */
 char	*ltrim(char *input)
 {
-	while (*input <= 32)
+	while (*input <= 32 && *input !='\0')
 		input++;
 	return (input);
 }
@@ -34,7 +34,7 @@ char	*ltrim(char *input)
  Clear a word that have been parsed */
 char	*wordtrim(char *input, int i)
 {
-	while (i >= 0)
+	while (i >= 0 && *input != '\0')
 	{
 		input++;
 		i--;

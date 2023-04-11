@@ -44,6 +44,8 @@ void	data_free(t_cmd *data)
 		free (data->built);
 	if (data->path)
 		free (data->path);
+	if (data->print)
+		free (data->print);
 	return ;
 }
 
@@ -66,8 +68,8 @@ int	builtincheck(t_cmd data, char **env)
 		r = z_env(g_data.env);
 	else if (ft_strncmp(data.built, "exit", 5) == 0)
 		return (z_exit(data, ft_atoi(data.input)));
-	//else if (ft_strncmp(data.built, "/", 1) == 0)
-		//access(data.built, F_OK), -> si ça existe, execve.
+	else
+		r = exec_bin(&data);
 	data_free(&data);
 	return (ft_error(r));
 }
@@ -78,8 +80,9 @@ int	lexer(char *input, char **env)
 	int		i;
 
 	data.input = input;
+	data.print = NULL;
 	data.path = ft_calloc(1, sizeof(char));
 	data = parse(data);
 	i = builtincheck(data, env);
-	return (0);
+	return (i);
 }

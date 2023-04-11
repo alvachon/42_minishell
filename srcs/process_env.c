@@ -49,7 +49,7 @@ void	sys_msg(char *reason, int code)
 	if (code > 0)
 	{
 		perror(reason);
-		exit(EXIT_FAILURE);
+		//exit(EXIT_FAILURE);
 	}
 }
 
