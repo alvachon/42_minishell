@@ -16,6 +16,7 @@ SRCS			= $(SRCS_DIR)/lexer.c \
 				  $(SRCS_DIR)/utils_built.c \
 				  $(SRCS_DIR)/utils_print.c \
 				  $(SRCS_DIR)/utils_read.c \
+				  $(SRCS_DIR)/utils_redir.c \
 				  $(SRCS_DIR)/z_cd.c \
 				  $(SRCS_DIR)/z_echo.c \
 				  $(SRCS_DIR)/z_print.c \

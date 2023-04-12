@@ -6,7 +6,7 @@
 /*   By: alvachon <alvachon@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/15 18:14:25 by alvachon          #+#    #+#             */
-/*   Updated: 2023/04/10 10:07:38 by alvachon         ###   ########.fr       */
+/*   Updated: 2023/04/12 14:16:25 by alvachon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,11 +22,7 @@ t_cmd	parse(t_cmd data)
 		keep_builtin(i, &data);
 		keep_print(i, &data);
 		keep_option(&data);
-		keep_redir_input(i, &data);
-		/*input = keep_redir_input(input, i);
-		input = keep_flag_delim(input, i);
-		//input = keep_delimiter(input, i);
-		printf("parse : %s\n", input);*/
+		keep_token(i, &data);
 		return (data);
 	}
 }
@@ -68,6 +64,7 @@ int	builtincheck(t_cmd data, char **env)
 		r = z_env(g_data.env);
 	else if (ft_strncmp(data.built, "exit", 5) == 0)
 		return (z_exit(data, ft_atoi(data.input)));
+	/*else if (parent_built_in)*/
 	else
 		r = exec_bin(&data);
 	data_free(&data);

@@ -6,7 +6,7 @@
 /*   By: alvachon <alvachon@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/02 12:06:16 by fboulang          #+#    #+#             */
-/*   Updated: 2023/04/11 14:52:26 by alvachon         ###   ########.fr       */
+/*   Updated: 2023/04/12 12:52:57 by alvachon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,8 +78,7 @@ int						builtincheck(t_cmd data, char **env);
 int						lexer(char *input, char **env);
 
 /*parse.c*/
-void					keep_redir_input(int i, t_cmd *data);
-/*void					keep_flag_delim(t_cmd data, int i);*/
+void					keep_token(int i, t_cmd *data);
 void					keep_print(int i, t_cmd *data);//
 void					keep_option(t_cmd *data);
 void					keep_builtin(int i, t_cmd *data);
@@ -122,6 +121,11 @@ int 					distance_finder(t_cmd *data);
 int						ft_getchar(int fd);
 void					*ft_realloc(void *ptr, size_t size);
 int						ft_stristr(const char *haystack, const char *needle, size_t len);
+
+/*utils_redir.c*/
+void					ft_swipe(t_cmd *data);
+void					do_input(int i, t_cmd *data);
+void					do_heredoc(int i, t_cmd *data);
 
 /*z_cd*/
 char					*ft_strpaste(char *already_here, char *new);
