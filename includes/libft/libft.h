@@ -6,12 +6,13 @@
 /*   By: alvachon <alvachon@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/29 11:51:52 by fboulang          #+#    #+#             */
-/*   Updated: 2023/02/06 13:36:50 by alvachon         ###   ########.fr       */
+/*   Updated: 2023/04/05 17:49:40 by alvachon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef LIBFT_H
 # define LIBFT_H
+
 # include <stdlib.h>
 # include <unistd.h>
 
@@ -67,4 +68,4 @@ size_t	ft_strlen(const char *s);
 t_list	*ft_lstnew(void *content);
 t_list	*ft_lstlast(t_list *lst);
 t_list	*ft_lstmap(t_list *lst, void *(*f)(void *), void (*del)(void *));
-#endif	
+#endif

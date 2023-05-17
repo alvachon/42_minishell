@@ -6,104 +6,89 @@
 /*   By: alvachon <alvachon@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/31 13:27:55 by alvachon          #+#    #+#             */
-/*   Updated: 2023/03/24 15:30:42 by alvachon         ###   ########.fr       */
+/*   Updated: 2023/05/16 10:31:51 by alvachon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
 
-void	keep_redir_input(t_cmd data, int i)
+int	job_process(t_node *process)
 {
-	(void)i;
-	if (data.input[0] == '<' && data.input[1] <= 32)
+	t_node	*first;
+	int		i;
+
+	i = 0;
+	first = process;
+	while (i <= g_data.pipenum)
 	{
-		data.redir_input = ft_substr(data.input, 0, 1);
-		data.input++;
-		data.input = ltrim(data.input);
+		i++;
+		if (builtin_check(process) == 0)
+			pipers(process);
+		else if (builtin_check(process) != 0)
+			exect_cmd(process);
+		process = process->next;
 	}
+	i = 0;
+	while (i <= g_data.pipenum)
+	{
+		close(first->fds[0]);
+		close(first->fds[1]);
+		free(first);
+		first = first->next;
+		i++;
+	}
+	g_data.pipenum = 0;
+	return (0);
 }
 
-void	keep_flag_delim(t_cmd data, int i)
+t_node	*shell_process(t_node *process, t_terminal *mini)
 {
-	if (data.input[0] == '<' && data.input[1] == '<')
+	while (mini->shell_is_interactive)
 	{
-		data.flag_delim = ft_substr(data.input, 0, 2);
-		i = 2;
-		data.input = wordtrim(data.input, i);
-		data.input = ltrim(data.input);
+		signal(SIGINT, handle_sig);
+		display_cmd(mini);
+		if (!mini->cmd)
+			input_eof();
+		if (mini->cmd[0] == '\0' || ft_strcmp(mini->cmd, "\n") == 0 \
+			|| ft_isspace(mini->cmd) == 1)
+		{
+			free(mini->cmd);
+			continue ;
+		}
+		process = queue_jobs(process, mini->cmd);
+		add_history(mini->cmd);
+		free(mini->cmd);
+		g_data.shell_state = SH_READ;
+		if (process->next)
+			return (process);
+		else if (process != NULL)
+			exect_cmd(process);
+		else if (process == NULL)
+			break ;
+		free(process);
 	}
+	return (NULL);
 }
 
-char	*scan_end(char *file, int trig)
-{
-	char	**cmd;
-
-	if (trig == 0)
-	{
-		printf("Watch out for < after guil \n");
-		return (file);
-	}
-	if (scan(file, '<') == 0)
-	{
-		cmd = ft_split(file, '<');
-		file = cmd[0];
-		free(cmd);
-	}
-	if (scan(file, '>') == 0)
-	{
-		cmd = ft_split(file, '>');
-		file = cmd[0];
-		free(cmd);
-	}
-	if (scan(file, '|') == 0)
-	{
-		cmd = ft_split(file, '>');
-		file = cmd[0];
-		free(cmd);
-	}
-	return (file);
-}
-
-/*
-! Define or enum the color system, too horrible this way [ ]
-! Thinking about a function to return an anwser instead of  if if else if [ ]
-* In the last else : Implementation of the pipe would be here I think ...
-*/
 int	main(int ac, char **av, char **env)
 {
-	t_terminal	minishell;
-	char		*cmd;
+	t_terminal	mini;
+	t_node		*process;
+	int			i;
 
-	(void)av;
-	if (ac != 2)
+	i = 0;
+	process = NULL;
+	if (ac < 2 && av)
 	{
-		init_shell(&minishell, env);
-		cmd = NULL;
-		while (FOREGROUND_JOB)
+		init_shell(&mini, env);
+		while (1)
 		{
-			if (isatty(STDIN_FILENO))
-			{
-				cmd = readline("\033[0m\033[34mminishell\033[0m\033[35m$ \033[0m");
-				g_data.shell_state = SH_EXEC;
-				if (!cmd)
-					ctrl_c_eof();
-				if (cmd[0] == '\0' || ft_strcmp(cmd, "\n") == 0)
-				{
-					if (cmd)
-						free(cmd);
-					continue ;
-				}
-				else if (lexer(cmd) == 1)
-					error_msg(cmd);
-				add_history(cmd);
-				free(cmd);
-				g_data.shell_state = SH_READ;
-			}
-			else
-			{
-				printf("\n(job process) Is redirected, not a terminal. \n");
-			}
+			process = shell_process(process, &mini);
+			if (g_data.pipenum)
+				job_process(process);
 		}
+		return (errno);
 	}
-	sys_msg("Usage: Qt arg.\n", 2);
+	errno = 5;
+	return (errno);
 }

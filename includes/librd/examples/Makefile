@@ -31,8 +31,7 @@ srcdir = .
 datadir = ${datarootdir}
 
 top_srcdir = ..
-#BUILD_DIR = .
-BUILD_DIR = /Users/alvachon/Documents/minishell/includes/librd
+BUILD_DIR = .
 installdir = $(datadir)/readline
 
 INSTALL = /usr/bin/install -c

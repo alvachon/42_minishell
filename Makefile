@@ -7,19 +7,25 @@ REL_PATH		=	$(shell pwd)
 INCL_DIR		= ./includes
 SRCS_DIR		= ./srcs
 OBJS_DIR		= ./objs
-SRCS			= $(SRCS_DIR)/input_lexer.c \
-				  $(SRCS_DIR)/input_merge.c \
+SRCS			= $(SRCS_DIR)/0_env.c \
+				  $(SRCS_DIR)/0_signal.c \
+				  $(SRCS_DIR)/1_parse.c \
+				  $(SRCS_DIR)/2_expand.c \
+				  $(SRCS_DIR)/3_process.c \
+				  $(SRCS_DIR)/4_execution.c \
+				  $(SRCS_DIR)/4_utils_execution.c \
+				  $(SRCS_DIR)/4_utils_path.c \
+				  $(SRCS_DIR)/4_utils_redir.c \
+				  $(SRCS_DIR)/5_pipes.c \
+				  $(SRCS_DIR)/lib_built.c \
+				  $(SRCS_DIR)/lib_print.c \
+				  $(SRCS_DIR)/lib_read.c \
+				  $(SRCS_DIR)/lib_readline.c \
 				  $(SRCS_DIR)/minishell.c \
-				  $(SRCS_DIR)/terminal_signal.c \
-				  $(SRCS_DIR)/terminal_struct.c \
-				  $(SRCS_DIR)/utils_clear.c \
-				  $(SRCS_DIR)/utils_env.c \
-				  $(SRCS_DIR)/utils_trim.c \
 				  $(SRCS_DIR)/z_cd.c \
 				  $(SRCS_DIR)/z_echo.c \
-				  $(SRCS_DIR)/z_env.c \
 				  $(SRCS_DIR)/z_export.c \
-				  $(SRCS_DIR)/z_pwd.c \
+				  $(SRCS_DIR)/z_print.c \
 				  $(SRCS_DIR)/z_unset.c
 OBJS 			= $(SRCS:$(SRCS_DIR)/%.c=$(OBJS_DIR)/%.o)
 HDRS_FILE		= minishell.h

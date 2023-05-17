@@ -32,7 +32,7 @@ datarootdir = ${prefix}/share
 srcdir = .
 VPATH = ..
 topdir = ..
-BUILD_DIR = /Users/alvachon/Documents/minishell/includes/librd
+BUILD_DIR = .
 
 INSTALL = /usr/bin/install -c
 INSTALL_PROGRAM = ${INSTALL}

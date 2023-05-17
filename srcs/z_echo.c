@@ -6,81 +6,140 @@
 /*   By: alvachon <alvachon@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/15 18:22:05 by alvachon          #+#    #+#             */
-/*   Updated: 2023/03/24 11:00:03 by alvachon         ###   ########.fr       */
+/*   Updated: 2023/05/10 15:15:17 by alvachon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
 
-void	free_echo(char *temp, char *temp2, char **env, int code)
+int	scan_for_word(char *input)
 {
 	int	i;
 
 	i = 0;
-	(void)env;
-	if (code == 1)
-		free(temp2);
-	if (code == 2)
-	{
-		while (env[i])
-		{
-			free(env[i]);
-			i++;
-		}
-		free(env);
-		free(temp2);
-		if (*temp)
-			free(temp);
-	}
-	if (code == 3)
-		free(temp);
+	while (input[i] && input[i] == 32)
+		i++;
+	if (input[i] == '|')
+		return (0);
+	if (input[i] == '<')
+		return (0);
+	if (input[i] == '>')
+		return (0);
+	if (ft_isprint(input[i]) == 1 && input[i] != 32)
+		return (1);
+	return (2);
 }
 
-void	execute_echo(char *path, char **cmd, char **env)
+char	*add_content(char *content, char *add, int position, char *var)
 {
-	pid_t	exe;
+	char	*mod;
 	int		i;
 	int		j;
-
-	i = -1;
-	j = -1;
-	exe = fork();
-	if (exe == 0)
-		execve(path, cmd, env);
-	else
-		wait(0);
-	while (cmd[i++])
-		free(cmd[i]);
-	while (env[j++])
-		free(env[j]);
-	free(cmd);
-	free(env);
-	free(path);
-	return ;
-}
-
-void	echo_parse(char **cmd, char **env)
-{
-	char	*temp;
-	char	*temp2;
-	int		i;
+	int		k;
 
 	i = 0;
-	temp = ft_strjoin("/", cmd[0]);
-	while (env[i])
+	j = 0;
+	k = 0;
+	mod = ft_calloc(1, (ft_strlen(content)) + ft_strlen(add));
+	while (i != position)
 	{
-		temp2 = ft_strjoin(env[i], temp);
-		if (access(temp2, F_OK) == 0)
-		{
-			execute_echo(temp2, cmd, env);
-			free_echo(temp, temp2, env, 3);
-			return ;
-		}
-		else
-		{
-			i++;
-			free_echo(temp, temp2, env, 1);
-		}
+		mod[i] = content[i];
+		i++;
 	}
-	free_echo(temp, temp2, env, 2);
+	k = i;
+	while (add[j])
+		mod[i++] = add[j++];
+	j = ft_strlen(var) + k;
+	while (k < j)
+		k++;
+	while (content[k])
+		mod[i++] = content[k++];
+	mod[i] = '\0';
+	free(content);
+	return (mod);
+}
+
+void	do_guil(t_node *node, int i)
+{
+	char	c;
+	char	*sub;
+
+	c = node->input[0];
+	node->input++;
+	i = chartrim(node->input, c);
+	if (i == 0)
+	{
+		node->input++;
+		return ;
+	}
+	if (i > 0)
+	{
+		sub = ft_substr(node->input, 0, i);
+		if (node->job.print == NULL)
+			node->job.print = ft_strdup(sub);
+		else
+			node->job.print = ft_strpaste(node->job.print, sub);
+		free(sub);
+	}
+	else
+		node->job.print = ft_calloc(1, sizeof(char));
+	while (i-- + 1)
+		node->input++;
+}
+
+void	do_sp(t_node *node, int i)
+{
+	char	*sub;
+
+	i = token_reach(i, node->input);
+	if (i > 0)
+	{
+		sub = ft_substr(node->input, 0, i);
+		if (node->job.print == NULL)
+			node->job.print = ft_strdup(sub);
+		else
+			node->job.print = ft_strpaste(node->job.print, sub);
+		free(sub);
+	}
+	else if (node->input && i == 0 && node->input[i] == ' ')
+	{
+		while (*node->input == ' ' && ft_isalnum(node->input[1]) == 0)
+			node->input++;
+		if (scan_for_word(node->input) == 1 && node->job.print != NULL)
+			node->job.print = ft_strpaste(node->job.print, " ");
+		node->input = ltrim(node->input);
+	}
+	else
+		node->job.print = ft_calloc(1, sizeof(char));
+	while (*node->input && i--)
+		node->input++;
+}
+
+int	z_echo(t_cmd data, char **env)
+{
+	int		i;
+	char	c;
+
+	i = 0;
+	c = '\n';
+	(void)env;
+	if (ft_strncmp(data.opt, "-n", 2) == 0)
+	{
+		while (data.print && data.print[i] != '\0')
+		{
+			write(data.out, &data.print[i], 1);
+			i++;
+		}	
+	}
+	else
+	{
+		while (data.print && data.print[i] != '\0')
+		{
+			write(data.out, &data.print[i], 1);
+			i++;
+		}
+		if (errno != 2)
+			write (data.out, &c, 1);
+	}
+	return (errno);
 }
